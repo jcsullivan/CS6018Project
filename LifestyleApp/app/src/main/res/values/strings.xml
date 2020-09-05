@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">LifestyleApp</string>
+    <string name="app_title_login_screen">MSD Lifestyle App</string>
+    <string name="login">Login</string>
+    <string name="login_colon">Login:</string>
+
+    <string name="password_colon">Password:</string>
+
 </resources>
