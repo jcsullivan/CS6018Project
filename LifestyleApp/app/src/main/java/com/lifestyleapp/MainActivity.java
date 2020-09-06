@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         profileButton = findViewById(R.id.profileButton); //change ID to Sam's
         calculatorButton = findViewById(R.id.calculatorButton); //change ID to Sam's
         hikesButton = findViewById(R.id.hikesButton); //change ID to Sam's
-        weatherButton = findViewById(R.id.weatherButton); //change ID to Sam's
+        weatherButton = findViewById(R.id.weatherButton); 
 
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
