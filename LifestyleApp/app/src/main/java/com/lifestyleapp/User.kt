@@ -3,6 +3,7 @@ package com.lifestyleapp
 import android.graphics.Bitmap
 
 class User(fullName: String, age: Int, city: String, country: String, height: Double, weight: Double, gender: String, profilePhoto: Bitmap) {
+
     val firstName: String;
 
     val lastName: String;
