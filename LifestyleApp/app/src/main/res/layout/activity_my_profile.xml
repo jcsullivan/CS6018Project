@@ -82,7 +82,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <EditText
-            android:id="@+id/editTextTextPersonName9"
+            android:id="@+id/currentWeightEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -90,7 +90,7 @@
             android:text="@string/name_colon" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName10"
+            android:id="@+id/goalWeightEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -99,7 +99,7 @@
             android:text="@string/age_colon" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName11"
+            android:id="@+id/heightEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -108,7 +108,7 @@
             android:text="@string/city_colon" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName12"
+            android:id="@+id/sedActEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -117,7 +117,7 @@
             android:text="@string/country_colon" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName13"
+            android:id="@+id/lbToLoseEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

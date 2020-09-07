@@ -21,7 +21,6 @@
     <string name="weight_management_calc">WEIGHT MANAGEMENT CALCULATOR</string>
     <string name="current_weight_colon">Current Weight:</string>
     <string name="goal_weight_colon">Goal Weight:</string>
-    <string name="height_colon">Height:</string>
     <string name="sed_act">Sedentary/Active:</string>
     <string name="lb_to_lose_per_week_colon">Lbs to Lose Per Week:</string>
     <string name="basal_met_rate_colon">Basal Metabolic Rate:</string>
@@ -38,8 +37,6 @@
     <string name="weight_management">Weight Management</string>
     <string name="nearby_hikes">Nearby Hikes</string>
     <string name="local_weather">Local Weather</string>
-
-
 
 
 </resources>

@@ -7,7 +7,6 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        tools:layout_editor_absoluteY="92dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
@@ -20,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/editTextTextPersonName9"
+            android:id="@+id/currentWeightEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -28,7 +27,7 @@
             android:text="@string/current_weight_colon" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName10"
+            android:id="@+id/goalWeightEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -37,7 +36,7 @@
             android:text="@string/goal_weight_colon" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName11"
+            android:id="@+id/heightEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -52,7 +51,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editTextTextPersonName12"
+                android:id="@+id/sedActEditText"
                 android:layout_width="184dp"
                 android:layout_height="match_parent"
                 android:ems="10"
@@ -60,14 +59,14 @@
                 android:text="@string/sed_act" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/sedActSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:entries="@array/sed_act_array" />
         </LinearLayout>
 
         <EditText
-            android:id="@+id/editTextTextPersonName13"
+            android:id="@+id/lbToLoseEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -76,8 +75,7 @@
             android:text="@string/lb_to_lose_per_week_colon" />
 
         <TextView
-            android:id="@+id/textView6"
-            tools:text="@string/basal_met_rate_colon"
+            android:id="@+id/basalMetRateTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -88,15 +86,14 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/basalMetRateEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName" />
 
         <TextView
-            android:id="@+id/textView7"
-            tools:text="@string/daily_cal_goal_colon"
+            android:id="@+id/dcalCenterPaneTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -107,15 +104,14 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName7"
+            android:id="@+id/dailyCalEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName" />
 
         <TextView
-            android:id="@+id/textView7"
-            tools:text="@string/current_bmi_colon"
+            android:id="@+id/dcal554"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -126,7 +122,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName8"
+            android:id="@+id/bmiEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
