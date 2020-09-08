@@ -1,61 +1,31 @@
 package com.lifestyleapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewStub;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements ViewStub.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     Button profileButton;
     Button calculatorButton;
     Button hikesButton;
     Button weatherButton;
-    Button weightManagementButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dynamic_activity);
-        FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-        fTrans.add(R.id.dynamic_header,new Life_Tool_fTop(),"Life_Tool_fTop");
-        fTrans.add(R.id.dynamic_full_center,new Life_Tool_fMid(),"Life_Tool_fMid");
+        setContentView(R.layout.activity_main);
 
-        fTrans.commit();
-        //weightManagementButton = findViewById(R.id.weight_man_btn);
-        //weightManagementButton.setOnClickListener(this);
+        profileButton = findViewById(R.id.profileButton); //change ID to Sam's
+        calculatorButton = findViewById(R.id.calculatorButton); //change ID to Sam's
+        hikesButton = findViewById(R.id.hikesButton); //change ID to Sam's
+        weatherButton = findViewById(R.id.weatherButton);
 
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.weight_man_btn: {
-                Log.e("PRESS","PRESS");
-                FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
-                fTrans.add(R.id.dynamic_header, new Weight_Man_fTop(), "Weight_Man_fTop");
-                fTrans.add(R.id.dynamic_full_center, new Weight_Man_fMid(), "Weight_Man_fMid");
-                fTrans.add(R.id.dynamic_footer, new Weight_Man_fBot(), "Weight_Man_fBot");
-                break;
-            }
-        }
-    }
-
-
-
-
-        //profileButton = findViewById(R.id.profileButton); //change ID to Sam's
-        //calculatorButton = findViewById(R.id.calculatorButton); //change ID to Sam's
-        //hikesButton = findViewById(R.id.hikesButton); //change ID to Sam's
-        //weatherButton = findViewById(R.id.weatherButton);
-
-        /*profileButton.setOnClickListener(new View.OnClickListener() {
+        profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO
@@ -85,10 +55,14 @@ public class MainActivity extends AppCompatActivity implements ViewStub.OnClickL
         weatherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
+                // Search for local weather using the browser
+                // https://www.youtube.com/watch?v=mMKC_gRSL5Q
+                Uri uri = Uri.parse("http://www.google.com/#q=local weather");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             }
         });
 
-    }*/
+    }
 
 }
