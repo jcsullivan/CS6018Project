@@ -6,18 +6,22 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
 
-    User newUser;
+    protected User newUser;
 
-    Button buttonCamera;
-    Button buttonLifestyle;
-    Button buttonSaveProfile;
+    private Button buttonCamera, buttonLifestyle, buttonSaveProfile;
+    private EditText profileName, profileAge, profileCity, profileCountry, profileHeight, profileWeight;
+    private RadioButton profileMale, profileFemale;
+    private String stringName, stringAge, stringCity, stringCountry, stringHeight, stringWeight;
+    private Boolean male, female;
 
     ImageView profilePicture;
 
@@ -42,6 +46,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch(view.getId())
         {
+            case R.id.lifestyleButton:
+            {
+                profileName = findViewById(R.id.profileName);
+                profileAge = findViewById(R.id.profileAge);
+                profileCity = findViewById(R.id.profileCity);
+                profileCountry = findViewById(R.id.profileCountry);
+                profileHeight = findViewById(R.id.profileHeight);
+                profileWeight = findViewById(R.id.profileWeight);
+                profileMale = findViewById(R.id.profileMale);
+                profileFemale = findViewById(R.id.profileFemale);
+            }
             case R.id.profileUpdatePhoto:
             {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
