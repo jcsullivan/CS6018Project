@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.weather_btn: {
                 // Search for local weather using the browser
                 // https://www.youtube.com/watch?v=mMKC_gRSL5Q
-                Uri uri = Uri.parse("http://www.google.com/#q=local weather");
+                Uri uri = Uri.parse("http://www.google.com/search?q=local weather");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
             }
