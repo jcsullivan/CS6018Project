@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         profileButton = findViewById(R.id.profileButton); //change ID to Sam's
         calculatorButton = findViewById(R.id.calculatorButton); //change ID to Sam's
         hikesButton = findViewById(R.id.hikesButton); //change ID to Sam's
-        weatherButton = findViewById(R.id.weatherButton); 
+        weatherButton = findViewById(R.id.weatherButton);
 
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +55,11 @@ public class MainActivity extends AppCompatActivity {
         weatherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
+                // Search for local weather using the browser
+                // https://www.youtube.com/watch?v=mMKC_gRSL5Q
+                Uri uri = Uri.parse("http://www.google.com/#q=local weather");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             }
         });
 
