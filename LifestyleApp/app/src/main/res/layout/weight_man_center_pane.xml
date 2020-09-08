@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/currentWeightEditText"
+            android:id="@+id/profileName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -27,7 +27,7 @@
             android:text="@string/current_weight_colon" />
 
         <EditText
-            android:id="@+id/goalWeightEditText"
+            android:id="@+id/profileAge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -36,7 +36,7 @@
             android:text="@string/goal_weight_colon" />
 
         <EditText
-            android:id="@+id/heightEditText"
+            android:id="@+id/profileCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -51,7 +51,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/sedActEditText"
+                android:id="@+id/profileCountry"
                 android:layout_width="184dp"
                 android:layout_height="match_parent"
                 android:ems="10"
@@ -66,7 +66,7 @@
         </LinearLayout>
 
         <EditText
-            android:id="@+id/lbToLoseEditText"
+            android:id="@+id/profileHeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
