@@ -82,7 +82,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <EditText
-            android:id="@+id/currentWeightEditText"
+            android:id="@+id/profileName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -90,58 +90,75 @@
             android:text="@string/name_colon" />
 
         <EditText
-            android:id="@+id/goalWeightEditText"
+            android:id="@+id/profileAge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:text="@string/age_colon" />
 
         <EditText
-            android:id="@+id/heightEditText"
+            android:id="@+id/profileCity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textShortMessage"
             android:text="@string/city_colon" />
 
         <EditText
-            android:id="@+id/sedActEditText"
+            android:id="@+id/profileCountry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="textShortMessage"
             android:text="@string/country_colon" />
 
         <EditText
-            android:id="@+id/lbToLoseEditText"
+            android:id="@+id/profileHeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:text="@string/height_colon" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName14"
+            android:id="@+id/profileWeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="numberDecimal"
             android:text="@string/weight_colon" />
 
-        <EditText
-            android:id="@+id/editTextTextPersonName15"
+        <RadioGroup
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/gender_colon" />
+            android:layout_height="match_parent" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/profileMale"
+                    android:layout_width="154dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Male" />
+
+                <RadioButton
+                    android:id="@+id/profileFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Female" />
+            </LinearLayout>
+        </RadioGroup>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
