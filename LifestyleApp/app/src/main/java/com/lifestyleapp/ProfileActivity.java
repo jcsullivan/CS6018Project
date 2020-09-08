@@ -20,10 +20,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button buttonCamera, buttonLifestyle, buttonSaveProfile;
     private EditText profileName, profileAge, profileCity, profileCountry, profileHeight, profileWeight;
     private RadioButton profileMale, profileFemale;
-    private String stringName, stringAge, stringCity, stringCountry, stringHeight, stringWeight;
-    private Boolean male, female;
+    private String stringName, stringCity, stringCountry, stringGender;
+    private int intAge;
+    private double doubleHeight, doubleWeight;
 
-    ImageView profilePicture;
+    //ImageView profilePicture = null;
+    Bitmap profilePicture = null;  
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -46,7 +48,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch(view.getId())
         {
-            case R.id.lifestyleButton:
+            case R.id.saveProfile:
             {
                 profileName = findViewById(R.id.profileName);
                 profileAge = findViewById(R.id.profileAge);
@@ -56,6 +58,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 profileWeight = findViewById(R.id.profileWeight);
                 profileMale = findViewById(R.id.profileMale);
                 profileFemale = findViewById(R.id.profileFemale);
+
+                stringName = profileName.getText().toString();
+                intAge = Integer.parseInt(profileAge.getText().toString());
+                stringCity = profileCity.getText().toString();
+                stringCountry = profileCountry.getText().toString();
+                doubleHeight = Double.parseDouble(profileHeight.getText().toString());
+                doubleWeight = Double.parseDouble(profileWeight.getText().toString());
+
+                if(profileMale.isSelected())
+                {
+                    stringGender = "Male";
+                }
+                if(profileFemale.isSelected())
+                {
+                    stringGender = "Female";
+                }
+                else
+                {
+                    // ***** Find better failure case.
+                    try {
+                        throw new Exception("Gender not selected.");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                newUser = new User(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, stringGender, profilePicture);
             }
             case R.id.profileUpdatePhoto:
             {
@@ -75,9 +104,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap thumbnailImage = (Bitmap) extras.get("data");
-            profilePicture = (ImageView) findViewById(R.id.profilePhoto);
-            profilePicture.setImageBitmap(thumbnailImage);
+            profilePicture = (Bitmap) extras.get("data");
+            //Bitmap thumbnailImage = (Bitmap) extras.get("data");
+            //profilePicture = findViewById(R.id.profilePhoto);
+            //profilePicture.setImageBitmap(thumbnailImage);
             // ***** STILL NEED TO ADD TO USER CLASS DATA.
         }
     }
