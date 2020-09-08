@@ -30,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_my_profile);
 
         buttonCamera = findViewById(R.id.profileUpdatePhoto);
-        buttonLifestyle = findViewById(R.id.lifestyleButton);
+        buttonLifestyle = findViewById(R.id.lifeBtnMyProf);
         buttonSaveProfile = findViewById(R.id.saveProfile);
 
         buttonCamera.setOnClickListener(this);
@@ -50,8 +50,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
                 }
             }
+            break;
+            case R.id.lifeBtnMyProf:
+            {
+                Intent lifeIntent = new Intent(this, MainActivity.class);
+                this.startActivity(lifeIntent);
+            }
+            break;
+            }
         }
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
