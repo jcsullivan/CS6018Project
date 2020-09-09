@@ -9,18 +9,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener{
-
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener
+{
     protected User newUser;
 
     private Button buttonCamera, buttonLifestyle, buttonSaveProfile;
     private EditText profileName, profileAge, profileCity, profileCountry, profileHeight, profileWeight;
     private RadioButton profileMale, profileFemale;
-    private String stringName, stringCity, stringCountry, stringGender;
+    private String stringName, stringCity, stringCountry, stringGender, stringAge, stringHeight, stringWeight;
     private int intAge;
     private double doubleHeight, doubleWeight;
 
@@ -60,31 +61,35 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 profileFemale = findViewById(R.id.profileFemale);
 
                 stringName = profileName.getText().toString();
-                intAge = Integer.parseInt(profileAge.getText().toString());
+                stringAge = profileAge.getText().toString();
                 stringCity = profileCity.getText().toString();
                 stringCountry = profileCountry.getText().toString();
-                doubleHeight = Double.parseDouble(profileHeight.getText().toString());
-                doubleWeight = Double.parseDouble(profileWeight.getText().toString());
+                stringHeight = profileHeight.getText().toString();
+                stringWeight = profileWeight.getText().toString();
 
                 if(profileMale.isSelected())
                 {
                     stringGender = "Male";
                 }
-                if(profileFemale.isSelected())
+                //if(profileFemale.isSelected())
+                else
                 {
                     stringGender = "Female";
                 }
+
+                if(stringName == "" || stringAge == "" || stringCity == "" || stringCountry == "" || stringHeight == "" || stringWeight == "" || (!profileMale.isSelected() && !profileFemale.isSelected()))
+                {
+                    Toast.makeText(ProfileActivity.this, "Please fill out all fields!", Toast.LENGTH_SHORT).show();
+                }
                 else
                 {
-                    // ***** Find better failure case.
-                    try {
-                        throw new Exception("Gender not selected.");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    intAge = Integer.parseInt(stringAge);
+                    doubleHeight = Double.parseDouble(stringHeight);
+                    doubleWeight = Double.parseDouble(stringWeight);
+                    newUser = new User(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, stringGender, profilePicture);
                 }
 
-                newUser = new User(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, stringGender, profilePicture);
+                break;
             }
             case R.id.profileUpdatePhoto:
             {
@@ -93,16 +98,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 {
                     startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
                 }
+                break;
             }
-            break;
-            case R.id.lifeBtnMyProf:
-            {
+            case R.id.lifeBtnMyProf: {
                 Intent lifeIntent = new Intent(this, MainActivity.class);
                 this.startActivity(lifeIntent);
-            }
-            break;
+                break;
             }
         }
+    }
 
 
     @Override
