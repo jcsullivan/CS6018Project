@@ -123,4 +123,40 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             // ***** STILL NEED TO ADD TO USER CLASS DATA.
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //Get the strings
+        stringName = profileName.getText().toString();
+        stringAge = profileAge.getText().toString();
+        stringCity = profileCity.getText().toString();
+        stringCountry = profileCountry.getText().toString();
+        stringHeight = profileHeight.getText().toString();
+        stringWeight = profileWeight.getText().toString();
+
+        //Put them in the outgoing Bundle
+        outState.putString("NAME_TEXT",stringName);
+        outState.putString("AGE_TEXT",stringAge);
+        outState.putString("CITY_TEXT",stringCity);
+        outState.putString("COUNTRY_TEXT",stringCountry);
+        outState.putString("HEIGHT_TEXT",stringHeight);
+        outState.putString("WEIGHT_TEXT",stringWeight);
+
+        //Save the view hierarchy
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        //Restore stuff
+        profileName.setText(savedInstanceState.getString("NAME_TEXT"));
+        profileAge.setText(savedInstanceState.getString("AGE_TEXT"));
+        profileCity.setText(savedInstanceState.getString("CITY_TEXT"));
+        profileCountry.setText(savedInstanceState.getString("COUNTRY_TEXT"));
+        profileHeight.setText(savedInstanceState.getString("HEIGHT_TEXT"));
+        profileWeight.setText(savedInstanceState.getString("WEIGHT_TEXT"));
+
+        //Restore the view hierarchy automatically
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 }
