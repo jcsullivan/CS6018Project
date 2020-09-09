@@ -54,7 +54,7 @@
             android:text="@string/country_colon" />
 
         <EditText
-            android:id="@+id/profileHeight"
+            android:id="@+id/lb_to_lose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

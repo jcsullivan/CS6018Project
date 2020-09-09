@@ -7,7 +7,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -55,7 +54,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 profileAge = findViewById(R.id.profileAge);
                 profileCity = findViewById(R.id.profileCity);
                 profileCountry = findViewById(R.id.profileCountry);
-                profileHeight = findViewById(R.id.profileHeight);
+                profileHeight = findViewById(R.id.lb_to_lose);
                 profileWeight = findViewById(R.id.profileWeight);
                 profileMale = findViewById(R.id.profileMale);
                 profileFemale = findViewById(R.id.profileFemale);
