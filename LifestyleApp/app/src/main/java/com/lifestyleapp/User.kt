@@ -2,31 +2,38 @@ package com.lifestyleapp
 
 import android.graphics.Bitmap
 
-class User(fullName: String, age: Int, city: String, country: String, height: Double, weight: Double, gender: String, profilePhoto: Bitmap) {
+var defaultUser = User("", 0, "", "", 0.0, 0.0, 1, null);
 
-    val firstName: String;
+class User(fullName: String, age: Int, city: String, country: String, height: Double, weight: Double, gender: Int, profilePhoto: Bitmap?)
+{
+    var fullName: String;
 
-    val lastName: String;
+    var firstName: String;
 
-    val age: Int;
+    var lastName: String;
 
-    val city: String;
+    var age: Int;
 
-    val country: String;
+    var city: String;
 
-    val height: Double;
+    var country: String;
 
-    val weight: Double;
+    var height: Double;
 
-    val gender: String;
+    var weight: Double;
 
-    val profilePhoto: Bitmap;
+    // 1 male, 0 female;
+    var gender: Int;
+
+    var profilePhoto: Bitmap?;
 
     init
     {
+        this.fullName = fullName;
+
         this.firstName = nameSplitter(fullName, 0);
 
-        this.lastName = nameSplitter(fullName, 1);  
+        this.lastName = nameSplitter(fullName, 1);
 
         this.age = age;
 
@@ -45,6 +52,11 @@ class User(fullName: String, age: Int, city: String, country: String, height: Do
 
     fun nameSplitter(fullName: String, position: Int): String
     {
+        if(fullName.isEmpty())
+        {
+            return "";
+        }
+
         val parts = fullName.split(" ");
 
         return parts[position];

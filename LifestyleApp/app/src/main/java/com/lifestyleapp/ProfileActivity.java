@@ -20,8 +20,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Button buttonCamera, buttonLifestyle, buttonSaveProfile;
     private EditText profileName, profileAge, profileCity, profileCountry, profileHeight, profileWeight;
     private RadioButton profileMale, profileFemale;
-    private String stringName, stringCity, stringCountry, stringGender, stringAge, stringHeight, stringWeight;
-    private int intAge;
+    private String stringName, stringCity, stringCountry, stringAge, stringHeight, stringWeight;
+    private int intAge, intGender;
     private double doubleHeight, doubleWeight;
 
     //ImageView profilePicture = null;
@@ -42,6 +42,57 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttonCamera.setOnClickListener(this);
         buttonLifestyle.setOnClickListener(this);
         buttonSaveProfile.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+//        setContentView(R.layout.activity_my_profile);
+
+        profileName = findViewById(R.id.profileName);
+        profileAge = findViewById(R.id.profileAge);
+        profileCity = findViewById(R.id.profileCity);
+        profileCountry = findViewById(R.id.profileCountry);
+        profileHeight = findViewById(R.id.lb_to_lose);
+        profileWeight = findViewById(R.id.profileWeight);
+        profileMale = findViewById(R.id.profileMale);
+        profileFemale = findViewById(R.id.profileFemale);
+
+        if(!UserKt.getDefaultUser().getFullName().isEmpty())
+        {
+            profileName.setText(UserKt.getDefaultUser().getFullName());
+        }
+        if(UserKt.getDefaultUser().getAge() != 0)
+        {
+            profileAge.setText(String.valueOf(UserKt.getDefaultUser().getAge()));
+        }
+        if(!UserKt.getDefaultUser().getCity().isEmpty())
+        {
+            profileCity.setText(UserKt.getDefaultUser().getCity());
+        }
+        if(!UserKt.getDefaultUser().getCountry().isEmpty())
+        {
+            profileCountry.setText(UserKt.getDefaultUser().getCountry());
+        }
+        if(UserKt.getDefaultUser().getHeight() != 0)
+        {
+            profileHeight.setText(String.format("%s", UserKt.getDefaultUser().getHeight()));
+        }
+        if(UserKt.getDefaultUser().getWeight() != 0)
+        {
+            profileWeight.setText(String.format("%s", UserKt.getDefaultUser().getWeight()));
+        }
+        if(UserKt.getDefaultUser().getGender() == 1)
+        {
+            profileMale.setChecked(true);
+            profileFemale.setChecked(false);
+        }
+        else
+        {
+            profileMale.setChecked(false);
+            profileFemale.setChecked(true);
+        }
     }
 
     @Override
@@ -68,15 +119,15 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
                 if(profileMale.isSelected())
                 {
-                    stringGender = "Male";
+                    intGender = 1;
                 }
                 //if(profileFemale.isSelected())
                 else
                 {
-                    stringGender = "Female";
+                    intGender = 0;
                 }
 
-                if(stringName == "" || stringAge == "" || stringCity == "" || stringCountry == "" || stringHeight == "" || stringWeight == "" || (!profileMale.isSelected() && !profileFemale.isSelected()))
+                if(stringName == "" || stringAge == "" || stringCity == "" || stringCountry == "" || stringHeight == "" || stringWeight == "")
                 {
                     Toast.makeText(ProfileActivity.this, "Please fill out all fields!", Toast.LENGTH_SHORT).show();
                 }
@@ -85,7 +136,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     intAge = Integer.parseInt(stringAge);
                     doubleHeight = Double.parseDouble(stringHeight);
                     doubleWeight = Double.parseDouble(stringWeight);
-                    newUser = new User(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, stringGender, profilePicture);
+
+                    newUser = new User(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture);
+
+                    UserKt.setDefaultUser(new User (stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture));
                 }
 
                 break;
