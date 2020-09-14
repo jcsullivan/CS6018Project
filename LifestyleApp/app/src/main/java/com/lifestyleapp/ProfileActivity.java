@@ -137,9 +137,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     doubleHeight = Double.parseDouble(stringHeight);
                     doubleWeight = Double.parseDouble(stringWeight);
 
-                    newUser = new User(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture);
+                    //newUser = new User(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture);
 
-                    UserKt.setDefaultUser(new User (stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture));
+                    UserKt.setDefaultUser(new User (stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture, 0.0, 0.0, false));
                 }
 
                 break;

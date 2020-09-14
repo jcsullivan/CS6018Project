@@ -2,9 +2,9 @@ package com.lifestyleapp
 
 import android.graphics.Bitmap
 
-var defaultUser = User("", 0, "", "", 0.0, 0.0, 1, null);
+var defaultUser = User("", 0, "", "", 0.0, 0.0, 1, null, 0.0, 0.0, false);
 
-class User(fullName: String, age: Int, city: String, country: String, height: Double, weight: Double, gender: Int, profilePhoto: Bitmap?)
+class User(fullName: String, age: Int, city: String, country: String, height: Double, weight: Double, gender: Int, profilePhoto: Bitmap?, bmi: Double, bmr: Double, sedentary: Boolean)
 {
     var fullName: String;
 
@@ -27,6 +27,12 @@ class User(fullName: String, age: Int, city: String, country: String, height: Do
 
     var profilePhoto: Bitmap?;
 
+    var bmi: Double;
+
+    var bmr: Double;
+
+    var sedentary: Boolean;
+
     init
     {
         this.fullName = fullName;
@@ -48,6 +54,12 @@ class User(fullName: String, age: Int, city: String, country: String, height: Do
         this.gender = gender;
 
         this.profilePhoto = profilePhoto;
+
+        this.bmi = bmi;
+
+        this.bmr = bmr;
+
+        this.sedentary = sedentary;
     }
 
     fun nameSplitter(fullName: String, position: Int): String

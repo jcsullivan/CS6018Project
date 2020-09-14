@@ -7,27 +7,27 @@ import com.lifestyleapp.defaultUser
 // Calling Kotlin from Java:  https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html 
 class Calculators
 {
-    fun BMI(height: Int, weight: Int): Int
+    fun BMI(): Double
     {
         // Equation from https://en.wikipedia.org/wiki/Body_mass_index
-        val bmi = (703 * weight) / (height * height);
+        val bmi = (703 * defaultUser.weight) / (defaultUser.height * defaultUser.height);
 
         return bmi;
     }
 
-    fun BMRTEE(gender: String, height: Int, weight: Int, age: Int, active: Boolean): Double
+    fun BMRTEE(): Double
     {
         // Converting weight to kilograms.
-        var kgWeight = weight / 2.205;
+        var kgWeight = defaultUser.weight / 2.205;
         // Converting height to centimeters.
-        var cmHeight = height * 2.54;
+        var cmHeight = defaultUser.height * 2.54;
 
         // Equations from https://en.wikipedia.org/wiki/Harris%E2%80%93Benedict_equation
-        var genderlessBMR = (10 * kgWeight) + (6.25 * cmHeight) - (5 * age);
+        var genderlessBMR = (10 * kgWeight) + (6.25 * cmHeight) - (5 * defaultUser.age);
 
         var bmr = 0.0;
 
-        if (gender == "Male")
+        if (defaultUser.gender == 1)
         {
             bmr = genderlessBMR + 5;
         }
@@ -38,7 +38,7 @@ class Calculators
 
         var tee = 0.0;
 
-        if(active)
+        if(!defaultUser.sedentary)
         {
             tee = bmr * 1.76;
         }
@@ -60,6 +60,10 @@ class Calculators
         var gender = defaultUser.gender;
 
         if(gender == 1 && dailyCalories < 1200)
+        {
+            warning = " (WARNING: low caloric intake)"
+        }
+        else if(dailyCalories < 1000)
         {
             warning = " (WARNING: low caloric intake)"
         }
