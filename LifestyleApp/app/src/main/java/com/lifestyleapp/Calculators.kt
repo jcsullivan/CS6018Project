@@ -2,6 +2,8 @@
 
 package com.example.lifestyleapp
 
+import com.lifestyleapp.defaultUser
+
 // Calling Kotlin from Java:  https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html 
 class Calculators
 {
@@ -48,11 +50,20 @@ class Calculators
         return tee;
     }
 
-    fun caloriesToEat(desiredChange: Double, tee: Double): Double
+    fun caloriesToEat(desiredChange: Double, tee: Double): String
     {
         // To reduce 1 kg (2.205 lbs) of weight, about 7000 kcal deficit is required.
         var dailyCalories = (1000 / (desiredChange / 2.205)) + tee;
 
-        return dailyCalories;
+        var warning = "";
+
+        var gender = defaultUser.gender;
+
+        if(gender == 1 && dailyCalories < 1200)
+        {
+            warning = " (WARNING: low caloric intake)"
+        }
+
+        return dailyCalories.toBigDecimal().toPlainString() + warning;
     }
 }
