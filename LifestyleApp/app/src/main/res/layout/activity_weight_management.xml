@@ -34,16 +34,16 @@
         android:layout_height="45dp"
         android:background="@drawable/roundedbuttongreen"
         android:text="@string/lifestyle_button"
-        tools:layout_editor_absoluteX="26dp"
-        tools:layout_editor_absoluteY="647dp" />
+        app:layout_constraintTop_toTopOf="@+id/button4"
+        tools:layout_editor_absoluteX="64dp" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="130dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:background="@drawable/roundedbuttonyellow"
         android:text="@string/save_button"
-        tools:layout_editor_absoluteX="228dp"
+        tools:layout_editor_absoluteX="231dp"
         tools:layout_editor_absoluteY="644dp" />
 
     <LinearLayout
