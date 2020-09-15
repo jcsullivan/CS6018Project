@@ -19,15 +19,14 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         loginButton = findViewById(R.id.login_button);
         loginButton.setOnClickListener(this);
 
-
     }
+
     @Override
     public void onClick(View view) {
         Intent loginIntent = new Intent(this, MainActivity.class);
         this.startActivity(loginIntent);
 
     }
-
 
     //Say that this class itself contains the listener.
 }
