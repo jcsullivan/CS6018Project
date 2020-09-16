@@ -29,7 +29,7 @@ class User(fullName: String, age: Int, city: String, country: String, height: Do
 
     var bmi: Double;
 
-    var bmr: Double;
+    var bmrtee: Double;
 
     var sedentary: Boolean;
 
@@ -57,7 +57,7 @@ class User(fullName: String, age: Int, city: String, country: String, height: Do
 
         this.bmi = bmi;
 
-        this.bmr = bmr;
+        this.bmrtee = bmr;
 
         this.sedentary = sedentary;
     }
