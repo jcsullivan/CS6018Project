@@ -7,6 +7,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -24,8 +25,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private int intAge, intGender;
     private double doubleHeight, doubleWeight;
 
+    ImageView profilePhotoView;
     //ImageView profilePicture = null;
-    Bitmap profilePicture = null;  
+    Bitmap profilePicture = null;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -38,6 +40,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         buttonCamera = findViewById(R.id.profileUpdatePhoto);
         buttonLifestyle = findViewById(R.id.lifeBtnMyProf);
         buttonSaveProfile = findViewById(R.id.saveProfile);
+        profilePhotoView= findViewById(R.id.profilePhoto);
 
         buttonCamera.setOnClickListener(this);
         buttonLifestyle.setOnClickListener(this);
@@ -59,6 +62,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         profileMale = findViewById(R.id.profileMale);
         profileFemale = findViewById(R.id.profileFemale);
 
+        //Added to retain photo changes by checking the global User and populating if not null.
+        //Likely a better way to do this but as far as I know res files are not mutable at runtime -Sam
+        if(UserKt.getDefaultUser().getProfilePhoto()!=null)
+        {
+            profilePhotoView.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
+        }
         if(!UserKt.getDefaultUser().getFullName().isEmpty())
         {
             profileName.setText(UserKt.getDefaultUser().getFullName());
@@ -171,9 +180,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Bundle extras = data.getExtras();
             profilePicture = (Bitmap) extras.get("data");
             //Bitmap thumbnailImage = (Bitmap) extras.get("data");
-            //profilePicture = findViewById(R.id.profilePhoto);
-            //profilePicture.setImageBitmap(thumbnailImage);
-            // ***** STILL NEED TO ADD TO USER CLASS DATA.
+
+            //Eventually should be relocated to Save onClick Method
+            UserKt.getDefaultUser().setProfilePhoto(profilePicture);
+
+            profilePhotoView= findViewById(R.id.profilePhoto);
+            profilePhotoView.setImageBitmap(profilePicture);
+
         }
     }
 
