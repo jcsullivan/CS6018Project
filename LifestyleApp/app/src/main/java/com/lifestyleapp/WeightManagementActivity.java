@@ -9,6 +9,8 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.lifestyleapp.Calculators;
+
 public class WeightManagementActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button buttonLifestyle, buttonCalculate;
@@ -35,6 +37,7 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
 
         weightCurrent = findViewById(R.id.profileName);
         weightHeight = findViewById(R.id.profileCity);
+        weightBMI = findViewById(R.id.bmiEditText);
 
         if(UserKt.getDefaultUser().getWeight() != 0)
         {
@@ -44,6 +47,10 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
         {
             weightHeight.setText(String.format("%s", UserKt.getDefaultUser().getHeight()));
         }
+        if(UserKt.getDefaultUser().getHeight() != 0 && UserKt.getDefaultUser().getWeight() != 0)
+        {
+            weightBMI.setText(String.valueOf(Calculators.BMI()));
+        }
     }
 
     @Override
@@ -51,6 +58,19 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
     {
         switch(view.getId())
         {
+            case R.id.saveProfile:
+            {
+                weightCurrent = findViewById(R.id.profileName);
+                weightHeight = findViewById(R.id.profileCity);
+                weightBMI = findViewById(R.id.bmiEditText);
+                weightGoal = findViewById(R.id.profileAge);
+                weightSedentary = findViewById(R.id.sedActSpinner);
+                weightToLose = findViewById(R.id.lb_to_lose);
+                weightBasal = findViewById(R.id.basalMetRateEditText);
+                weightCalories = findViewById(R.id.dailyCalEditText);  
+
+            }
+            break;
             case R.id.lifeBtnMyProf:
             {
                 Intent lifeIntent = new Intent(this, MainActivity.class);
