@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/name_colon" />
+                android:hint="@string/name_colon" />
 
             <EditText
                 android:id="@+id/profileAge"
@@ -102,7 +102,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:inputType="number"
-                android:text="@string/age_colon" />
+                android:hint="@string/age_colon" />
 
             <EditText
                 android:id="@+id/profileCity"
@@ -111,7 +111,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:inputType="textShortMessage"
-                android:text="@string/city_colon" />
+                android:hint="@string/city_colon" />
 
             <EditText
                 android:id="@+id/profileCountry"
@@ -120,7 +120,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:inputType="textShortMessage"
-                android:text="@string/country_colon" />
+                android:hint="@string/country_colon" />
 
             <TextView
                 android:id="@+id/textViewHeight"
