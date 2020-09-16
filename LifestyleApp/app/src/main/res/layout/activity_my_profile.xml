@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="@string/name_colon" />
+            android:hint="@string/name_colon" />
 
         <EditText
             android:id="@+id/profileAge"
@@ -101,7 +101,7 @@
             android:layout_marginTop="10dp"
             android:ems="10"
             android:inputType="number"
-            android:text="@string/age_colon" />
+            android:hint="@string/age_colon" />
 
         <EditText
             android:id="@+id/profileCity"
@@ -110,7 +110,7 @@
             android:layout_marginTop="10dp"
             android:ems="10"
             android:inputType="textShortMessage"
-            android:text="@string/city_colon" />
+            android:hint="@string/city_colon" />
 
         <EditText
             android:id="@+id/profileCountry"
@@ -119,16 +119,16 @@
             android:layout_marginTop="10dp"
             android:ems="10"
             android:inputType="textShortMessage"
-            android:text="@string/country_colon" />
+            android:hint="@string/country_colon" />
 
         <EditText
-            android:id="@+id/lb_to_lose"
+            android:id="@+id/lb_to_change"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:ems="10"
             android:inputType="number"
-            android:text="@string/height_colon" />
+            android:hint="@string/height_colon" />
 
         <EditText
             android:id="@+id/profileWeight"
@@ -137,7 +137,7 @@
             android:layout_marginTop="10dp"
             android:ems="10"
             android:inputType="numberDecimal"
-            android:text="@string/weight_colon" />
+            android:hint="@string/weight_colon" />
 
         <RadioGroup
             android:id="@+id/profileGender"

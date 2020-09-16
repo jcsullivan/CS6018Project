@@ -22,7 +22,7 @@
     <string name="current_weight_colon">Current Weight:</string>
     <string name="goal_weight_colon">Goal Weight:</string>
     <string name="sed_act">Sedentary/Active:</string>
-    <string name="lb_to_lose_per_week_colon">Lbs to Lose Per Week:</string>
+    <string name="lb_to_lose_per_week_colon">Lbs to Change Per Week:</string>
     <string name="basal_met_rate_colon">Basal Metabolic Rate:</string>
     <string name="daily_cal_goal_colon">Daily Calories to Achieve Goal:</string>
     <string name="current_bmi_colon">Current BMI:</string>
