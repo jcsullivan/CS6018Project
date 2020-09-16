@@ -73,4 +73,9 @@ class User(fullName: String, age: Int, city: String, country: String, height: Do
 
         return parts[position];
     }
+
+    fun manualSetBMI(BMI: Double)
+    {
+        this.bmi = BMI;
+    }
 }

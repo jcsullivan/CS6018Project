@@ -55,10 +55,10 @@ class Calculators
         }
 
         @JvmStatic
-        fun caloriesToEat(desiredChange: Double, tee: Double): String
+        fun caloriesToEat(desiredChange: Double): String
         {
             // To reduce 1 kg (2.205 lbs) of weight, about 7000 kcal deficit is required.
-            var dailyCalories = (1000 / (desiredChange / 2.205)) + tee;
+            var dailyCalories = (1000 / (desiredChange / 2.205)) + defaultUser.bmrtee;
 
             var warning = "";
 

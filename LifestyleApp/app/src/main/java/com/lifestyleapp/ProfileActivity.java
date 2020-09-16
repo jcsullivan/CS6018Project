@@ -54,7 +54,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         profileAge = findViewById(R.id.profileAge);
         profileCity = findViewById(R.id.profileCity);
         profileCountry = findViewById(R.id.profileCountry);
-        profileHeight = findViewById(R.id.lb_to_lose);
+        profileHeight = findViewById(R.id.lb_to_change);
         profileWeight = findViewById(R.id.profileWeight);
         profileMale = findViewById(R.id.profileMale);
         profileFemale = findViewById(R.id.profileFemale);
@@ -105,7 +105,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 profileAge = findViewById(R.id.profileAge);
                 profileCity = findViewById(R.id.profileCity);
                 profileCountry = findViewById(R.id.profileCountry);
-                profileHeight = findViewById(R.id.lb_to_lose);
+                profileHeight = findViewById(R.id.lb_to_change);
                 profileWeight = findViewById(R.id.profileWeight);
                 profileMale = findViewById(R.id.profileMale);
                 profileFemale = findViewById(R.id.profileFemale);
@@ -127,7 +127,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     intGender = 0;
                 }
 
-                if(stringName == "" || stringAge == "" || stringCity == "" || stringCountry == "" || stringHeight == "" || stringWeight == "")
+                if(stringName.isEmpty() || stringAge.isEmpty() || stringCity.isEmpty() || stringCountry.isEmpty() || stringHeight.isEmpty() || stringWeight.isEmpty())
                 {
                     Toast.makeText(ProfileActivity.this, "Please fill out all fields!", Toast.LENGTH_SHORT).show();
                 }
