@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,10 +17,13 @@ import com.example.lifestyleapp.Calculators;
 public class WeightManagementActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button buttonLifestyle, buttonCalculate;
-    private EditText weightCurrent, weightGoal, weightHeight, weightToLose, weightBasal, weightCalories, weightBMI;
-    private Spinner weightSedentary;
-    private Double doubleCurrent, doubleGoal, doubleHeight, doubleToLose, doubleBasal, doubleCalories, doubleBMI;
+    private EditText weightCurrent, weightHeight, weightBasal, weightCalories, weightBMI;
+    private Double doubleCurrent, doubleHeight, doubleToLose, doubleBasal, doubleCalories, doubleBMI;
     private Boolean boolSedentary;
+    private TextView tvPoundsPerWeek;
+    private SeekBar seekBarPoundsPerWeek;
+    boolean boolIsActive;
+    private RadioButton radioButtonActive, radioButtonSedentary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -30,6 +36,16 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
 
         buttonLifestyle.setOnClickListener(this);
         buttonCalculate.setOnClickListener(this);
+
+        //pounds per week seek bar
+        seekBarPoundsPerWeek = findViewById(R.id.calculatorPoundsPerWeek);
+        seekBarPoundsPerWeek.setOnSeekBarChangeListener(seekBarChangePoundsPerWeek);
+
+        //text above pounds per week seek bar
+        double pounds = seekBarPoundsPerWeek.getProgress()/10.0;
+        tvPoundsPerWeek = findViewById(R.id.tvCalculatorChangeText);
+        tvPoundsPerWeek.setText("Pounds To Lose Per Week: " + pounds);
+
     }
 
     @Override
@@ -37,8 +53,6 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
     {
         super.onStart();
 
-        weightCurrent = findViewById(R.id.profileName);
-        weightHeight = findViewById(R.id.profileCity);
         weightBMI = findViewById(R.id.bmiEditText);
 
         if(UserKt.getDefaultUser().getHeight() != 0 && UserKt.getDefaultUser().getWeight() != 0)
@@ -48,6 +62,9 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
             UserKt.getDefaultUser().setBmi(Calculators.BMI());
             weightBMI.setText(String.valueOf(UserKt.getDefaultUser().getBmi()));
         }
+
+
+
     }
 
     @Override
@@ -60,20 +77,13 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
                 weightCurrent = findViewById(R.id.profileName);
                 weightHeight = findViewById(R.id.profileCity);
                 weightBMI = findViewById(R.id.bmiEditText);
-                weightGoal = findViewById(R.id.profileAge);
-                weightSedentary = findViewById(R.id.sedActSpinner);
-                weightToLose = findViewById(R.id.lb_to_change);
+                seekBarPoundsPerWeek = findViewById(R.id.calculatorPoundsPerWeek);
                 weightBasal = findViewById(R.id.basalMetRateEditText);
                 weightCalories = findViewById(R.id.dailyCalEditText);
 
                 doubleCurrent = Double.parseDouble(weightCurrent.getText().toString());
                 doubleHeight = Double.parseDouble(weightHeight.getText().toString());
                 doubleBMI = Double.parseDouble(weightBMI.getText().toString());
-                doubleGoal = Double.parseDouble(weightGoal.getText().toString());
-                doubleToLose = Double.parseDouble(weightToLose.getText().toString());
-
-                // ***** Need to figure out spinners.
-                boolSedentary = true;
 
                 if(doubleCurrent != 0.0 && doubleHeight != 0.0 && doubleBMI != 0.0)
                 {
@@ -93,6 +103,27 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
             break;
         }
     }
+
+    // seek bar listener for pounds per week
+    SeekBar.OnSeekBarChangeListener seekBarChangePoundsPerWeek = new SeekBar.OnSeekBarChangeListener() {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int pounds, boolean fromUser) {
+            // updated continuously as the user slides the thumb
+            double decimalPounds = ((double)pounds / 10.0);
+            tvPoundsPerWeek.setText("Pounds To Lose Per Week: " + decimalPounds);
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            // called when the user first touches the SeekBar
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            // called after the user finishes moving the SeekBar
+        }
+    };
 
 
 }
