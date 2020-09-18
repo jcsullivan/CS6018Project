@@ -9,24 +9,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Objects;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener
 {
     protected User newUser;
 
     private Button buttonCamera, buttonLifestyle, buttonSaveProfile;
-    private EditText profileName, profileAge, profileCity, profileCountry, profileHeight, profileWeight;
+    private EditText profileName, profileAge, profileCity, profileCountry;
     private RadioButton profileMale, profileFemale;
     private String stringName, stringCity, stringCountry, stringAge, stringHeight, stringWeight;
     private int intAge, intGender;
     private double doubleHeight, doubleWeight;
+    private TextView tvHeight, tvWeight;
+    private SeekBar seekBarHeight, seekBarWeight;
 
     ImageView profilePhotoView;
-    //ImageView profilePicture = null;
     Bitmap profilePicture = null;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -36,34 +41,50 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
-
+        profilePhotoView= findViewById(R.id.profilePhoto);
         buttonCamera = findViewById(R.id.profileUpdatePhoto);
         buttonLifestyle = findViewById(R.id.lifeBtnMyProf);
         buttonSaveProfile = findViewById(R.id.saveProfile);
-        profilePhotoView= findViewById(R.id.profilePhoto);
 
         buttonCamera.setOnClickListener(this);
         buttonLifestyle.setOnClickListener(this);
         buttonSaveProfile.setOnClickListener(this);
+
+        //height seek bar
+        seekBarHeight = findViewById(R.id.seekBarHeight);
+        seekBarHeight.setOnSeekBarChangeListener(seekBarChangeListenerHeight);
+
+        int inches = seekBarHeight.getProgress();
+        tvHeight = findViewById(R.id.textViewHeight);
+        tvHeight.setText("Height: " + inches + " inches");
+
+        //weight seek bar
+        seekBarWeight = findViewById(R.id.seekBarWeight);
+        seekBarWeight.setOnSeekBarChangeListener(seekBarChangeListenerWeight);
+
+        int pounds = seekBarWeight.getProgress();
+        tvWeight = findViewById(R.id.textViewWeight);
+        tvWeight.setText("Weight " + pounds + " pounds");
+
+
     }
 
     @Override
     protected void onStart()
     {
         super.onStart();
-//        setContentView(R.layout.activity_my_profile);
 
         profileName = findViewById(R.id.profileName);
         profileAge = findViewById(R.id.profileAge);
         profileCity = findViewById(R.id.profileCity);
         profileCountry = findViewById(R.id.profileCountry);
-        profileHeight = findViewById(R.id.lb_to_change);
-        profileWeight = findViewById(R.id.profileWeight);
+        tvHeight = findViewById(R.id.textViewHeight);
+        seekBarHeight = findViewById(R.id.seekBarHeight);
+        tvWeight = findViewById(R.id.textViewWeight);
+        seekBarWeight = findViewById(R.id.seekBarWeight);
         profileMale = findViewById(R.id.profileMale);
         profileFemale = findViewById(R.id.profileFemale);
 
-        //Added to retain photo changes by checking the global User and populating if not null.
-        //Likely a better way to do this but as far as I know res files are not mutable at runtime -Sam
         if(UserKt.getDefaultUser().getProfilePhoto()!=null)
         {
             profilePhotoView.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
@@ -83,14 +104,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if(!UserKt.getDefaultUser().getCountry().isEmpty())
         {
             profileCountry.setText(UserKt.getDefaultUser().getCountry());
-        }
-        if(UserKt.getDefaultUser().getHeight() != 0)
-        {
-            profileHeight.setText(String.format("%s", UserKt.getDefaultUser().getHeight()));
-        }
-        if(UserKt.getDefaultUser().getWeight() != 0)
-        {
-            profileWeight.setText(String.format("%s", UserKt.getDefaultUser().getWeight()));
         }
         if(UserKt.getDefaultUser().getGender() == 1)
         {
@@ -114,8 +127,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 profileAge = findViewById(R.id.profileAge);
                 profileCity = findViewById(R.id.profileCity);
                 profileCountry = findViewById(R.id.profileCountry);
-                profileHeight = findViewById(R.id.lb_to_change);
-                profileWeight = findViewById(R.id.profileWeight);
                 profileMale = findViewById(R.id.profileMale);
                 profileFemale = findViewById(R.id.profileFemale);
 
@@ -123,8 +134,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 stringAge = profileAge.getText().toString();
                 stringCity = profileCity.getText().toString();
                 stringCountry = profileCountry.getText().toString();
-                stringHeight = profileHeight.getText().toString();
-                stringWeight = profileWeight.getText().toString();
 
                 if(profileMale.isSelected())
                 {
@@ -190,6 +199,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         //Get the strings
@@ -197,8 +207,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         stringAge = profileAge.getText().toString();
         stringCity = profileCity.getText().toString();
         stringCountry = profileCountry.getText().toString();
-        stringHeight = profileHeight.getText().toString();
-        stringWeight = profileWeight.getText().toString();
+        stringHeight = String.valueOf(seekBarHeight.getProgress());  // FIXME
+        stringWeight = String.valueOf(seekBarHeight.getProgress());  // FIXME
 
         //Put them in the outgoing Bundle
         outState.putString("NAME_TEXT",stringName);
@@ -219,10 +229,50 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         profileAge.setText(savedInstanceState.getString("AGE_TEXT"));
         profileCity.setText(savedInstanceState.getString("CITY_TEXT"));
         profileCountry.setText(savedInstanceState.getString("COUNTRY_TEXT"));
-        profileHeight.setText(savedInstanceState.getString("HEIGHT_TEXT"));
-        profileWeight.setText(savedInstanceState.getString("WEIGHT_TEXT"));
+        seekBarHeight.setProgress(Integer.parseInt(Objects.requireNonNull(savedInstanceState.getString("HEIGHT_TEXT"))));  // FIXME
+        seekBarWeight.setProgress(Integer.parseInt(Objects.requireNonNull(savedInstanceState.getString("WEIGHT_TEXT"))));  // FIXME
 
         //Restore the view hierarchy automatically
         super.onRestoreInstanceState(savedInstanceState);
     }
-}
+
+    // seek bar listener for height
+    SeekBar.OnSeekBarChangeListener seekBarChangeListenerHeight = new SeekBar.OnSeekBarChangeListener() {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int inches, boolean fromUser) {
+            // updated continuously as the user slides the thumb
+            tvHeight.setText("Height: " + inches + " inches");
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            // called when the user first touches the SeekBar
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            // called after the user finishes moving the SeekBar
+        }
+    };
+
+    // seek bar listener for weight
+    SeekBar.OnSeekBarChangeListener seekBarChangeListenerWeight = new SeekBar.OnSeekBarChangeListener() {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int pounds, boolean fromUser) {
+            // updated continuously as the user slides the thumb
+            tvWeight.setText("Weight: " + pounds + " pounds");
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            // called when the user first touches the SeekBar
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            // called after the user finishes moving the SeekBar
+        }
+    };
+} //
