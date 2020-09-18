@@ -122,6 +122,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 profileAge = findViewById(R.id.profileAge);
                 profileCity = findViewById(R.id.profileCity);
                 profileCountry = findViewById(R.id.profileCountry);
+                tvHeight = findViewById(R.id.textViewHeight);
+                seekBarHeight = findViewById(R.id.seekBarHeight);
+                tvWeight = findViewById(R.id.textViewWeight);
+                seekBarWeight = findViewById(R.id.seekBarWeight);
                 profileMale = findViewById(R.id.profileMale);
                 profileFemale = findViewById(R.id.profileFemale);
 
@@ -129,26 +133,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 stringAge = profileAge.getText().toString();
                 stringCity = profileCity.getText().toString();
                 stringCountry = profileCountry.getText().toString();
+                doubleWeight = seekBarWeight.getProgress();
+                doubleHeight = seekBarHeight.getProgress();
 
                 if(profileMale.isSelected())
                 {
-                    intGender = 1;
+                    intGender = 1;  // male
                 }
-                //if(profileFemale.isSelected())
                 else
                 {
-                    intGender = 0;
+                    intGender = 0;  // female
                 }
 
-                if(stringName.isEmpty() || stringAge.isEmpty() || stringCity.isEmpty() || stringCountry.isEmpty() || stringHeight.isEmpty() || stringWeight.isEmpty())
+                if(stringName.isEmpty() || stringAge.isEmpty() || stringCity.isEmpty() || stringCountry.isEmpty())
                 {
                     Toast.makeText(ProfileActivity.this, "Please fill out all fields!", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
                     intAge = Integer.parseInt(stringAge);
-                    doubleHeight = Double.parseDouble(stringHeight);
-                    doubleWeight = Double.parseDouble(stringWeight);
 
                     //newUser = new User(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture);
 
