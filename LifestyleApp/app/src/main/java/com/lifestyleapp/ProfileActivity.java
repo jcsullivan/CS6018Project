@@ -7,7 +7,6 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -31,8 +30,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private TextView tvHeight, tvWeight;
     private SeekBar seekBarHeight, seekBarWeight;
 
-    ImageView profilePhotoView;
-    Bitmap profilePicture = null;
+    //ImageView profilePicture = null;
+    Bitmap profilePicture = null;  
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
@@ -41,7 +40,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
-        profilePhotoView= findViewById(R.id.profilePhoto);
+
         buttonCamera = findViewById(R.id.profileUpdatePhoto);
         buttonLifestyle = findViewById(R.id.lifeBtnMyProf);
         buttonSaveProfile = findViewById(R.id.saveProfile);
@@ -85,10 +84,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         profileMale = findViewById(R.id.profileMale);
         profileFemale = findViewById(R.id.profileFemale);
 
-        if(UserKt.getDefaultUser().getProfilePhoto()!=null)
-        {
-            profilePhotoView.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
-        }
         if(!UserKt.getDefaultUser().getFullName().isEmpty())
         {
             profileName.setText(UserKt.getDefaultUser().getFullName());
@@ -189,16 +184,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Bundle extras = data.getExtras();
             profilePicture = (Bitmap) extras.get("data");
             //Bitmap thumbnailImage = (Bitmap) extras.get("data");
-
-            //Eventually should be relocated to Save onClick Method
-            UserKt.getDefaultUser().setProfilePhoto(profilePicture);
-
-            profilePhotoView= findViewById(R.id.profilePhoto);
-            profilePhotoView.setImageBitmap(profilePicture);
-
+            //profilePicture = findViewById(R.id.profilePhoto);
+            //profilePicture.setImageBitmap(thumbnailImage);
+            // ***** STILL NEED TO ADD TO USER CLASS DATA.
         }
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {

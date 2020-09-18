@@ -37,6 +37,8 @@
     <string name="weight_management">Weight Management</string>
     <string name="nearby_hikes">Nearby Hikes</string>
     <string name="local_weather">Local Weather</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
