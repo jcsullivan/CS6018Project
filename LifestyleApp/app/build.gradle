@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
+def apikeyPropertiesFile = rootProject.file("app/src/main/java/com/lifestyleapp/apikey.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion 29
 
@@ -12,6 +16,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "OPENWEATHERMAPKEY", apikeyProperties['OPENWEATHERMAPKEY'])
     }
 
     buildTypes {

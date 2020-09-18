@@ -13,7 +13,7 @@ public class WeatherUtilities
 {
     private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
     private static String APP_ID_QUERY = "&app_id=";
-    private static final String APP_ID="bb0621113ef205977446e632e5858ce0";
+    private static final String APP_ID=BuildConfig.OPENWEATHERMAPKEY;
     private static String UNITS = "&units=imperial";
 
     public static URL buildURLFromString(String location){
