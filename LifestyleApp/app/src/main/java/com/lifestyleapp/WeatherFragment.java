@@ -9,6 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,11 +24,12 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     private EditText editLocation;
     private Button buttonLocation;
     private String localLocation;
+    private TextView weatherInfo;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_CITY = "param1";
-    private static final String ARG_COUNTRY = "param2";
+    private static final String ARG_CITY = "";
+    private static final String ARG_COUNTRY = "";
 
     // TODO: Rename and change types of parameters
     private String mCity;
@@ -80,12 +85,15 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     {
         editLocation = view.findViewById(R.id.location);
         buttonLocation = (Button)view.findViewById(R.id.resetLocation);
+        weatherInfo = view.findViewById(R.id.weatherInfo);
 
         localLocation = mCity + ", " + mCountry;
 
         editLocation.setText(localLocation);
 
         buttonLocation.setOnClickListener(this);
+
+        weatherStuff();
     }
 
     @Override
@@ -96,9 +104,30 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
                 if (!editLocation.getText().toString().isEmpty())
                 {
                     localLocation = editLocation.getText().toString();
+                    weatherStuff();
                 }
             }
             break;
         }
+    }
+
+    private void weatherStuff()
+    {
+        String forURL = localLocation.replaceAll(",\\s+", ",");
+
+        URL weatherURL = WeatherUtilities.buildURLFromString(forURL);
+
+        String dataFromURL = "";
+        try
+        {
+            dataFromURL = WeatherUtilities.getDataFromURL(weatherURL);
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        String parsedWeather = WeatherUtilities.parseJSON(dataFromURL);
+
+        weatherInfo.setText(parsedWeather);
     }
 }
