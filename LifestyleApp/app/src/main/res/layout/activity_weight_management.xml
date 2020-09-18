@@ -83,11 +83,12 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView3">
 
             <TextView
+                android:id="@+id/headerInformation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lines="2"
                 android:maxLines="2"
-                android:text="Calculations base on a weight of XXX pounds and height of XX inches."
+                android:text="Calculations based on a weight of XXX pounds and a height of XX inches."
                 android:textAlignment="center"
                 android:textSize="18sp" />
 
@@ -96,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Pounds To Lose Per Week: "
+                android:text="Pounds To Change Per Week: "
                 android:textColor="#000000" />
 
             <SeekBar
@@ -104,8 +105,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:max="20"
-                android:min="0"
-                android:progress="10"
+                android:min="-20"
+                android:progress="1"
                 android:progressTint="#000000" />
 
             <RadioGroup

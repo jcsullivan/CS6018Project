@@ -17,12 +17,11 @@ import com.example.lifestyleapp.Calculators;
 public class WeightManagementActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button buttonLifestyle, buttonCalculate;
-    private EditText weightCurrent, weightHeight, weightBasal, weightCalories, weightBMI;
-    private Double doubleCurrent, doubleHeight, doubleToLose, doubleBasal, doubleCalories, doubleBMI;
-    private Boolean boolSedentary;
-    private TextView tvPoundsPerWeek;
+    private EditText weightBasal, weightCalories, weightBMI;
+    private Double doubleToLose, doubleBasal, doubleCalories, doubleBMI;
+    private Boolean boolSedentary = true;
+    private TextView tvPoundsPerWeek, tvHeaderInformation;
     private SeekBar seekBarPoundsPerWeek;
-    boolean boolIsActive;
     private RadioButton radioButtonActive, radioButtonSedentary;
 
     @Override
@@ -33,6 +32,8 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
 
         buttonLifestyle = findViewById(R.id.lifeBtnMyProf);
         buttonCalculate = findViewById(R.id.saveProfile);
+        radioButtonActive = findViewById(R.id.calculatorActive);
+        radioButtonSedentary = findViewById(R.id.calculatorSedentary);
 
         buttonLifestyle.setOnClickListener(this);
         buttonCalculate.setOnClickListener(this);
@@ -42,9 +43,9 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
         seekBarPoundsPerWeek.setOnSeekBarChangeListener(seekBarChangePoundsPerWeek);
 
         //text above pounds per week seek bar
-        double pounds = seekBarPoundsPerWeek.getProgress()/10.0;
+        doubleToLose = seekBarPoundsPerWeek.getProgress()/10.0;
         tvPoundsPerWeek = findViewById(R.id.tvCalculatorChangeText);
-        tvPoundsPerWeek.setText("Pounds To Lose Per Week: " + pounds);
+        tvPoundsPerWeek.setText("Pounds To Change Per Week: " + doubleToLose);
 
     }
 
@@ -54,17 +55,14 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
         super.onStart();
 
         weightBMI = findViewById(R.id.bmiEditText);
+        tvHeaderInformation = findViewById(R.id.headerInformation);
 
         if(UserKt.getDefaultUser().getHeight() != 0 && UserKt.getDefaultUser().getWeight() != 0)
         {
-            weightCurrent.setText(String.format("%s", UserKt.getDefaultUser().getWeight()));
-            weightHeight.setText(String.format("%s", UserKt.getDefaultUser().getHeight()));
+            tvHeaderInformation.setText("Calculations based on a weight of " + UserKt.getDefaultUser().getWeight() + " pounds and a height of " + UserKt.getDefaultUser().getHeight() + " inches.");
             UserKt.getDefaultUser().setBmi(Calculators.BMI());
             weightBMI.setText(String.valueOf(UserKt.getDefaultUser().getBmi()));
         }
-
-
-
     }
 
     @Override
@@ -74,21 +72,22 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
         {
             case R.id.saveProfile:
             {
-                weightCurrent = findViewById(R.id.profileName);
-                weightHeight = findViewById(R.id.profileCity);
                 weightBMI = findViewById(R.id.bmiEditText);
                 seekBarPoundsPerWeek = findViewById(R.id.calculatorPoundsPerWeek);
                 weightBasal = findViewById(R.id.basalMetRateEditText);
                 weightCalories = findViewById(R.id.dailyCalEditText);
 
-                doubleCurrent = Double.parseDouble(weightCurrent.getText().toString());
-                doubleHeight = Double.parseDouble(weightHeight.getText().toString());
                 doubleBMI = Double.parseDouble(weightBMI.getText().toString());
 
-                if(doubleCurrent != 0.0 && doubleHeight != 0.0 && doubleBMI != 0.0)
+                if(radioButtonActive.isSelected())
                 {
-                    UserKt.getDefaultUser().setHeight(doubleHeight);
-                    UserKt.getDefaultUser().setWeight(doubleCurrent);
+                    boolSedentary = false;
+                }
+
+                UserKt.getDefaultUser().setSedentary(boolSedentary);
+
+                if(UserKt.getDefaultUser().getHeight() != 0.0 && UserKt.getDefaultUser().getWeight() != 0.0 && doubleBMI != 0.0)
+                {
                     UserKt.getDefaultUser().setBmrtee(Calculators.BMRTEE());
                     weightBasal.setText(String.valueOf(UserKt.getDefaultUser().getBmrtee()));
                     weightCalories.setText(Calculators.caloriesToEat(doubleToLose));
@@ -110,8 +109,8 @@ public class WeightManagementActivity extends AppCompatActivity implements View.
         @Override
         public void onProgressChanged(SeekBar seekBar, int pounds, boolean fromUser) {
             // updated continuously as the user slides the thumb
-            double decimalPounds = ((double)pounds / 10.0);
-            tvPoundsPerWeek.setText("Pounds To Lose Per Week: " + decimalPounds);
+            doubleToLose = ((double)pounds / 10.0);
+            tvPoundsPerWeek.setText("Pounds To Lose Per Week: " + doubleToLose);
         }
 
         @Override
