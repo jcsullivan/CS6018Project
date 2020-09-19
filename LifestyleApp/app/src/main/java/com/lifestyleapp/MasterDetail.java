@@ -55,7 +55,7 @@ public class MasterDetail extends AppCompatActivity implements NavPaneFragment.O
             if(navIndex==mMasterListNavFrag.PROFILE_BUTTON_INDEX){
                 fTrans.replace(R.id.master_detail_pane_phone,profilePageFragment,"frag_myprof_phone");
             }else if (navIndex==mMasterListNavFrag.WEIGHT_BUTTON_INDEX){
-                fTrans.replace(R.id.master_detail_right_pane_tablet,weightManFragment,"frag_weightman_phone");
+                fTrans.replace(R.id.master_detail_pane_phone,weightManFragment,"frag_weightman_phone");
 
             }
         }
