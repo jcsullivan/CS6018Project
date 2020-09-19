@@ -34,6 +34,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     // TODO: Rename and change types of parameters
     private String mCity;
     private String mCountry;
+    private User currentUser;
 
     public WeatherFragment()
     {
@@ -63,11 +64,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-        {
-            mCity = getArguments().getString(ARG_CITY);
-            mCountry = getArguments().getString(ARG_COUNTRY);
-        }
+
     }
 
     @Override
@@ -77,12 +74,11 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
 
-        return view;
-    }
+        currentUser = UserKt.getDefaultUser();
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState)
-    {
+        mCity = currentUser.getCity();
+        mCountry = currentUser.getCountry();
+
         editLocation = view.findViewById(R.id.location);
         buttonLocation = (Button)view.findViewById(R.id.resetLocation);
         weatherInfo = view.findViewById(R.id.weatherInfo);
@@ -93,7 +89,15 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
 
         buttonLocation.setOnClickListener(this);
 
-        weatherStuff();
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState)
+    {
+
+
+        //weatherStuff();
     }
 
     @Override
@@ -101,11 +105,9 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
         switch (v.getId()) {
             case R.id.resetLocation:
             {
-                if (!editLocation.getText().toString().isEmpty())
-                {
+
                     localLocation = editLocation.getText().toString();
                     weatherStuff();
-                }
             }
             break;
         }
@@ -113,7 +115,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
 
     private void weatherStuff()
     {
-        String forURL = localLocation.replaceAll(",\\s+", ",");
+        String forURL = localLocation.replaceAll(",\\s+", ",").trim();
 
         URL weatherURL = WeatherUtilities.buildURLFromString(forURL);
 

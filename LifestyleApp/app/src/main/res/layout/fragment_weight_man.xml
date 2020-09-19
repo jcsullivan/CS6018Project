@@ -15,7 +15,7 @@
         android:backgroundTintMode="src_over">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/title_weight_man_frag"
             android:layout_width="265dp"
             android:layout_height="60dp"
             android:layout_marginStart="23dp"
@@ -23,14 +23,14 @@
             android:fontFamily="@font/roboto"
             android:text="@string/weight_management_calc"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-            app:layout_constraintEnd_toStartOf="@+id/imageView3"
+            app:layout_constraintBottom_toBottomOf="@+id/weight_man_profile_pic_frag"
+            app:layout_constraintEnd_toStartOf="@+id/weight_man_profile_pic_frag"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView3"
+            app:layout_constraintTop_toTopOf="@+id/weight_man_profile_pic_frag"
             app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/weight_man_profile_pic_frag"
             android:layout_width="65dp"
             android:layout_height="67dp"
             android:layout_marginStart="8dp"
@@ -38,7 +38,7 @@
             android:layout_marginBottom="664dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView4"
+            app:layout_constraintStart_toEndOf="@+id/title_weight_man_frag"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/stock_gurl" />
@@ -52,12 +52,12 @@
             android:background="@drawable/roundedbuttongreen"
             android:text="@string/lifestyle_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/saveProfile"
+            app:layout_constraintEnd_toStartOf="@+id/weight_man_calc_btn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <Button
-            android:id="@+id/saveProfile"
+            android:id="@+id/weight_man_calc_btn"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -78,10 +78,10 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3">
+            app:layout_constraintTop_toBottomOf="@+id/weight_man_profile_pic_frag">
 
             <TextView
-                android:id="@+id/headerInformation"
+                android:id="@+id/headerInformationFrag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lines="2"
@@ -91,7 +91,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/tvCalculatorChangeText"
+                android:id="@+id/tvCalculatorChangeTextFrag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -99,7 +99,7 @@
                 android:textColor="#000000" />
 
             <SeekBar
-                android:id="@+id/calculatorPoundsPerWeek"
+                android:id="@+id/calculatorPoundsPerWeekFrag"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:max="20"
@@ -108,14 +108,14 @@
                 android:progressTint="#000000" />
 
             <RadioGroup
-                android:id="@+id/calculatorSedintaryOrActive"
+                android:id="@+id/calculatorSedintaryOrActiveFrag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <RadioButton
-                    android:id="@+id/calculatorActive"
+                    android:id="@+id/calculatorActiveFrag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -124,7 +124,7 @@
                     android:textSize="18sp" />
 
                 <RadioButton
-                    android:id="@+id/calculatorSedentary"
+                    android:id="@+id/calculatorSedentaryFrag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -134,7 +134,7 @@
             </RadioGroup>
 
             <TextView
-                android:id="@+id/daily_cal_weight_man"
+                android:id="@+id/daily_cal_weight_man_frag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -145,14 +145,14 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/dailyCalEditText"
+                android:id="@+id/dailyCalEditTextFrag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName" />
 
             <TextView
-                android:id="@+id/basalMetRateTextView"
+                android:id="@+id/basalMetRateTextViewFrag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -163,14 +163,14 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/basalMetRateEditText"
+                android:id="@+id/basalMetRateEditTextFrag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName" />
 
             <TextView
-                android:id="@+id/curent_bmi_weightman"
+                android:id="@+id/curent_bmi_weightman_frag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -181,7 +181,7 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/bmiEditText"
+                android:id="@+id/bmiEditTextFrag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -193,3 +193,16 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
+
+
+
+
+
+
+
+
+
+
+
+
+

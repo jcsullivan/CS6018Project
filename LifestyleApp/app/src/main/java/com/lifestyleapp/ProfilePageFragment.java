@@ -1,10 +1,13 @@
 package com.lifestyleapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,13 +16,16 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Objects;
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
-public class ProfileActivity extends AppCompatActivity implements View.OnClickListener
-{
+public class ProfilePageFragment extends Fragment implements View.OnClickListener {
+
     protected User newUser;
 
     private Button buttonCamera, buttonLifestyle, buttonSaveProfile;
@@ -32,59 +38,79 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private SeekBar seekBarHeight, seekBarWeight;
 
     ImageView profilePhotoView;
-    Bitmap profilePicture = null;  
+    Bitmap profilePicture = null;
+
+    View myprofFragmentView;
+    OnLifePressListener lifePressListener;
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_profile);
+    public interface OnLifePressListener {
+        public void onLifeBtnPress();
+    }
 
-        buttonCamera = findViewById(R.id.profileUpdatePhoto);
-        buttonLifestyle = findViewById(R.id.lifeBtnMyProf);
-        buttonSaveProfile = findViewById(R.id.saveProfile);
-        profilePhotoView= findViewById(R.id.profilePhoto);
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            lifePressListener = (OnLifePressListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnLifePressListener");
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        myprofFragmentView =  inflater.inflate(R.layout.fragment_profile_page, container, false);
+
+        buttonCamera = myprofFragmentView.findViewById(R.id.prof_update_photo_frag);
+        buttonLifestyle = myprofFragmentView.findViewById(R.id.lifeBtnMyProfFrag);
+        buttonSaveProfile = myprofFragmentView.findViewById(R.id.saveProfileFrag);
+        profilePhotoView= myprofFragmentView.findViewById(R.id.myprof_photo_frag);
 
         buttonCamera.setOnClickListener(this);
         buttonLifestyle.setOnClickListener(this);
         buttonSaveProfile.setOnClickListener(this);
 
         //height seek bar
-        seekBarHeight = findViewById(R.id.seekBarHeight);
+        seekBarHeight = myprofFragmentView.findViewById(R.id.seekBarHeightFrag);
         seekBarHeight.setOnSeekBarChangeListener(seekBarChangeListenerHeight);
 
         int inches = seekBarHeight.getProgress();
-        tvHeight = findViewById(R.id.textViewHeight);
+        tvHeight = myprofFragmentView.findViewById(R.id.textViewHeightFrag);
         tvHeight.setText("Height: " + inches + " inches");
 
         //weight seek bar
-        seekBarWeight = findViewById(R.id.seekBarWeight);
+        seekBarWeight = myprofFragmentView.findViewById(R.id.seekBarWeightFrag);
         seekBarWeight.setOnSeekBarChangeListener(seekBarChangeListenerWeight);
 
         int pounds = seekBarWeight.getProgress();
-        tvWeight = findViewById(R.id.textViewWeight);
+        tvWeight = myprofFragmentView.findViewById(R.id.textViewWeightFrag);
         tvWeight.setText("Weight " + pounds + " pounds");
 
-
+        return myprofFragmentView;
     }
 
     @Override
-    protected void onStart()
+    public void onStart()
     {
         super.onStart();
 
-        profileName = findViewById(R.id.profileName);
-        profileAge = findViewById(R.id.profileAge);
-        profileCity = findViewById(R.id.profileCity);
-        profileCountry = findViewById(R.id.profileCountry);
-        tvHeight = findViewById(R.id.textViewHeight);
-        seekBarHeight = findViewById(R.id.seekBarHeight);
-        tvWeight = findViewById(R.id.textViewWeight);
-        seekBarWeight = findViewById(R.id.seekBarWeight);
-        profileMale = findViewById(R.id.profileMale);
-        profileFemale = findViewById(R.id.profileFemale);
+        profileName = myprofFragmentView.findViewById(R.id.profileNameFrag);
+        profileAge = myprofFragmentView.findViewById(R.id.profileAgeFrag);
+        profileCity = myprofFragmentView.findViewById(R.id.profileCityFrag);
+        profileCountry = myprofFragmentView.findViewById(R.id.profileCountryFrag);
+        tvHeight = myprofFragmentView.findViewById(R.id.textViewHeightFrag);
+        seekBarHeight = myprofFragmentView.findViewById(R.id.seekBarHeightFrag);
+        tvWeight = myprofFragmentView.findViewById(R.id.textViewWeightFrag);
+        seekBarWeight = myprofFragmentView.findViewById(R.id.seekBarWeightFrag);
+        profileMale = myprofFragmentView.findViewById(R.id.profileMaleFrag);
+        profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
+
+
 
         if(UserKt.getDefaultUser().getProfilePhoto()!=null)
         {
@@ -106,6 +132,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         {
             profileCountry.setText(UserKt.getDefaultUser().getCountry());
         }
+
         if(UserKt.getDefaultUser().getGender() == 1)
         {
             profileMale.setChecked(true);
@@ -122,43 +149,46 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View view) {
         switch(view.getId())
         {
-            case R.id.saveProfile:
+            case R.id.saveProfileFrag:
             {
-                profileName = findViewById(R.id.profileName);
-                profileAge = findViewById(R.id.profileAge);
-                profileCity = findViewById(R.id.profileCity);
-                profileCountry = findViewById(R.id.profileCountry);
-                tvHeight = findViewById(R.id.textViewHeight);
-                seekBarHeight = findViewById(R.id.seekBarHeight);
-                tvWeight = findViewById(R.id.textViewWeight);
-                seekBarWeight = findViewById(R.id.seekBarWeight);
-                profileMale = findViewById(R.id.profileMale);
-                profileFemale = findViewById(R.id.profileFemale);
+                profileName = myprofFragmentView.findViewById(R.id.profileNameFrag);
+                profileAge = myprofFragmentView.findViewById(R.id.profileAgeFrag);
+                profileCity = myprofFragmentView.findViewById(R.id.profileCityFrag);
+                profileCountry = myprofFragmentView.findViewById(R.id.profileCountryFrag);
+                tvHeight = myprofFragmentView.findViewById(R.id.textViewHeightFrag);
+                seekBarHeight = myprofFragmentView.findViewById(R.id.seekBarHeightFrag);
+                tvWeight = myprofFragmentView.findViewById(R.id.textViewWeightFrag);
+                seekBarWeight = myprofFragmentView.findViewById(R.id.seekBarWeightFrag);
+                profileMale = myprofFragmentView.findViewById(R.id.profileMaleFrag);
+                profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
 
 
                 stringName = profileName.getText().toString();
                 stringAge = profileAge.getText().toString();
                 stringCity = profileCity.getText().toString();
                 stringCountry = profileCountry.getText().toString();
-                doubleWeight = seekBarWeight.getProgress();
-                doubleHeight = seekBarHeight.getProgress();
+                doubleWeight = (double)seekBarWeight.getProgress();
+                doubleHeight = (double)seekBarHeight.getProgress();
+
 
                 if(profileMale.isSelected())
                 {
-                    intGender = 1;  // male
+                    intGender = 1;
                 }
+
                 else
                 {
-                    intGender = 0;  // female
+                    intGender = 0;
                 }
 
                 if(stringName.isEmpty() || stringAge.isEmpty() || stringCity.isEmpty() || stringCountry.isEmpty())
                 {
-                    Toast.makeText(ProfileActivity.this, "Please fill out all fields!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please fill out all fields!", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
                     intAge = Integer.parseInt(stringAge);
+
 
                     //newUser = new User(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture);
 
@@ -167,81 +197,36 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
                 break;
             }
-            case R.id.profileUpdatePhoto:
+            case R.id.prof_update_photo_frag:
             {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if(cameraIntent.resolveActivity(getPackageManager()) != null)
-                {
-                    startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
-                }
+                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+
                 break;
             }
-            case R.id.lifeBtnMyProf: {
-                Intent lifeIntent = new Intent(this, MainActivity.class);
-                this.startActivity(lifeIntent);
+            case R.id.lifeBtnMyProfFrag: {
+                lifePressListener.onLifeBtnPress();
                 break;
             }
         }
     }
-
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            profilePicture = (Bitmap) extras.get("data");
-            //Bitmap thumbnailImage = (Bitmap) extras.get("data");
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                if (resultCode == RESULT_OK) {
+                    profilePicture = (Bitmap) data.getExtras().get("data");
+                    UserKt.getDefaultUser().setProfilePhoto(profilePicture);
 
-            //Eventually should be relocated to Save onClick Method
-            UserKt.getDefaultUser().setProfilePhoto(profilePicture);
-
-            profilePhotoView= findViewById(R.id.profilePhoto);
-            profilePhotoView.setImageBitmap(profilePicture);
-
+                    profilePhotoView= myprofFragmentView.findViewById(R.id.myprof_photo_frag);
+                    profilePhotoView.setImageBitmap(profilePicture);
+                } else if (resultCode == RESULT_CANCELED) {
+                    Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
+                }
+            }
         }
-    }
-
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        //Get the strings
-        stringName = profileName.getText().toString();
-        stringAge = profileAge.getText().toString();
-        stringCity = profileCity.getText().toString();
-        stringCountry = profileCountry.getText().toString();
-        stringHeight = String.valueOf(seekBarHeight.getProgress());  // FIXME
-        stringWeight = String.valueOf(seekBarHeight.getProgress());  // FIXME
-
-        //Put them in the outgoing Bundle
-        outState.putString("NAME_TEXT",stringName);
-        outState.putString("AGE_TEXT",stringAge);
-        outState.putString("CITY_TEXT",stringCity);
-        outState.putString("COUNTRY_TEXT",stringCountry);
-        outState.putString("HEIGHT_TEXT",stringHeight);
-        outState.putString("WEIGHT_TEXT",stringWeight);
-
-        //Save the view hierarchy
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        //Restore stuff
-        profileName.setText(savedInstanceState.getString("NAME_TEXT"));
-        profileAge.setText(savedInstanceState.getString("AGE_TEXT"));
-        profileCity.setText(savedInstanceState.getString("CITY_TEXT"));
-        profileCountry.setText(savedInstanceState.getString("COUNTRY_TEXT"));
-        seekBarHeight.setProgress(Integer.parseInt(Objects.requireNonNull(savedInstanceState.getString("HEIGHT_TEXT"))));  // FIXME
-        seekBarWeight.setProgress(Integer.parseInt(Objects.requireNonNull(savedInstanceState.getString("WEIGHT_TEXT"))));  // FIXME
-
-        //Restore the view hierarchy automatically
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    // seek bar listener for height
     SeekBar.OnSeekBarChangeListener seekBarChangeListenerHeight = new SeekBar.OnSeekBarChangeListener() {
 
         @Override
@@ -280,4 +265,4 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             // called after the user finishes moving the SeekBar
         }
     };
-} //
+}

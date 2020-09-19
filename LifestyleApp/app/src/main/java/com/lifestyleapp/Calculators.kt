@@ -1,5 +1,3 @@
-//@file:JvmName("Calcs")
-
 package com.example.lifestyleapp
 
 import com.lifestyleapp.defaultUser
