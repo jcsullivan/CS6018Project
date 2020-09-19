@@ -132,13 +132,6 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         {
             profileCountry.setText(UserKt.getDefaultUser().getCountry());
         }
-        if(UserKt.getDefaultUser().getWeight()!=0){
-            seekBarWeight.setProgress((int) UserKt.getDefaultUser().getWeight());
-
-        }
-        if(UserKt.getDefaultUser().getHeight()!=0){
-            seekBarHeight.setProgress((int)UserKt.getDefaultUser().getHeight());
-        }
 
         if(UserKt.getDefaultUser().getGender() == 1)
         {
@@ -162,6 +155,10 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 profileAge = myprofFragmentView.findViewById(R.id.profileAgeFrag);
                 profileCity = myprofFragmentView.findViewById(R.id.profileCityFrag);
                 profileCountry = myprofFragmentView.findViewById(R.id.profileCountryFrag);
+                tvHeight = myprofFragmentView.findViewById(R.id.textViewHeightFrag);
+                seekBarHeight = myprofFragmentView.findViewById(R.id.seekBarHeightFrag);
+                tvWeight = myprofFragmentView.findViewById(R.id.textViewWeightFrag);
+                seekBarWeight = myprofFragmentView.findViewById(R.id.seekBarWeightFrag);
                 profileMale = myprofFragmentView.findViewById(R.id.profileMaleFrag);
                 profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
 
@@ -178,7 +175,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 {
                     intGender = 1;
                 }
-                //if(profileFemale.isSelected())
+
                 else
                 {
                     intGender = 0;
@@ -191,8 +188,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 else
                 {
                     intAge = Integer.parseInt(stringAge);
-                    doubleHeight = Double.parseDouble(stringHeight);
-                    doubleWeight = Double.parseDouble(stringWeight);
+
 
                     //newUser = new User(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture);
 
