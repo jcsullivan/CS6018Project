@@ -93,7 +93,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
 
         buttonLocation.setOnClickListener(this);
 
-        weatherStuff();
+        //weatherStuff();
     }
 
     @Override

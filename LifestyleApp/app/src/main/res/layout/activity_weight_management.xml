@@ -44,19 +44,7 @@
             app:srcCompat="@drawable/stock_gurl" />
 
         <Button
-            android:id="@+id/lifeBtnMyProf"
-            android:layout_width="130dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="42dp"
-            android:background="@drawable/roundedbuttongreen"
-            android:text="@string/lifestyle_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-        <Button
-            android:id="@+id/lifeBtnMyProf"
+            android:id="@+id/lifestyle_btn_weightman_frag"
             android:layout_width="130dp"
             android:layout_height="45dp"
             android:layout_marginTop="10dp"
@@ -87,9 +75,7 @@
             android:layout_width="334dp"
             android:layout_height="536dp"
             android:layout_marginTop="32dp"
-            android:layout_marginBottom="10dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/lifeBtnMyProf"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView3">
@@ -133,8 +119,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Active"
                     android:checked="true"
+                    android:text="Active"
                     android:textSize="18sp" />
 
                 <RadioButton

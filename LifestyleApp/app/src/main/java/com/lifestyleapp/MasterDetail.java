@@ -11,6 +11,7 @@ public class MasterDetail extends AppCompatActivity implements NavPaneFragment.O
     private NavPaneFragment mMasterListNavFrag;
     private ProfilePageFragment profilePageFragment;
     private WeightManFragment weightManFragment;
+    private WeatherFragment weatherFragment;
 
 
     @Override
@@ -21,6 +22,8 @@ public class MasterDetail extends AppCompatActivity implements NavPaneFragment.O
         mMasterListNavFrag = new NavPaneFragment();
         profilePageFragment = new ProfilePageFragment();
         weightManFragment = new WeightManFragment();
+        weatherFragment = new WeatherFragment();
+
 
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         if (isTablet()) {
@@ -44,14 +47,17 @@ public class MasterDetail extends AppCompatActivity implements NavPaneFragment.O
                 fTrans.replace(R.id.master_detail_right_pane_tablet, profilePageFragment, "frag_myprof_tab");
             } else if (navIndex == mMasterListNavFrag.WEIGHT_BUTTON_INDEX) {
                 fTrans.replace(R.id.master_detail_right_pane_tablet, weightManFragment, "frag_weightman_tab");
-
+            }
+            else{
+                fTrans.replace(R.id.master_detail_right_pane_tablet, weatherFragment, "frag_weather_tab");
             }
         } else {
             if (navIndex == mMasterListNavFrag.PROFILE_BUTTON_INDEX) {
                 fTrans.replace(R.id.master_detail_pane_phone, profilePageFragment, "frag_myprof_phone");
             } else if (navIndex == mMasterListNavFrag.WEIGHT_BUTTON_INDEX) {
                 fTrans.replace(R.id.master_detail_pane_phone, weightManFragment, "frag_weightman_phone");
-
+            } else{
+                fTrans.replace(R.id.master_detail_pane_phone, weatherFragment, "frag_weather_phone");
             }
         }
         fTrans.commit();

@@ -24,6 +24,7 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
     Button weatherButton;
     public final int PROFILE_BUTTON_INDEX =1;
     public final int WEIGHT_BUTTON_INDEX =2;
+    public final int WEATHER_BUTTON_INDEX=3;
     //int HIKE_BUTTON_INDEX =3;
     //int WEATHER_BUTTON_INDEX =4;
 
@@ -112,9 +113,11 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
             case R.id.weather_btn_frag: {
                 // Search for local weather using the browser
                 // https://www.youtube.com/watch?v=mMKC_gRSL5Q
-                Uri uri = Uri.parse("http://www.google.com/search?q=local weather");
+                /*Uri uri = Uri.parse("http://www.google.com/search?q=local weather");
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
+                 */
+                listener.onNavSelected(WEATHER_BUTTON_INDEX);
             }
             break;
 
