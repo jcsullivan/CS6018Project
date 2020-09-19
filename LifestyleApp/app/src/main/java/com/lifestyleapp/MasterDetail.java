@@ -10,6 +10,7 @@ import android.os.Bundle;
 public class MasterDetail extends AppCompatActivity implements NavPaneFragment.OnNavSelectedListener {
     private NavPaneFragment mMasterListNavFrag;
     private ProfilePageFragment profilePageFragment;
+    private WeightManFragment weightManFragment;
 
 
 
@@ -21,6 +22,7 @@ public class MasterDetail extends AppCompatActivity implements NavPaneFragment.O
 
         mMasterListNavFrag = new NavPaneFragment();
         profilePageFragment = new ProfilePageFragment();
+        weightManFragment = new WeightManFragment();
 
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         if(isTablet()) {
@@ -45,12 +47,16 @@ public class MasterDetail extends AppCompatActivity implements NavPaneFragment.O
             if(navIndex==mMasterListNavFrag.PROFILE_BUTTON_INDEX){
                 fTrans.replace(R.id.master_detail_right_pane_tablet,profilePageFragment,"frag_myprof_tab");
             }else if (navIndex==mMasterListNavFrag.WEIGHT_BUTTON_INDEX){
+                fTrans.replace(R.id.master_detail_right_pane_tablet,weightManFragment,"frag_weightman_tab");
 
             }
         }
         else{
             if(navIndex==mMasterListNavFrag.PROFILE_BUTTON_INDEX){
                 fTrans.replace(R.id.master_detail_pane_phone,profilePageFragment,"frag_myprof_phone");
+            }else if (navIndex==mMasterListNavFrag.WEIGHT_BUTTON_INDEX){
+                fTrans.replace(R.id.master_detail_right_pane_tablet,weightManFragment,"frag_weightman_phone");
+
             }
         }
         fTrans.commit();
