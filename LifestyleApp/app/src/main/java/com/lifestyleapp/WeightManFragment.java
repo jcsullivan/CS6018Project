@@ -136,7 +136,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         public void onProgressChanged(SeekBar seekBar, int pounds, boolean fromUser) {
             // updated continuously as the user slides the thumb
             doubleToLose = ((double)pounds / 10.0);
-            tvPoundsPerWeek.setText("Pounds To Lose Per Week: " + doubleToLose);
+            tvPoundsPerWeek.setText("Pounds To Change Per Week: " + doubleToLose);
         }
 
         @Override

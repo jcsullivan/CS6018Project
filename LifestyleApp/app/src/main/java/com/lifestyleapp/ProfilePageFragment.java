@@ -77,7 +77,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
 
         //height seek bar
         seekBarHeight = myprofFragmentView.findViewById(R.id.seekBarHeightFrag);
-        //seekBarHeight.setOnSeekBarChangeListener(seekBarChangeListenerHeight);
+        seekBarHeight.setOnSeekBarChangeListener(seekBarChangeListenerHeight);
 
         int inches = seekBarHeight.getProgress();
         tvHeight = myprofFragmentView.findViewById(R.id.textViewHeightFrag);
@@ -85,7 +85,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
 
         //weight seek bar
         seekBarWeight = myprofFragmentView.findViewById(R.id.seekBarWeightFrag);
-        //seekBarWeight.setOnSeekBarChangeListener(seekBarChangeListenerWeight);
+        seekBarWeight.setOnSeekBarChangeListener(seekBarChangeListenerWeight);
 
         int pounds = seekBarWeight.getProgress();
         tvWeight = myprofFragmentView.findViewById(R.id.textViewWeightFrag);
@@ -110,6 +110,8 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         profileMale = myprofFragmentView.findViewById(R.id.profileMaleFrag);
         profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
 
+
+
         if(UserKt.getDefaultUser().getProfilePhoto()!=null)
         {
             profilePhotoView.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
@@ -130,6 +132,14 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         {
             profileCountry.setText(UserKt.getDefaultUser().getCountry());
         }
+        if(UserKt.getDefaultUser().getWeight()!=0){
+            seekBarWeight.setProgress((int) UserKt.getDefaultUser().getWeight());
+
+        }
+        if(UserKt.getDefaultUser().getHeight()!=0){
+            seekBarHeight.setProgress((int)UserKt.getDefaultUser().getHeight());
+        }
+
         if(UserKt.getDefaultUser().getGender() == 1)
         {
             profileMale.setChecked(true);
@@ -160,6 +170,9 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 stringAge = profileAge.getText().toString();
                 stringCity = profileCity.getText().toString();
                 stringCountry = profileCountry.getText().toString();
+                doubleWeight = (double)seekBarWeight.getProgress();
+                doubleHeight = (double)seekBarHeight.getProgress();
+
 
                 if(profileMale.isSelected())
                 {
@@ -218,4 +231,42 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 }
             }
         }
+    SeekBar.OnSeekBarChangeListener seekBarChangeListenerHeight = new SeekBar.OnSeekBarChangeListener() {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int inches, boolean fromUser) {
+            // updated continuously as the user slides the thumb
+            tvHeight.setText("Height: " + inches + " inches");
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            // called when the user first touches the SeekBar
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            // called after the user finishes moving the SeekBar
+        }
+    };
+
+    // seek bar listener for weight
+    SeekBar.OnSeekBarChangeListener seekBarChangeListenerWeight = new SeekBar.OnSeekBarChangeListener() {
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int pounds, boolean fromUser) {
+            // updated continuously as the user slides the thumb
+            tvWeight.setText("Weight: " + pounds + " pounds");
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            // called when the user first touches the SeekBar
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            // called after the user finishes moving the SeekBar
+        }
+    };
 }
