@@ -116,6 +116,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     private void weatherStuff()
     {
         String forURL = localLocation.replaceAll(",\\s+", ",").trim();
+        forURL = forURL.replaceAll("\\s+", "%20").trim();
 
         URL weatherURL = WeatherUtilities.buildURLFromString(forURL);
 
