@@ -38,12 +38,24 @@
 
         <Button
             android:id="@+id/resetLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="130dp"
+            android:layout_height="45dp"
+            android:background="@drawable/roundedbuttongreen"
             android:layout_marginTop="16dp"
             android:text="Set Location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/location" />
+
+        <Button
+            android:id="@+id/backToLifestyle"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/roundedbuttonyellow"
+            android:text="Lifestyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weatherInfo" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
