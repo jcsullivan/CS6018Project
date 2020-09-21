@@ -3,7 +3,7 @@ package com.lifestyleapp;
 public class WeatherData
 {
     Coord coord;
-    Weather weather;
+    Weather weather[];
     Main main;
     Wind wind;
     Clouds clouds;
