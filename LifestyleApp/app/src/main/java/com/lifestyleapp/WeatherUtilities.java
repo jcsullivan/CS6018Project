@@ -64,13 +64,13 @@ public class WeatherUtilities
         String returnString = "";
 
         returnString = returnString + "Current Conditions: " + weatherData.weather[0].main + "\n";
-        returnString = returnString + "Current Temperature: " + weatherData.main.temp + "\n";
-        returnString = returnString + "Feels-Like Temperature: " + weatherData.main.feels_like + "\n";
-        returnString = returnString + "Current Humidity: " + weatherData.main.humidity + "\n";
-        returnString = returnString + "Current Pressure: " + weatherData.main.pressure + "\n";
-        returnString = returnString + "Current Wind Speed: " + weatherData.wind.speed + "\n";
-        returnString = returnString + "Current Wind Direction: " + weatherData.wind.deg + "\n";
-        returnString = returnString + "Current Cloud Cover: " + weatherData.clouds.all + "\n";
+        returnString = returnString + "Current Temperature: " + weatherData.main.temp + "°\n";
+        returnString = returnString + "Feels-Like Temperature: " + weatherData.main.feels_like + "°\n";
+        returnString = returnString + "Current Humidity: " + weatherData.main.humidity + "%\n";
+        returnString = returnString + "Current Pressure: " + weatherData.main.pressure + "mbar\n";
+        returnString = returnString + "Current Wind Speed: " + weatherData.wind.speed + "mph\n";
+        returnString = returnString + "Current Wind Direction: " + weatherData.wind.deg + "°\n";
+        returnString = returnString + "Current Cloud Cover: " + weatherData.clouds.all + "%\n";
 
         return returnString;
     }

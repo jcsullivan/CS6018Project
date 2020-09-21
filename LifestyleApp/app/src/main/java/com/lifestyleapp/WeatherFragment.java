@@ -102,10 +102,6 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
         buttonLifestyle = (Button)view.findViewById(R.id.backToLifestyle);
         weatherInfo = view.findViewById(R.id.weatherInfo);
 
-        localLocation = mCity + ", " + mCountry;
-
-        editLocation.setText(localLocation);
-
         buttonLocation.setOnClickListener(this);
         buttonLifestyle.setOnClickListener(this);
 
@@ -115,12 +111,16 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
-        editLocation.setText(UserKt.getDefaultUser().getCity() + ", " + UserKt.getDefaultUser().getCountry());
-        localLocation = editLocation.getText().toString();
-        String locationForURL = localLocation.replaceAll(",\\s+", ",").trim();
-        locationForURL = locationForURL.replaceAll("\\s+", "%20").trim();
+        String test = UserKt.getDefaultUser().getCity();
+        if(!UserKt.getDefaultUser().getCity().isEmpty() && !UserKt.getDefaultUser().getCountry().isEmpty())
+        {
+            editLocation.setText(UserKt.getDefaultUser().getCity() + ", " + UserKt.getDefaultUser().getCountry());
+            localLocation = editLocation.getText().toString();
+            String locationForURL = localLocation.replaceAll(",\\s+", ",").trim();
+            locationForURL = locationForURL.replaceAll("\\s+", "%20").trim();
 
-        new fetchWeatherStuff().execute(locationForURL);
+            new fetchWeatherStuff().execute(locationForURL);
+        }
     }
 
     @Override
