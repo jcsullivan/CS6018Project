@@ -32,13 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         hikesButton.setOnClickListener(this);
         weatherButton.setOnClickListener(this);
 
-
-
-
-
-
-
-
     }
     @Override
     public void onClick(View view) {

@@ -28,6 +28,7 @@ public class MasterDetail extends AppCompatActivity implements NavPaneFragment.O
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         if (isTablet()) {
             fTrans.replace(R.id.master_detail_nav_pane_tablet, mMasterListNavFrag, "frag_masterlist");
+            fTrans.replace(R.id.master_detail_right_pane_tablet, profilePageFragment, "frag_profile");
         } else {
             fTrans.replace(R.id.master_detail_pane_phone, mMasterListNavFrag, "frag_masterlist");
         }

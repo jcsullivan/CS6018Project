@@ -109,9 +109,12 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState)
+    //public void onViewCreated(View view, Bundle savedInstanceState)
+    public void onStart()
     {
-        String test = UserKt.getDefaultUser().getCity();
+        super.onStart();
+        String test1 = UserKt.getDefaultUser().getCity();
+        String test2 = UserKt.getDefaultUser().getCountry();
         if(!UserKt.getDefaultUser().getCity().isEmpty() && !UserKt.getDefaultUser().getCountry().isEmpty())
         {
             editLocation.setText(UserKt.getDefaultUser().getCity() + ", " + UserKt.getDefaultUser().getCountry());
