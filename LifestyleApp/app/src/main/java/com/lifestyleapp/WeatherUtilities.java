@@ -30,6 +30,7 @@ public class WeatherUtilities
     public static String getDataFromURL(URL url) throws IOException
     {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setRequestMethod("GET");
         try {
             InputStream inputStream = urlConnection.getInputStream();
 
