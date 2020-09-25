@@ -1,5 +1,7 @@
 package com.lifestyleapp;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -22,7 +24,7 @@ import java.net.URL;
 public class WeatherFragment extends Fragment implements View.OnClickListener
 {
     private EditText editLocation;
-    private Button buttonLocation;
+    private Button buttonLocation, buttonLifestyle;
     private String localLocation;
     private TextView weatherInfo;
 
@@ -35,6 +37,22 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     private String mCity;
     private String mCountry;
     private User currentUser;
+
+    ProfilePageFragment.OnLifePressListener lifePressListener;
+
+    public interface OnLifePressListener {
+        public void onLifeBtnPress();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            lifePressListener = (ProfilePageFragment.OnLifePressListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnLifePressListener");
+        }
+    }
 
     public WeatherFragment()
     {
@@ -81,23 +99,31 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
 
         editLocation = view.findViewById(R.id.location);
         buttonLocation = (Button)view.findViewById(R.id.resetLocation);
+        buttonLifestyle = (Button)view.findViewById(R.id.backToLifestyle);
         weatherInfo = view.findViewById(R.id.weatherInfo);
 
-        localLocation = mCity + ", " + mCountry;
-
-        editLocation.setText(localLocation);
-
         buttonLocation.setOnClickListener(this);
+        buttonLifestyle.setOnClickListener(this);
 
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState)
+    //public void onViewCreated(View view, Bundle savedInstanceState)
+    public void onStart()
     {
+        super.onStart();
+        String test1 = UserKt.getDefaultUser().getCity();
+        String test2 = UserKt.getDefaultUser().getCountry();
+        if(!UserKt.getDefaultUser().getCity().isEmpty() && !UserKt.getDefaultUser().getCountry().isEmpty())
+        {
+            editLocation.setText(UserKt.getDefaultUser().getCity() + ", " + UserKt.getDefaultUser().getCountry());
+            localLocation = editLocation.getText().toString();
+            String locationForURL = localLocation.replaceAll(",\\s+", ",").trim();
+            locationForURL = locationForURL.replaceAll("\\s+", "%20").trim();
 
-
-        //weatherStuff();
+            new fetchWeatherStuff().execute(locationForURL);
+        }
     }
 
     @Override
@@ -106,30 +132,46 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
             case R.id.resetLocation:
             {
 
-                    localLocation = editLocation.getText().toString();
-                    weatherStuff();
+                localLocation = editLocation.getText().toString();
+                String locationForURL = localLocation.replaceAll(",\\s+", ",").trim();
+                locationForURL = locationForURL.replaceAll("\\s+", "%20").trim();
+
+                new fetchWeatherStuff().execute(locationForURL);
+                break;
             }
-            break;
+            case R.id.backToLifestyle:
+            {
+                lifePressListener.onLifeBtnPress();
+                break;
+            }
         }
     }
 
-    private void weatherStuff()
+    private class fetchWeatherStuff extends AsyncTask<String,Void,String>
     {
-        String forURL = localLocation.replaceAll(",\\s+", ",").trim();
-
-        URL weatherURL = WeatherUtilities.buildURLFromString(forURL);
-
-        String dataFromURL = "";
-        try
+        @Override
+        protected String doInBackground(String... inputStringArray)
         {
-            dataFromURL = WeatherUtilities.getDataFromURL(weatherURL);
-        } catch (IOException e)
-        {
-            e.printStackTrace();
+            String location = inputStringArray[0];
+            URL weatherDataURL = WeatherUtilities.buildURLFromString(location);
+            String jsonWeatherData = null;
+            try{
+                jsonWeatherData = WeatherUtilities.getDataFromURL(weatherDataURL);
+                return jsonWeatherData;
+            }catch(Exception e){
+                e.printStackTrace();
+                return null;
+            }
         }
 
-        String parsedWeather = WeatherUtilities.parseJSON(dataFromURL);
+        @Override
+        protected void onPostExecute(String jsonWeatherData)
+        {
+            if (jsonWeatherData!=null){
+                String weatherToShow = WeatherUtilities.parseJSON(jsonWeatherData);
 
-        weatherInfo.setText(parsedWeather);
+                weatherInfo.setText(weatherToShow);
+            }
+        }
     }
 }

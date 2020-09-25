@@ -23,8 +23,8 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        Intent loginIntent = new Intent(this, MainActivity.class);
-        this.startActivity(loginIntent);
+        //Intent loginIntent = new Intent(this, MainActivity.class);
+        //this.startActivity(loginIntent);
 
     }
 

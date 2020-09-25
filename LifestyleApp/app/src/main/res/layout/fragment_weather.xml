@@ -8,7 +8,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/sandspiral"
+        android:backgroundTint="#d6FFFFFF"
+        android:backgroundTintMode="src_over">
 
         <EditText
             android:id="@+id/location"
@@ -17,7 +20,8 @@
             android:layout_marginTop="32dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Location"
+            android:text=""
+            android:hint="Enter Location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="TextView"
+            android:textColor="#FF000000"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,12 +40,24 @@
 
         <Button
             android:id="@+id/resetLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="130dp"
+            android:layout_height="45dp"
+            android:background="@drawable/roundedbuttongreen"
             android:layout_marginTop="16dp"
             android:text="Set Location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/location" />
+
+        <Button
+            android:id="@+id/backToLifestyle"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/roundedbuttonyellow"
+            android:text="Lifestyle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weatherInfo" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

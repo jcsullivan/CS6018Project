@@ -189,10 +189,9 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 {
                     intAge = Integer.parseInt(stringAge);
 
-
-                    //newUser = new User(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture);
-
                     UserKt.setDefaultUser(new User (stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture, 0.0, 0.0, false));
+
+                    Toast.makeText(getActivity(), "User information saved!", Toast.LENGTH_SHORT).show();
                 }
 
                 break;
