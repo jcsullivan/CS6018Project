@@ -11,7 +11,7 @@ import static com.lifestyleapp.WeatherUtilities.getDataFromURL;
 import static com.lifestyleapp.WeatherUtilities.parseJSON;
 import static org.junit.Assert.*;
 
-public class WeatherUtilitiesTest {
+public class WeatherUtilitiesTests {
 
 
     @Test
