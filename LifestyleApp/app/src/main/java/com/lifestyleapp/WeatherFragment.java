@@ -19,11 +19,6 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.net.URL;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link WeatherFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class WeatherFragment extends Fragment implements View.OnClickListener
 {
     private EditText editLocation;
@@ -33,10 +28,6 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
 
     private static final String ARG_CITY = "";
     private static final String ARG_COUNTRY = "";
-
-    private String mCity;
-    private String mCountry;
-    private User currentUser;
 
     private WeatherViewModel mWeatherViewModel;
 
@@ -61,15 +52,6 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param city Parameter 1.
-     * @param country Parameter 2.
-     * @return A new instance of fragment WeatherFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static WeatherFragment newInstance(String city, String country)
     {
         WeatherFragment fragment = new WeatherFragment();
@@ -93,11 +75,6 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
-
-        currentUser = UserKt.getDefaultUser();
-
-        mCity = currentUser.getCity();
-        mCountry = currentUser.getCountry();
 
         editLocation = view.findViewById(R.id.location);
         buttonLocation = (Button)view.findViewById(R.id.resetLocation);
