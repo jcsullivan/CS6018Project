@@ -4,7 +4,10 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,15 +31,14 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     private String localLocation;
     private TextView weatherInfo;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_CITY = "";
     private static final String ARG_COUNTRY = "";
 
-    // TODO: Rename and change types of parameters
     private String mCity;
     private String mCountry;
     private User currentUser;
+
+    private WeatherViewModel mWeatherViewModel;
 
     ProfilePageFragment.OnLifePressListener lifePressListener;
 
@@ -105,16 +107,41 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
         buttonLocation.setOnClickListener(this);
         buttonLifestyle.setOnClickListener(this);
 
+        //Create the view model
+        mWeatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
+
+        //Set the observer
+        mWeatherViewModel.getData().observe(this, weatherObserver);
+
         return view;
     }
+
+    final Observer<WeatherData> weatherObserver  = new Observer<WeatherData>() {
+        @Override
+        public void onChanged(@Nullable final WeatherData weatherData) {
+            // Update the UI if this data variable changes
+            if(weatherData!=null) {
+                String weatherString = "";
+
+                weatherString = weatherString + "Current Conditions: " + weatherData.weather[0].main + "\n";
+                weatherString = weatherString + "Current Temperature: " + weatherData.main.temp + "°\n";
+                weatherString = weatherString + "Feels-Like Temperature: " + weatherData.main.feels_like + "°\n";
+                weatherString = weatherString + "Current Humidity: " + weatherData.main.humidity + "%\n";
+                weatherString = weatherString + "Current Pressure: " + weatherData.main.pressure + "mbar\n";
+                weatherString = weatherString + "Current Wind Speed: " + weatherData.wind.speed + "mph\n";
+                weatherString = weatherString + "Current Wind Direction: " + weatherData.wind.deg + "°\n";
+                weatherString = weatherString + "Current Cloud Cover: " + weatherData.clouds.all + "%\n";
+
+                weatherInfo.setText(weatherString);
+            }
+        }
+    };
 
     @Override
     //public void onViewCreated(View view, Bundle savedInstanceState)
     public void onStart()
     {
         super.onStart();
-        String test1 = UserKt.getDefaultUser().getCity();
-        String test2 = UserKt.getDefaultUser().getCountry();
         if(!UserKt.getDefaultUser().getCity().isEmpty() && !UserKt.getDefaultUser().getCountry().isEmpty())
         {
             editLocation.setText(UserKt.getDefaultUser().getCity() + ", " + UserKt.getDefaultUser().getCountry());
@@ -122,7 +149,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
             String locationForURL = localLocation.replaceAll(",\\s+", ",").trim();
             locationForURL = locationForURL.replaceAll("\\s+", "%20").trim();
 
-            new fetchWeatherStuff().execute(locationForURL);
+            loadWeatherData(locationForURL);
         }
     }
 
@@ -136,7 +163,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
                 String locationForURL = localLocation.replaceAll(",\\s+", ",").trim();
                 locationForURL = locationForURL.replaceAll("\\s+", "%20").trim();
 
-                new fetchWeatherStuff().execute(locationForURL);
+                loadWeatherData(locationForURL);
                 break;
             }
             case R.id.backToLifestyle:
@@ -145,6 +172,11 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
                 break;
             }
         }
+    }
+
+    void loadWeatherData(String location){
+        //pass the location in to the view model
+        mWeatherViewModel.setLocation(location);
     }
 
     private class fetchWeatherStuff extends AsyncTask<String,Void,String>
