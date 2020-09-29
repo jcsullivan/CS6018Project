@@ -4,7 +4,7 @@ import org.junit.*
 import org.junit.Assert.*
 
 
-class UserTest {
+class UserTests {
 
     @Before
     fun setup(){
