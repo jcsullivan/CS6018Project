@@ -5,7 +5,9 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.MutableLiveData;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.net.URL;
 
 public class WeatherRepository
 {
@@ -45,9 +47,9 @@ public class WeatherRepository
             URL weatherDataURL = null;
             String retrievedJsonData = null;
             if(location!=null) {
-                weatherDataURL = NetworkUtils.buildURLFromString(location);
+                weatherDataURL = WeatherUtilities.buildURLFromString(location);
                 try {
-                    retrievedJsonData = NetworkUtils.getDataFromURL(weatherDataURL);
+                    retrievedJsonData = WeatherUtilities.getDataFromURL(weatherDataURL);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -57,13 +59,10 @@ public class WeatherRepository
 
         @Override
         protected void onPostExecute(String s) {
-            if(s!=null) {
-                try {
-                    WeatherRepository ref = mWeatherRepositoryReference.get();
-                    ref.jsonData.setValue(JSONWeatherUtils.getWeatherData(s));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            if(s!=null)
+            {
+                WeatherRepository ref = mWeatherRepositoryReference.get();
+                ref.jsonData.setValue(WeatherUtilities.getWeatherData(s));
             }
 
         }
