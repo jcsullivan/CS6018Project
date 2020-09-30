@@ -74,4 +74,13 @@ public class WeatherUtilities
 
         return returnString;
     }
+
+    public static WeatherData getWeatherData(String json)
+    {
+        Gson gson = new Gson();
+
+        WeatherData weatherData = gson.fromJson(json, WeatherData.class);
+
+        return weatherData;
+    }
 }
