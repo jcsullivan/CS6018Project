@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -28,6 +29,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
     private TextView tvPoundsPerWeek, tvHeaderInformation;
     private SeekBar seekBarPoundsPerWeek;
     private RadioButton radioButtonActive, radioButtonSedentary;
+    private ImageView profilePhoto;
 
 
     private View weight_man_frag_view;
@@ -63,6 +65,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         buttonCalculate = weight_man_frag_view.findViewById(R.id.weight_man_calc_btn);
         radioButtonActive = weight_man_frag_view.findViewById(R.id.calculatorActiveFrag);
         radioButtonSedentary = weight_man_frag_view.findViewById(R.id.calculatorSedentaryFrag);
+        profilePhoto = weight_man_frag_view.findViewById(R.id.weight_man_profile_pic_frag);
 
         buttonLifestyle.setOnClickListener(this);
         buttonCalculate.setOnClickListener(this);
@@ -83,8 +86,14 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
     {
         super.onStart();
 
+        profilePhoto = weight_man_frag_view.findViewById(R.id.weight_man_profile_pic_frag);
         weightBMI = weight_man_frag_view.findViewById(R.id.bmiEditTextFrag);
         tvHeaderInformation = weight_man_frag_view.findViewById(R.id.headerInformationFrag);
+
+        if (UserKt.getDefaultUser().getProfilePhoto() != null)
+        {
+            profilePhoto.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
+        }
 
         if(UserKt.getDefaultUser().getHeight() != 0 && UserKt.getDefaultUser().getWeight() != 0)
         {

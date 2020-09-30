@@ -11,17 +11,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 
 public class NavPaneFragment extends Fragment implements View.OnClickListener {
 
-
+    View navFragmentView;
 
     OnNavSelectedListener listener;
     Button profileButton;
     Button weightManButton;
     Button hikesButton;
     Button weatherButton;
+    ImageView profilePhotoView;
     public final int PROFILE_BUTTON_INDEX =1;
     public final int WEIGHT_BUTTON_INDEX =2;
     public final int WEATHER_BUTTON_INDEX=3;
@@ -68,11 +70,12 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-         View navFragmentView = inflater.inflate(R.layout.fragment_nav_pane, container, false);
+        navFragmentView = inflater.inflate(R.layout.fragment_nav_pane, container, false);
          profileButton = navFragmentView.findViewById(R.id.my_prof_btn_frag);
          weightManButton = navFragmentView.findViewById(R.id.weight_man_btn_frag);
          hikesButton = navFragmentView.findViewById(R.id.hike_btn_frag);
          weatherButton = navFragmentView.findViewById(R.id.weather_btn_frag);
+        profilePhotoView = navFragmentView.findViewById(R.id.photo_nav_pane_frag);
 
         profileButton.setOnClickListener(this);
         weightManButton.setOnClickListener(this);
@@ -80,6 +83,19 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
         weatherButton.setOnClickListener(this);
 
         return navFragmentView;
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+
+        profilePhotoView = navFragmentView.findViewById(R.id.photo_nav_pane_frag);
+
+        if (UserKt.getDefaultUser().getProfilePhoto() != null)
+        {
+            profilePhotoView.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
+        }
     }
 
 
