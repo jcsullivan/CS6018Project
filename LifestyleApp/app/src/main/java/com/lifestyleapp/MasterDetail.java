@@ -45,23 +45,23 @@ public class MasterDetail extends AppCompatActivity implements NavPaneFragment.O
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
         if (isTablet()) {
             if (navIndex == mMasterListNavFrag.PROFILE_BUTTON_INDEX) {
-                fTrans.replace(R.id.master_detail_right_pane_tablet, profilePageFragment, "frag_myprof_tab");
+                fTrans.replace(R.id.master_detail_right_pane_tablet, profilePageFragment, "frag_myprof_tab").commit();
             } else if (navIndex == mMasterListNavFrag.WEIGHT_BUTTON_INDEX) {
-                fTrans.replace(R.id.master_detail_right_pane_tablet, weightManFragment, "frag_weightman_tab");
+                fTrans.replace(R.id.master_detail_right_pane_tablet, weightManFragment, "frag_weightman_tab").commit();
             }
             else{
-                fTrans.replace(R.id.master_detail_right_pane_tablet, weatherFragment, "frag_weather_tab");
+                fTrans.replace(R.id.master_detail_right_pane_tablet, weatherFragment, "frag_weather_tab").commit();
             }
         } else {
             if (navIndex == mMasterListNavFrag.PROFILE_BUTTON_INDEX) {
-                fTrans.replace(R.id.master_detail_pane_phone, profilePageFragment, "frag_myprof_phone");
+                fTrans.replace(R.id.master_detail_pane_phone, profilePageFragment, "frag_myprof_phone").addToBackStack("profile").commit();
             } else if (navIndex == mMasterListNavFrag.WEIGHT_BUTTON_INDEX) {
-                fTrans.replace(R.id.master_detail_pane_phone, weightManFragment, "frag_weightman_phone");
+                fTrans.replace(R.id.master_detail_pane_phone, weightManFragment, "frag_weightman_phone").addToBackStack("weight").commit();
             } else{
-                fTrans.replace(R.id.master_detail_pane_phone, weatherFragment, "frag_weather_phone");
+                fTrans.replace(R.id.master_detail_pane_phone, weatherFragment, "frag_weather_phone").addToBackStack("weather").commit();
             }
         }
-        fTrans.commit();
+        //fTrans.commit();
     }
 
     @Override

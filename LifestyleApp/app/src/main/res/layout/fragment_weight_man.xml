@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:lines="2"
                 android:maxLines="2"
-                android:text="Calculations based on a weight of XXX pounds and a height of XX inches."
+                android:text="Please fill out profile information before using weight calculator."
                 android:textAlignment="center"
                 android:textSize="18sp" />
 
@@ -149,7 +149,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:gravity="center_horizontal|center_vertical"
+                android:inputType="textPersonName"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/basalMetRateTextViewFrag"
@@ -167,7 +169,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:gravity="right|center_vertical"
+                android:inputType="textPersonName"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/curent_bmi_weightman_frag"
@@ -185,7 +189,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:gravity="center_horizontal|center_vertical"
+                android:inputType="textPersonName"
+                android:textSize="24sp" />
 
 
         </LinearLayout>

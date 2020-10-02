@@ -98,7 +98,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         if(UserKt.getDefaultUser().getHeight() != 0 && UserKt.getDefaultUser().getWeight() != 0)
         {
             tvHeaderInformation.setText("Calculations based on a weight of " + UserKt.getDefaultUser().getWeight() + " pounds and a height of " + UserKt.getDefaultUser().getHeight() + " inches.");
-            UserKt.getDefaultUser().setBmi(Calculators.BMI());
+            UserKt.getDefaultUser().setBmi(Double.parseDouble(Calculators.BMI()));
             weightBMI.setText(String.valueOf(UserKt.getDefaultUser().getBmi()));
         }
     }
@@ -125,7 +125,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
 
                 if(UserKt.getDefaultUser().getHeight() != 0.0 && UserKt.getDefaultUser().getWeight() != 0.0 && doubleBMI != 0.0)
                 {
-                    UserKt.getDefaultUser().setBmrtee(Calculators.BMRTEE());
+                    UserKt.getDefaultUser().setBmrtee(Double.parseDouble(Calculators.BMRTEE()));
                     weightBasal.setText(String.valueOf(UserKt.getDefaultUser().getBmrtee()));
                     weightCalories.setText(Calculators.caloriesToEat(doubleToLose));
                 }

@@ -8,16 +8,17 @@ class Calculators
     companion object
     {
         @JvmStatic
-        fun BMI(): Double
+        fun BMI(): String
         {
             // Equation from https://en.wikipedia.org/wiki/Body_mass_index
             val bmi = (703 * defaultUser.weight) / (defaultUser.height * defaultUser.height);
+            var bmiString = "%.4f".format(bmi);
 
-            return bmi;
+            return bmiString;
         }
 
         @JvmStatic
-        fun BMRTEE(): Double
+        fun BMRTEE(): String
         {
             // Converting weight to kilograms.
             var kgWeight = defaultUser.weight / 2.205;
@@ -49,14 +50,17 @@ class Calculators
                 tee = bmr * 1.53;
             }
 
-            return tee;
+            var teeString = "%.4f".format(tee);
+
+            return teeString;
         }
 
         @JvmStatic
         fun caloriesToEat(desiredChange: Double): String
         {
             // To reduce 1 kg (2.205 lbs) of weight, about 7000 kcal deficit is required.
-            var dailyCalories = (1000 / (desiredChange / 2.205)) + defaultUser.bmrtee;
+            var dailyCalories = (1000 / (desiredChange * 2.205)) + defaultUser.bmrtee;
+            var caloriesString = "%.4f".format(dailyCalories);
 
             var warning = "";
 
@@ -71,7 +75,7 @@ class Calculators
                 warning = " (WARNING: low caloric intake)"
             }
 
-            return dailyCalories.toBigDecimal().toPlainString() + warning;
+            return caloriesString + warning;
         }
     }
 
