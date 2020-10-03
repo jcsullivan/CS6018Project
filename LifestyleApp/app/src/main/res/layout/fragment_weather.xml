@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="false"
+    android:background="@drawable/sandspiral"
+    tools:context=".WeatherFragment">
+
+<FrameLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".WeatherFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/sandspiral"
         android:backgroundTint="#d6FFFFFF"
         android:backgroundTintMode="src_over">
 
@@ -61,3 +67,4 @@
             app:layout_constraintTop_toBottomOf="@+id/weatherInfo" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
+</ScrollView>
