@@ -27,7 +27,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:text=""
-            android:hint="Enter Location"
+            android:hint="@string/enter_loc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +50,7 @@
             android:layout_height="45dp"
             android:background="@drawable/roundedbuttongreen"
             android:layout_marginTop="16dp"
-            android:text="Set Location"
+            android:text="@string/set_loc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/location" />
@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:background="@drawable/roundedbuttonyellow"
-            android:text="Lifestyle"
+            android:text="@string/lifestyle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/weatherInfo" />

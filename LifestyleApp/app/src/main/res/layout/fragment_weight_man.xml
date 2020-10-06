@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:lines="2"
                 android:maxLines="2"
-                android:text="Please fill out profile information before using weight calculator."
+                android:text="@string/please_fill_out_prof_bef_weight"
                 android:textAlignment="center"
                 android:textSize="18sp" />
 
@@ -96,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Pounds To Change Per Week: "
+                android:text="@string/pounds_to_change_per_wk"
                 android:textColor="#000000" />
 
             <SeekBar
@@ -109,7 +109,7 @@
                 android:progressTint="#000000" />
 
             <RadioGroup
-                android:id="@+id/calculatorSedintaryOrActiveFrag"
+                android:id="@+id/calculatorSedentaryOrActiveFrag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="Active"
+                    android:text="@string/active"
                     android:textSize="18sp" />
 
                 <RadioButton
@@ -129,7 +129,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Sedentary"
+                    android:text="@string/sedentary"
                     android:textSize="18sp" />
 
             </RadioGroup>
@@ -170,12 +170,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:gravity="right|center_vertical"
+                android:gravity="end|center_vertical"
                 android:inputType="textPersonName"
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/curent_bmi_weightman_frag"
+                android:id="@+id/current_bmi_weightman_frag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
