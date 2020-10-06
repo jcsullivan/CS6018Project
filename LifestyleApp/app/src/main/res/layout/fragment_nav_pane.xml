@@ -43,7 +43,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.049"
-            app:srcCompat="@drawable/stock_gurl" />
+            app:srcCompat="@drawable/stock_gurl"
+            android:contentDescription="@string/nav_pane_prof_photo" />
 
         <LinearLayout
             android:layout_width="278dp"

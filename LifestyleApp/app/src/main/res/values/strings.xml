@@ -27,6 +27,24 @@
     <string name="daily_cal_goal_colon">Daily Calories to Achieve Goal:</string>
     <string name="current_bmi_colon">Current BMI:</string>
     <string name="cal_button_text">Calculate</string>
+    <string name="nav_pane_prof_photo">Nav Pane Profile Photo</string>
+    <string name="photo_frag_prof_photo">Photo Frag Profile Photo</string>
+    <string name="prof_frag_prof_photo">Prof Frag Profile Photo</string>
+    <string name="height_in_inches">Height in inches:</string>
+    <string name="weight_in_pounds">Weight in pounds:</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+
+    <string name="enter_loc">Enter Location</string>
+    <string name="set_loc">Set Location</string>
+    <string name="lifestyle">Lifestyle</string>
+
+
+
+
+
+
+
 
     <string-array name="sed_act_array">
         <item>Sedentary</item>
@@ -128,6 +146,10 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="please_fill_out_prof_bef_weight">Please fill out profile information before using weight calculator.</string>
+    <string name="pounds_to_change_per_wk">Pounds To Change Per Week:</string>
+    <string name="active">Active</string>
+    <string name="sedentary">Sedentary</string>
 
 
 </resources>

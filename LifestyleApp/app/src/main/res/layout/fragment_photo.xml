@@ -14,6 +14,7 @@
         android:id="@+id/stock_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/stock_gurl" />
+        app:srcCompat="@drawable/stock_gurl"
+        android:contentDescription="@string/photo_frag_prof_photo" />
 
 </FrameLayout>
