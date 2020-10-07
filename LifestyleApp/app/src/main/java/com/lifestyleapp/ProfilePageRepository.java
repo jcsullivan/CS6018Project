@@ -17,8 +17,8 @@ public class ProfilePageRepository {
 
     public MutableLiveData<User> getUserData() { return currentUserLiveData; }
 
-    public void setUserData (String fullName, int age, String city, String country, double height, double weight, int gender, Bitmap photo, double bmi, double bmr, boolean sedentary) {
-        User userData = new User(fullName, age, city, country, height, weight, gender, photo, bmi, bmr, sedentary);
+    public void setUserData (String fullName, int age, String city, String country, double height, double weight, int gender, String photoPath, double bmi, double bmr, boolean sedentary) {
+        User userData = new User(fullName, age, city, country, height, weight, gender, photoPath, bmi, bmr, sedentary);
         currentUserLiveData.setValue(userData);
     }
 

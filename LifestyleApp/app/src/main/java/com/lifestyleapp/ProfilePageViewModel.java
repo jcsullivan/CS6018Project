@@ -22,8 +22,8 @@ public class ProfilePageViewModel extends AndroidViewModel {
     }
 
     // FORWARD ALL OF THE DATA TO THE REPOSITORY
-    public void setProfileViewModelData(String fullName, int age, String city, String country, double height, double weight, int gender, Bitmap photo, double bmi, double bmr, boolean sedentary){
-        profilePageRepository.setUserData(fullName, age, city, country, height, weight, gender, photo, bmi, bmr, sedentary);
+    public void setProfileViewModelData(String fullName, int age, String city, String country, double height, double weight, int gender, String profilePhotoPath, double bmi, double bmr, boolean sedentary){
+        profilePageRepository.setUserData(fullName, age, city, country, height, weight, gender, profilePhotoPath, bmi, bmr, sedentary);
     }
 
     // RETRIEVE DATA FROM THE REPOSITORY

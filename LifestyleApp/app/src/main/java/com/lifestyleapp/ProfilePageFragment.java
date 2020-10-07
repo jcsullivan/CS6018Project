@@ -3,7 +3,10 @@ package com.lifestyleapp;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -39,10 +48,16 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
 
     ImageView profilePhotoView;
     Bitmap profilePicture = null;
+    String profilePhotoPath = null;
     View myprofFragmentView;
     OnLifePressListener lifePressListener;
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
+    String currentPhotoPath;
+
+
+    static final int REQUEST_TAKE_PHOTO = 1;
+
+
 
     public interface OnLifePressListener {
         public void onLifeBtnPress();
@@ -116,7 +131,14 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
 
         if (user != null) {
 
-            if (user.getProfilePhoto() != null) profilePhotoView.setImageBitmap(user.getProfilePhoto());
+            if (user.getProfilePhotoPath() != null) {
+                String profPhotoPath = user.getProfilePhotoPath();
+                File sd = Environment.getExternalStorageDirectory();
+                File image = new File(sd+profPhotoPath);
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
+                profilePhotoView.setImageBitmap(bitmap);
+            }
             if (!user.getFullName().equals("")) profileName.setText(user.getFullName());
             if (user.getAge() != 0) profileAge.setText(String.valueOf(user.getAge()));
             if (!user.getCity().equals("")) profileCity.setText(user.getCity());
@@ -130,6 +152,28 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 profileFemale.setChecked(true);
             }
 
+        }
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getContext(),
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
         }
     }
 
@@ -167,7 +211,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 } else {
 
                     intAge = Integer.parseInt(stringAge);
-                    profilePageViewModel.setProfileViewModelData(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture, 0.0, 0.0, false);
+                    profilePageViewModel.setProfileViewModelData(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePhotoPath, 0.0, 0.0, false);
                     Toast.makeText(getActivity(), "User information saved!", Toast.LENGTH_SHORT).show();
 
                 }
@@ -177,8 +221,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
             }
             case R.id.prof_update_photo_frag:
             {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+                dispatchTakePictureIntent();
                 break;
             }
             case R.id.lifeBtnMyProfFrag:
@@ -189,18 +232,38 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "BMP_" + timeStamp + "_";
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".bmp",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            if (resultCode == RESULT_OK) {
-                profilePicture = (Bitmap) data.getExtras().get("data");
-                UserKt.getDefaultUser().setProfilePhoto(profilePicture);
+        if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (resultCode == RESULT_OK && data!=null) {
+                //profilePicture = (Bitmap) data.getExtras().get("data");
+                Bundle extras = data.getExtras();
+                Uri photoURI = (Uri) extras.get("photoURI");
+                String photoStringPath = photoURI.toString();
 
-                profilePhotoView= myprofFragmentView.findViewById(R.id.myprof_photo_frag);
-                profilePhotoView.setImageBitmap(profilePicture);
+                UserKt.getDefaultUser().setProfilePhotoPath(photoStringPath);
+
+                //profilePhotoView= myprofFragmentView.findViewById(R.id.myprof_photo_frag);
+                //profilePhotoView.setImageBitmap(profilePicture);
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
             }
