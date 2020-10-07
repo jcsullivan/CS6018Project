@@ -20,26 +20,25 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class ProfilePageFragment extends Fragment implements View.OnClickListener {
 
-    protected User newUser;
-
     private Button buttonCamera, buttonLifestyle, buttonSaveProfile;
     private EditText profileName, profileAge, profileCity, profileCountry;
     private RadioButton profileMale, profileFemale;
-    private String stringName, stringCity, stringCountry, stringAge, stringHeight, stringWeight;
+    private String stringName, stringCity, stringCountry, stringAge;
     private int intAge, intGender;
     private double doubleHeight, doubleWeight;
     private TextView tvHeight, tvWeight;
     private SeekBar seekBarHeight, seekBarWeight;
+    private ProfilePageViewModel profilePageViewModel;
 
     ImageView profilePhotoView;
     Bitmap profilePicture = null;
-
     View myprofFragmentView;
     OnLifePressListener lifePressListener;
 
@@ -92,6 +91,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         tvWeight.setText("Weight " + pounds + " pounds");
 
         return myprofFragmentView;
+
     }
 
     @Override
@@ -110,47 +110,36 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         profileMale = myprofFragmentView.findViewById(R.id.profileMaleFrag);
         profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
 
+        // GET USER FROM VIEWMODEL (IF THERE IS ONE), THEN SET TEXT FIELDS
+        profilePageViewModel = ViewModelProviders.of(this).get(ProfilePageViewModel.class);
+        User user = profilePageViewModel.getProfileViewModelData().getValue();  // TODO FIXME
 
+        if (user != null) {
 
-        if(UserKt.getDefaultUser().getProfilePhoto()!=null)
-        {
-            profilePhotoView.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
-        }
-        if(!UserKt.getDefaultUser().getFullName().isEmpty())
-        {
-            profileName.setText(UserKt.getDefaultUser().getFullName());
-        }
-        if(UserKt.getDefaultUser().getAge() != 0)
-        {
-            profileAge.setText(String.valueOf(UserKt.getDefaultUser().getAge()));
-        }
-        if(!UserKt.getDefaultUser().getCity().isEmpty())
-        {
-            profileCity.setText(UserKt.getDefaultUser().getCity());
-        }
-        if(!UserKt.getDefaultUser().getCountry().isEmpty())
-        {
-            profileCountry.setText(UserKt.getDefaultUser().getCountry());
-        }
+            if (user.getProfilePhoto() != null) profilePhotoView.setImageBitmap(user.getProfilePhoto());
+            if (!user.getFullName().equals("")) profileName.setText(user.getFullName());
+            if (user.getAge() != 0) profileAge.setText(String.valueOf(user.getAge()));
+            if (!user.getCity().equals("")) profileCity.setText(user.getCity());
+            if (!user.getCountry().equals("")) profileCountry.setText(user.getCountry());
 
-        if(UserKt.getDefaultUser().getGender() == 1)
-        {
-            profileMale.setChecked(true);
-            profileFemale.setChecked(false);
-        }
-        else
-        {
-            profileMale.setChecked(false);
-            profileFemale.setChecked(true);
+            if (user.getGender() == 1) {
+                profileMale.setChecked(true);
+                profileFemale.setChecked(false);
+            } else {
+                profileMale.setChecked(false);
+                profileFemale.setChecked(true);
+            }
+
         }
     }
 
     @Override
     public void onClick(View view) {
-        switch(view.getId())
-        {
-            case R.id.saveProfileFrag:
-            {
+
+        switch(view.getId()) {
+
+            case R.id.saveProfileFrag: {
+
                 profileName = myprofFragmentView.findViewById(R.id.profileNameFrag);
                 profileAge = myprofFragmentView.findViewById(R.id.profileAgeFrag);
                 profileCity = myprofFragmentView.findViewById(R.id.profileCityFrag);
@@ -162,7 +151,6 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 profileMale = myprofFragmentView.findViewById(R.id.profileMaleFrag);
                 profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
 
-
                 stringName = profileName.getText().toString();
                 stringAge = profileAge.getText().toString();
                 stringCity = profileCity.getText().toString();
@@ -170,62 +158,56 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 doubleWeight = (double)seekBarWeight.getProgress();
                 doubleHeight = (double)seekBarHeight.getProgress();
 
+                intGender = (profileMale.isSelected()) ? 1 : 0;  // assign 1 for male, 0 for female
 
-                if(profileMale.isSelected())
-                {
-                    intGender = 1;
-                }
+                if(stringName.isEmpty() || stringAge.isEmpty() || stringCity.isEmpty() || stringCountry.isEmpty()) {
 
-                else
-                {
-                    intGender = 0;
-                }
-
-                if(stringName.isEmpty() || stringAge.isEmpty() || stringCity.isEmpty() || stringCountry.isEmpty())
-                {
                     Toast.makeText(getActivity(), "Please fill out all fields!", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+
+                } else {
+
                     intAge = Integer.parseInt(stringAge);
-
-                    UserKt.setDefaultUser(new User (stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture, 0.0, 0.0, false));
-
+                    profilePageViewModel.setProfileViewModelData(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture, 0.0, 0.0, false);
                     Toast.makeText(getActivity(), "User information saved!", Toast.LENGTH_SHORT).show();
+
                 }
 
                 break;
+
             }
             case R.id.prof_update_photo_frag:
             {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
-
                 break;
             }
-            case R.id.lifeBtnMyProfFrag: {
+            case R.id.lifeBtnMyProfFrag:
+            {
                 lifePressListener.onLifeBtnPress();
                 break;
             }
         }
     }
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
 
-            if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                if (resultCode == RESULT_OK) {
-                    profilePicture = (Bitmap) data.getExtras().get("data");
-                    UserKt.getDefaultUser().setProfilePhoto(profilePicture);
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            if (resultCode == RESULT_OK) {
+                profilePicture = (Bitmap) data.getExtras().get("data");
+                UserKt.getDefaultUser().setProfilePhoto(profilePicture);
 
-                    profilePhotoView= myprofFragmentView.findViewById(R.id.myprof_photo_frag);
-                    profilePhotoView.setImageBitmap(profilePicture);
-                } else if (resultCode == RESULT_CANCELED) {
-                    Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
-                }
+                profilePhotoView= myprofFragmentView.findViewById(R.id.myprof_photo_frag);
+                profilePhotoView.setImageBitmap(profilePicture);
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
             }
         }
+
+    }
+
     SeekBar.OnSeekBarChangeListener seekBarChangeListenerHeight = new SeekBar.OnSeekBarChangeListener() {
 
         @Override
@@ -243,6 +225,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         public void onStopTrackingTouch(SeekBar seekBar) {
             // called after the user finishes moving the SeekBar
         }
+
     };
 
     // seek bar listener for weight
@@ -264,4 +247,6 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
             // called after the user finishes moving the SeekBar
         }
     };
+
+
 }
