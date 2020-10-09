@@ -52,6 +52,7 @@ public class WeatherRepository
                     retrievedJsonData = WeatherUtilities.getDataFromURL(weatherDataURL);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    return "{\"weather\":[{\"main\":\"ERROR\"}]}";
                 }
             }
             return retrievedJsonData;

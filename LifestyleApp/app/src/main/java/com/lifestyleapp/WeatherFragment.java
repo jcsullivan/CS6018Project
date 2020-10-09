@@ -97,19 +97,27 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
         @Override
         public void onChanged(@Nullable final WeatherData weatherData) {
             // Update the UI if this data variable changes
-            if(weatherData!=null) {
-                String weatherString = "";
+            if(weatherData!=null)
+            {
+                if(weatherData.weather[0].main.equals("ERROR"))
+                {
+                    weatherInfo.setText("Please enter a location in '[City], [Country Abbreviation] format.");
+                }
+                else
+                {
+                    String weatherString = "";
 
-                weatherString = weatherString + "Current Conditions: " + weatherData.weather[0].main + "\n";
-                weatherString = weatherString + "Current Temperature: " + weatherData.main.temp + "°\n";
-                weatherString = weatherString + "Feels-Like Temperature: " + weatherData.main.feels_like + "°\n";
-                weatherString = weatherString + "Current Humidity: " + weatherData.main.humidity + "%\n";
-                weatherString = weatherString + "Current Pressure: " + weatherData.main.pressure + "mbar\n";
-                weatherString = weatherString + "Current Wind Speed: " + weatherData.wind.speed + "mph\n";
-                weatherString = weatherString + "Current Wind Direction: " + weatherData.wind.deg + "°\n";
-                weatherString = weatherString + "Current Cloud Cover: " + weatherData.clouds.all + "%\n";
+                    weatherString = weatherString + "Current Conditions: " + weatherData.weather[0].main + "\n";
+                    weatherString = weatherString + "Current Temperature: " + weatherData.main.temp + "°\n";
+                    weatherString = weatherString + "Feels-Like Temperature: " + weatherData.main.feels_like + "°\n";
+                    weatherString = weatherString + "Current Humidity: " + weatherData.main.humidity + "%\n";
+                    weatherString = weatherString + "Current Pressure: " + weatherData.main.pressure + "mbar\n";
+                    weatherString = weatherString + "Current Wind Speed: " + weatherData.wind.speed + "mph\n";
+                    weatherString = weatherString + "Current Wind Direction: " + weatherData.wind.deg + "°\n";
+                    weatherString = weatherString + "Current Cloud Cover: " + weatherData.clouds.all + "%\n";
 
-                weatherInfo.setText(weatherString);
+                    weatherInfo.setText(weatherString);
+                }
             }
         }
     };
@@ -156,31 +164,31 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
         mWeatherViewModel.setLocation(location);
     }
 
-    private class fetchWeatherStuff extends AsyncTask<String,Void,String>
-    {
-        @Override
-        protected String doInBackground(String... inputStringArray)
-        {
-            String location = inputStringArray[0];
-            URL weatherDataURL = WeatherUtilities.buildURLFromString(location);
-            String jsonWeatherData = null;
-            try{
-                jsonWeatherData = WeatherUtilities.getDataFromURL(weatherDataURL);
-                return jsonWeatherData;
-            }catch(Exception e){
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String jsonWeatherData)
-        {
-            if (jsonWeatherData!=null){
-                String weatherToShow = WeatherUtilities.parseJSON(jsonWeatherData);
-
-                weatherInfo.setText(weatherToShow);
-            }
-        }
-    }
+//    private class fetchWeatherStuff extends AsyncTask<String,Void,String>
+//    {
+//        @Override
+//        protected String doInBackground(String... inputStringArray)
+//        {
+//            String location = inputStringArray[0];
+//            URL weatherDataURL = WeatherUtilities.buildURLFromString(location);
+//            String jsonWeatherData = null;
+//            try{
+//                jsonWeatherData = WeatherUtilities.getDataFromURL(weatherDataURL);
+//                return jsonWeatherData;
+//            }catch(Exception e){
+//                e.printStackTrace();
+//                return null;
+//            }
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String jsonWeatherData)
+//        {
+//            if (jsonWeatherData!=null){
+//                String weatherToShow = WeatherUtilities.parseJSON(jsonWeatherData);
+//
+//                weatherInfo.setText(weatherToShow);
+//            }
+//        }
+//    }
 }
