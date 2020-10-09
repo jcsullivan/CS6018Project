@@ -1,13 +1,16 @@
 package com.lifestyleapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class LoginActivity extends AppCompatActivity  implements View.OnClickListener{
+public class LoginActivity extends AppCompatActivity  implements View.OnClickListener {
 
     Button loginButton;
 
@@ -18,6 +21,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         setContentView(R.layout.activity_login);
         loginButton = findViewById(R.id.login_button);
         loginButton.setOnClickListener(this);
+
 
     }
 
