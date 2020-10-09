@@ -69,9 +69,9 @@ public class PhotoFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
         ImageView ivProfileImage = view.findViewById(R.id.stock_image);
-        if (UserKt.getDefaultUser().getProfilePhoto() != null) {
-            ivProfileImage.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
-        }
+        //if (UserKt.getDefaultUser().getProfilePhoto() != null) {
+            //ivProfileImage.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
+        //}
 
     }
 }

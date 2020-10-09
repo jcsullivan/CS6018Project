@@ -92,9 +92,9 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
 
         profilePhotoView = navFragmentView.findViewById(R.id.photo_nav_pane_frag);
 
-        if (UserKt.getDefaultUser().getProfilePhoto() != null)
+        if (UserKt.getDefaultUser().getProfilePhotoPath() != null)
         {
-            profilePhotoView.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
+            //profilePhotoView.setImageBitmap(UserKt.getDefaultUser().getProfilePhotoPath());
         }
     }
 

@@ -88,10 +88,10 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         weightBMI = weight_man_frag_view.findViewById(R.id.bmiEditTextFrag);
         tvHeaderInformation = weight_man_frag_view.findViewById(R.id.headerInformationFrag);
 
-        if (UserKt.getDefaultUser().getProfilePhoto() != null)
-        {
-            profilePhoto.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
-        }
+        //if (UserKt.getDefaultUser().getProfilePhoto() != null)
+        //{
+          //  profilePhoto.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
+        //}
 
         if(UserKt.getDefaultUser().getHeight() != 0 && UserKt.getDefaultUser().getWeight() != 0)
         {

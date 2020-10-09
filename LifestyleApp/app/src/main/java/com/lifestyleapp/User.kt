@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 var defaultUser = User("", 0, "", "", 0.0, 0.0, 1, null, 0.0, 0.0, false);
 
 @Entity(tableName = "user_table")
-class User(fullName: String, age: Int, city: String, country: String, height: Double, weight: Double, gender: Int, profilePhoto: Bitmap?, bmi: Double, bmr: Double, sedentary: Boolean)
+class User constructor(fullName: String, age: Int, city: String, country: String, height: Double, weight: Double, gender: Int, profilePhotoPath: String?, bmi: Double, bmrtee: Double, sedentary: Boolean)
 {
 
     @PrimaryKey
@@ -21,7 +21,7 @@ class User(fullName: String, age: Int, city: String, country: String, height: Do
     var height: Double;
     var weight: Double;
     var gender: Int;      // 1 male, 0 female;
-    var profilePhoto: Bitmap?;
+    var profilePhotoPath: String?;
     var bmi: Double;
     var bmrtee: Double;
     var sedentary: Boolean;
@@ -34,9 +34,9 @@ class User(fullName: String, age: Int, city: String, country: String, height: Do
         this.height = height;
         this.weight = weight;
         this.gender = gender;
-        this.profilePhoto = profilePhoto;
+        this.profilePhotoPath = profilePhotoPath;
         this.bmi = bmi;
-        this.bmrtee = bmr;
+        this.bmrtee = bmrtee;
         this.sedentary = sedentary;
     }
 
