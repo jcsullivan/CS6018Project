@@ -110,7 +110,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         profileMale = myprofFragmentView.findViewById(R.id.profileMaleFrag);
         profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
 
-        // GET USER FROM VIEWMODEL (IF THERE IS ONE), THEN SET TEXT FIELDS
+        // GET USER FROM VIEWMODEL (IF THERE IS ONE), THEN SET THE TEXT FIELDS ON THE UI
         profilePageViewModel = ViewModelProviders.of(this).get(ProfilePageViewModel.class);
         User user = profilePageViewModel.getProfileViewModelData().getValue();  // TODO FIXME
 

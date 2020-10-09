@@ -15,7 +15,6 @@ class User(fullName: String, age: Int, city: String, country: String, height: Do
     @PrimaryKey
     @NonNull
     var fullName: String;  // fullName is the primary key for the user table, can never be null
-
     var age: Int;
     var city: String;
     var country: String;

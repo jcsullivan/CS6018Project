@@ -21,6 +21,7 @@ import com.example.lifestyleapp.Calculators;
 
 
 public class WeightManFragment extends Fragment implements View.OnClickListener {
+
     public final int WEIGHT_MAN_SIGNAL = 2;
     private Button buttonLifestyle, buttonCalculate;
     private EditText weightBasal, weightCalories, weightBMI;
@@ -31,11 +32,8 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
     private RadioButton radioButtonActive, radioButtonSedentary;
     private ImageView profilePhoto;
 
-
     private View weight_man_frag_view;
     OnLifePressFromWeightListener lifePressListenerFromWeight;
-
-
 
     public WeightManFragment() {
         // Required empty public constructor
@@ -102,6 +100,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
             weightBMI.setText(String.valueOf(UserKt.getDefaultUser().getBmi()));
         }
     }
+
     @Override
     public void onClick(View view)
     {
@@ -138,6 +137,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
             break;
         }
     }
+
     // seek bar listener for pounds per week
     SeekBar.OnSeekBarChangeListener seekBarChangePoundsPerWeek = new SeekBar.OnSeekBarChangeListener() {
 
