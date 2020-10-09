@@ -9,13 +9,12 @@ import androidx.room.PrimaryKey
 var defaultUser = User("", 0, "", "", 0.0, 0.0, 1, null, 0.0, 0.0, false);
 
 @Entity(tableName = "user_table")
-class User(fullName: String, age: Int, city: String, country: String, height: Double, weight: Double, gender: Int, profilePhotoPath: String?, bmi: Double, bmr: Double, sedentary: Boolean)
+class User constructor(fullName: String, age: Int, city: String, country: String, height: Double, weight: Double, gender: Int, profilePhotoPath: String?, bmi: Double, bmrtee: Double, sedentary: Boolean)
 {
 
     @PrimaryKey
     @NonNull
     var fullName: String;  // fullName is the primary key for the user table, can never be null
-
     var age: Int;
     var city: String;
     var country: String;
@@ -37,7 +36,7 @@ class User(fullName: String, age: Int, city: String, country: String, height: Do
         this.gender = gender;
         this.profilePhotoPath = profilePhotoPath;
         this.bmi = bmi;
-        this.bmrtee = bmr;
+        this.bmrtee = bmrtee;
         this.sedentary = sedentary;
     }
 

@@ -26,7 +26,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,14 +52,14 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
 
     ImageView profilePhotoView;
     Bitmap profilePicture = null;
-    String profilePhotoPath = null;
+    @Nullable String profilePhotoFileName = null;
     View myprofFragmentView;
     OnLifePressListener lifePressListener;
 
-    String currentPhotoPath;
+    private int byteArrSize;
 
 
-    static final int REQUEST_TAKE_PHOTO = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
 
 
@@ -132,12 +136,23 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         if (user != null) {
 
             if (user.getProfilePhotoPath() != null) {
-                String profPhotoPath = user.getProfilePhotoPath();
-                File sd = Environment.getExternalStorageDirectory();
-                File image = new File(sd+profPhotoPath);
-                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
-                profilePhotoView.setImageBitmap(bitmap);
+                String profPhotoFileName = user.getProfilePhotoPath();
+
+                FileInputStream fis = null;
+                try {
+                    fis = getContext().openFileInput(profPhotoFileName);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                byte[] readBytes = new byte[byteArrSize];
+                try {
+                    fis.read(readBytes);
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap fromFileBmp = BitmapFactory.decodeByteArray(readBytes,0,readBytes.length);
+                profilePhotoView.setImageBitmap(fromFileBmp);
             }
             if (!user.getFullName().equals("")) profileName.setText(user.getFullName());
             if (user.getAge() != 0) profileAge.setText(String.valueOf(user.getAge()));
@@ -155,27 +170,6 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(getContext(),
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
-    }
 
     @Override
     public void onClick(View view) {
@@ -211,7 +205,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 } else {
 
                     intAge = Integer.parseInt(stringAge);
-                    profilePageViewModel.setProfileViewModelData(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePhotoPath, 0.0, 0.0, false);
+                    profilePageViewModel.setProfileViewModelData(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePhotoFileName, 0.0, 0.0, false);
                     Toast.makeText(getActivity(), "User information saved!", Toast.LENGTH_SHORT).show();
 
                 }
@@ -221,7 +215,9 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
             }
             case R.id.prof_update_photo_frag:
             {
-                dispatchTakePictureIntent();
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+
                 break;
             }
             case R.id.lifeBtnMyProfFrag:
@@ -232,38 +228,50 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "BMP_" + timeStamp + "_";
-        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".bmp",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_TAKE_PHOTO) {
-            if (resultCode == RESULT_OK && data!=null) {
-                //profilePicture = (Bitmap) data.getExtras().get("data");
-                Bundle extras = data.getExtras();
-                Uri photoURI = (Uri) extras.get("photoURI");
-                String photoStringPath = photoURI.toString();
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            if (resultCode == RESULT_OK) {
+                profilePicture = (Bitmap) data.getExtras().get("data");
 
-                UserKt.getDefaultUser().setProfilePhotoPath(photoStringPath);
 
-                //profilePhotoView= myprofFragmentView.findViewById(R.id.myprof_photo_frag);
-                //profilePhotoView.setImageBitmap(profilePicture);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                profilePicture.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                byteArrSize = byteArray.length;
+                profilePicture.recycle();
+                profilePhotoFileName = "profilephoto.bmp";
+                try(FileOutputStream fos = getContext().openFileOutput(profilePhotoFileName, Context.MODE_PRIVATE)){
+                    fos.write(byteArray);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Toast.makeText(getActivity(), "File Written", Toast.LENGTH_LONG).show();
+                FileInputStream fis = null;
+                try {
+                    fis = getContext().openFileInput(profilePhotoFileName);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                byte[] readBytes = new byte[byteArrSize];
+                try {
+                    fis.read(readBytes);
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap fromFileBmp = BitmapFactory.decodeByteArray(readBytes,0,readBytes.length);
+                profilePhotoView.setImageBitmap(fromFileBmp);
+
+
+
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
             }
