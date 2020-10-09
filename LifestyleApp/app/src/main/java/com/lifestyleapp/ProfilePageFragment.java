@@ -3,7 +3,10 @@ package com.lifestyleapp;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +20,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -36,6 +49,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
     private double doubleHeight, doubleWeight;
     private TextView tvHeight, tvWeight;
     private SeekBar seekBarHeight, seekBarWeight;
+    String profilePhotoPath;
 
     ImageView profilePhotoView;
     Bitmap profilePicture = null;
@@ -45,9 +59,12 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
+
+
     public interface OnLifePressListener {
         public void onLifeBtnPress();
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -214,13 +231,43 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
     {
         super.onActivityResult(requestCode, resultCode, data);
 
-            if (requestCode == REQUEST_IMAGE_CAPTURE) {
-                if (resultCode == RESULT_OK) {
-                    profilePicture = (Bitmap) data.getExtras().get("data");
-                    UserKt.getDefaultUser().setProfilePhoto(profilePicture);
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            if (resultCode == RESULT_OK) {
+                profilePicture = (Bitmap) data.getExtras().get("data");
+                //This line is commented out so that we can tell the image is being read from a written file.
+                //Currently this ruins the reload of profilePictures on changing fragments but that will be addressed once db chain is implemented fully.
+                //UserKt.getDefaultUser().setProfilePhoto(profilePicture);
 
-                    profilePhotoView= myprofFragmentView.findViewById(R.id.myprof_photo_frag);
-                    profilePhotoView.setImageBitmap(profilePicture);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                profilePicture.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                int size = byteArray.length;
+                profilePicture.recycle();
+                String filename = "testFile.bmp";
+                try(FileOutputStream fos = getContext().openFileOutput(filename, Context.MODE_PRIVATE)){
+                    fos.write(byteArray);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getActivity(), "File Written", Toast.LENGTH_LONG).show();
+
+                FileInputStream fis = null;
+                try {
+                    fis = getContext().openFileInput(filename);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                byte[] readBytes = new byte[size];
+                try {
+                    fis.read(readBytes);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap fromFileBmp = BitmapFactory.decodeByteArray(readBytes,0,readBytes.length);
+                profilePhotoView.setImageBitmap(fromFileBmp);
+
                 } else if (resultCode == RESULT_CANCELED) {
                     Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
                 }
