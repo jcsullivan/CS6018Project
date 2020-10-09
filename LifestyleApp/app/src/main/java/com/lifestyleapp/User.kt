@@ -1,6 +1,5 @@
 package com.lifestyleapp
 
-import android.graphics.Bitmap
 import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey

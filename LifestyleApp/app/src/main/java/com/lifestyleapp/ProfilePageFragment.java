@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,20 +18,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -48,20 +42,15 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
     private double doubleHeight, doubleWeight;
     private TextView tvHeight, tvWeight;
     private SeekBar seekBarHeight, seekBarWeight;
-    private ProfilePageViewModel profilePageViewModel;
+    private UserViewModel userViewModel;
+    private int byteArrSize;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     ImageView profilePhotoView;
     Bitmap profilePicture = null;
     @Nullable String profilePhotoFileName = null;
     View myprofFragmentView;
     OnLifePressListener lifePressListener;
-
-    private int byteArrSize;
-
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
-
 
     public interface OnLifePressListener {
         public void onLifeBtnPress();
@@ -130,8 +119,8 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
 
         // GET USER FROM VIEWMODEL (IF THERE IS ONE), THEN SET THE TEXT FIELDS ON THE UI
-        profilePageViewModel = ViewModelProviders.of(this).get(ProfilePageViewModel.class);
-        User user = profilePageViewModel.getProfileViewModelData().getValue();  // TODO FIXME
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        User user = userViewModel.getProfileViewModelData().getValue();
 
         if (user != null) {
 
@@ -205,7 +194,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 } else {
 
                     intAge = Integer.parseInt(stringAge);
-                    profilePageViewModel.setProfileViewModelData(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePhotoFileName, 0.0, 0.0, false);
+                    userViewModel.setProfileViewModelData(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePhotoFileName, 0.0, 0.0, false);
                     Toast.makeText(getActivity(), "User information saved!", Toast.LENGTH_SHORT).show();
 
                 }

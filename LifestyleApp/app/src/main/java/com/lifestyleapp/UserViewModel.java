@@ -1,23 +1,22 @@
 package com.lifestyleapp;
 
 import android.app.Application;
-import android.graphics.Bitmap;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-public class ProfilePageViewModel extends AndroidViewModel {
+public class UserViewModel extends AndroidViewModel {
 
     private MutableLiveData<User> userMutableLiveData;
-    private ProfilePageRepository profilePageRepository;
+    private UserRepository profilePageRepository;
 
-    public ProfilePageViewModel (Application application) {
+    public UserViewModel(Application application) {
 
         super(application);
 
-        profilePageRepository = ProfilePageRepository.getInstance();
+        profilePageRepository = UserRepository.getInstance();
 
         userMutableLiveData = profilePageRepository.getUserData();
 

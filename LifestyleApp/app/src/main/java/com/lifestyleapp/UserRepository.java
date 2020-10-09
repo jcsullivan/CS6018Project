@@ -3,15 +3,15 @@ package com.lifestyleapp;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
-public class ProfilePageRepository {
+public class UserRepository {
 
     // Singleton pattern setup
     // create an object of the class
-    private static ProfilePageRepository instance = new ProfilePageRepository();
+    private static UserRepository instance = new UserRepository();
     // make constructor private so the class can't be instantiated
-    private ProfilePageRepository() {};
+    private UserRepository() {};
     // get the only repository in existence
-    public static ProfilePageRepository getInstance() { return instance; }
+    public static UserRepository getInstance() { return instance; }
 
     private final MutableLiveData<User> currentUserLiveData = new MutableLiveData<>();
 

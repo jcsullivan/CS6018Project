@@ -1,10 +1,10 @@
 package com.lifestyleapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.lifestyleapp.Calculators;
@@ -31,6 +30,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
     private SeekBar seekBarPoundsPerWeek;
     private RadioButton radioButtonActive, radioButtonSedentary;
     private ImageView profilePhoto;
+    private UserViewModel userViewModel;
 
     private View weight_man_frag_view;
     OnLifePressFromWeightListener lifePressListenerFromWeight;
@@ -88,17 +88,29 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         weightBMI = weight_man_frag_view.findViewById(R.id.bmiEditTextFrag);
         tvHeaderInformation = weight_man_frag_view.findViewById(R.id.headerInformationFrag);
 
-        //if (UserKt.getDefaultUser().getProfilePhoto() != null)
-        //{
-          //  profilePhoto.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
-        //}
+        // GET USER FROM VIEWMODEL (IF THERE IS ONE), THEN SET THE TEXT FIELDS ON THE UI
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        User user = userViewModel.getProfileViewModelData().getValue();
 
-        if(UserKt.getDefaultUser().getHeight() != 0 && UserKt.getDefaultUser().getWeight() != 0)
-        {
-            tvHeaderInformation.setText("Calculations based on a weight of " + UserKt.getDefaultUser().getWeight() + " pounds and a height of " + UserKt.getDefaultUser().getHeight() + " inches.");
-            UserKt.getDefaultUser().setBmi(Double.parseDouble(Calculators.BMI()));
-            weightBMI.setText(String.valueOf(UserKt.getDefaultUser().getBmi()));
+        if (user != null) {
+
+            double ht = user.getHeight();
+            double wt = user.getWeight();
+
+            if (ht != 0 && wt != 0) {
+                tvHeaderInformation.setText("Calculations based on a weight of " + wt + " pounds and a height of " + ht + " inches.");
+            }
+
+            double bmi = Double.parseDouble(Calculators.BMI());
+            user.setBmi(bmi);
+            weightBMI.setText(String.valueOf(bmi));
+
+            if (user.getProfilePhotoPath() != null) {
+                // TODO - GET THE PHOTO FROM THE DB
+            }
+
         }
+
     }
 
     @Override
