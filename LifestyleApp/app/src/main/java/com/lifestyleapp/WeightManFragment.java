@@ -1,7 +1,6 @@
 package com.lifestyleapp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,13 +14,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.lifestyleapp.Calculators;
 
 
 public class WeightManFragment extends Fragment implements View.OnClickListener {
+
     public final int WEIGHT_MAN_SIGNAL = 2;
     private Button buttonLifestyle, buttonCalculate;
     private EditText weightBasal, weightCalories, weightBMI;
@@ -31,7 +30,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
     private SeekBar seekBarPoundsPerWeek;
     private RadioButton radioButtonActive, radioButtonSedentary;
     private ImageView profilePhoto;
-
+    private UserViewModel userViewModel;
 
     private View weight_man_frag_view;
     OnLifePressFromWeightListener lifePressListenerFromWeight;
@@ -108,6 +107,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
             weightBMI.setText(String.valueOf(user.getBmi()));
         }
     }
+
     @Override
     public void onClick(View view)
     {
@@ -144,6 +144,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
             break;
         }
     }
+
     // seek bar listener for pounds per week
     SeekBar.OnSeekBarChangeListener seekBarChangePoundsPerWeek = new SeekBar.OnSeekBarChangeListener() {
 

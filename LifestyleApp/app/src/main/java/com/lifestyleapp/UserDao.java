@@ -19,7 +19,7 @@ public interface UserDao {
         @Insert(onConflict = OnConflictStrategy.REPLACE) // Completely replaces any User with the same key
         void insert(User user);
 
-        @Query("SELECT FIRST(fullName) FROM user_table WHERE :name == fullName")  // returns only one row from the table, if there is a match
+        @Query("SELECT * FROM user_table WHERE :name == fullName")  // returns only one row from the table, if there is a match
         LiveData<User> getUser(String name);
 
 }

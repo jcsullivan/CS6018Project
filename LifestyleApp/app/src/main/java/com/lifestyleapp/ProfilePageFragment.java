@@ -3,6 +3,7 @@ package com.lifestyleapp;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -22,6 +23,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
@@ -35,14 +42,15 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
     private double doubleHeight, doubleWeight;
     private TextView tvHeight, tvWeight;
     private SeekBar seekBarHeight, seekBarWeight;
-    private ProfilePageViewModel profilePageViewModel;
+    private UserViewModel userViewModel;
+    private int byteArrSize;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     ImageView profilePhotoView;
     Bitmap profilePicture = null;
+    @Nullable String profilePhotoFileName = null;
     View myprofFragmentView;
     OnLifePressListener lifePressListener;
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     public interface OnLifePressListener {
         public void onLifeBtnPress();
@@ -110,13 +118,31 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         profileMale = myprofFragmentView.findViewById(R.id.profileMaleFrag);
         profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
 
-        // GET USER FROM VIEWMODEL (IF THERE IS ONE), THEN SET TEXT FIELDS
-        profilePageViewModel = ViewModelProviders.of(this).get(ProfilePageViewModel.class);
-        User user = profilePageViewModel.getProfileViewModelData().getValue();  // TODO FIXME
+        // GET USER FROM VIEWMODEL (IF THERE IS ONE), THEN SET THE TEXT FIELDS ON THE UI
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        User user = userViewModel.getProfileViewModelData().getValue();
 
         if (user != null) {
 
-            if (user.getProfilePhoto() != null) profilePhotoView.setImageBitmap(user.getProfilePhoto());
+            if (user.getProfilePhotoPath() != null) {
+                String profPhotoFileName = user.getProfilePhotoPath();
+
+                FileInputStream fis = null;
+                try {
+                    fis = getContext().openFileInput(profPhotoFileName);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                byte[] readBytes = new byte[byteArrSize];
+                try {
+                    fis.read(readBytes);
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap fromFileBmp = BitmapFactory.decodeByteArray(readBytes,0,readBytes.length);
+                profilePhotoView.setImageBitmap(fromFileBmp);
+            }
             if (!user.getFullName().equals("")) profileName.setText(user.getFullName());
             if (user.getAge() != 0) profileAge.setText(String.valueOf(user.getAge()));
             if (!user.getCity().equals("")) profileCity.setText(user.getCity());
@@ -132,6 +158,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
 
         }
     }
+
 
     @Override
     public void onClick(View view) {
@@ -167,7 +194,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 } else {
 
                     intAge = Integer.parseInt(stringAge);
-                    profilePageViewModel.setProfileViewModelData(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePicture, 0.0, 0.0, false);
+                    userViewModel.setProfileViewModelData(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePhotoFileName, 0.0, 0.0, false);
                     Toast.makeText(getActivity(), "User information saved!", Toast.LENGTH_SHORT).show();
 
                 }
@@ -179,6 +206,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
             {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+
                 break;
             }
             case R.id.lifeBtnMyProfFrag:
@@ -189,6 +217,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         }
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
@@ -197,10 +226,41 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
                 profilePicture = (Bitmap) data.getExtras().get("data");
-                UserKt.getDefaultUser().setProfilePhoto(profilePicture);
 
-                profilePhotoView= myprofFragmentView.findViewById(R.id.myprof_photo_frag);
-                profilePhotoView.setImageBitmap(profilePicture);
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                profilePicture.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+                byteArrSize = byteArray.length;
+                profilePicture.recycle();
+                profilePhotoFileName = "profilephoto.bmp";
+                try(FileOutputStream fos = getContext().openFileOutput(profilePhotoFileName, Context.MODE_PRIVATE)){
+                    fos.write(byteArray);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Toast.makeText(getActivity(), "File Written", Toast.LENGTH_LONG).show();
+                FileInputStream fis = null;
+                try {
+                    fis = getContext().openFileInput(profilePhotoFileName);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                byte[] readBytes = new byte[byteArrSize];
+                try {
+                    fis.read(readBytes);
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap fromFileBmp = BitmapFactory.decodeByteArray(readBytes,0,readBytes.length);
+                profilePhotoView.setImageBitmap(fromFileBmp);
+
+
+
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
             }

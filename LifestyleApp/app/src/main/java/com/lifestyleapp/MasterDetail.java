@@ -2,9 +2,6 @@ package com.lifestyleapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
 public class MasterDetail extends AppCompatActivity implements NavPaneFragment.OnNavSelectedListener, ProfilePageFragment.OnLifePressListener, WeightManFragment.OnLifePressFromWeightListener {
