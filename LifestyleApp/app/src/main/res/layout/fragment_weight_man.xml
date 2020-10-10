@@ -170,7 +170,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:gravity="end|center_vertical"
+                android:gravity="center_horizontal|center_vertical"
                 android:inputType="textPersonName"
                 android:textSize="24sp" />
 

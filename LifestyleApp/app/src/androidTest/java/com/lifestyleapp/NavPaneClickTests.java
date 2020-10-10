@@ -1,6 +1,6 @@
 package com.lifestyleapp;
 
-
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -44,8 +44,6 @@ public class NavPaneClickTests {
         moveToWeatherBtn.perform(click());
         onView(withId(R.id.resetLocation)).check(matches(withText(containsString("Set Location"))));
     }
-
-
 
 
 

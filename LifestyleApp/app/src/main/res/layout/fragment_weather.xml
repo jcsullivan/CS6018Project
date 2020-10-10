@@ -6,6 +6,8 @@
     android:layout_height="fill_parent"
     android:fillViewport="false"
     android:background="@drawable/sandspiral"
+    android:backgroundTint="#d6FFFFFF"
+    android:backgroundTintMode="src_over"
     tools:context=".WeatherFragment">
 
 <FrameLayout
@@ -15,9 +17,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:backgroundTint="#d6FFFFFF"
-        android:backgroundTintMode="src_over">
+        android:layout_height="match_parent">
 
         <EditText
             android:id="@+id/location"

@@ -8,29 +8,29 @@ class Calculators
     companion object
     {
         @JvmStatic
-        fun BMI(): String
+        fun BMI(weight: Double, height: Double): String
         {
             // Equation from https://en.wikipedia.org/wiki/Body_mass_index
-            val bmi = (703 * defaultUser.weight) / (defaultUser.height * defaultUser.height);
+            val bmi = (703 * weight) / (height * height);
             var bmiString = "%.4f".format(bmi);
 
             return bmiString;
         }
 
         @JvmStatic
-        fun BMRTEE(): String
+        fun BMRTEE(weight: Double, height: Double, age: Double, gender: Double, sedentary: Boolean): String
         {
             // Converting weight to kilograms.
-            var kgWeight = defaultUser.weight / 2.205;
+            var kgWeight = weight / 2.205;
             // Converting height to centimeters.
-            var cmHeight = defaultUser.height * 2.54;
+            var cmHeight = height * 2.54;
 
             // Equations from https://en.wikipedia.org/wiki/Harris%E2%80%93Benedict_equation
-            var genderlessBMR = (10 * kgWeight) + (6.25 * cmHeight) - (5 * defaultUser.age);
+            var genderlessBMR = (10 * kgWeight) + (6.25 * cmHeight) - (5 * age);
 
             var bmr = 0.0;
 
-            if (defaultUser.gender == 1)
+            if (gender == 1.0)
             {
                 bmr = genderlessBMR + 5;
             }
@@ -41,7 +41,7 @@ class Calculators
 
             var tee = 0.0;
 
-            if(!defaultUser.sedentary)
+            if(!sedentary)
             {
                 tee = bmr * 1.76;
             }
@@ -56,17 +56,15 @@ class Calculators
         }
 
         @JvmStatic
-        fun caloriesToEat(desiredChange: Double): String
+        fun caloriesToEat(bmrtee: Double, gender: Double, desiredChange: Double): String
         {
             // To reduce 1 kg (2.205 lbs) of weight, about 7000 kcal deficit is required.
-            var dailyCalories = (1000 / (desiredChange * 2.205)) + defaultUser.bmrtee;
+            var dailyCalories = (1000 / (desiredChange * 2.205)) + bmrtee;
             var caloriesString = "%.4f".format(dailyCalories);
 
             var warning = "";
 
-            var gender = defaultUser.gender;
-
-            if(gender == 1 && dailyCalories < 1200)
+            if(gender == 1.0 && dailyCalories < 1200)
             {
                 warning = " (WARNING: low caloric intake)"
             }
