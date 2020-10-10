@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,8 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
     private View weight_man_frag_view;
     OnLifePressFromWeightListener lifePressListenerFromWeight;
 
+    private WeightManViewModel weightManViewModel;
+    private User user;
 
 
     public WeightManFragment() {
@@ -90,16 +93,19 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         weightBMI = weight_man_frag_view.findViewById(R.id.bmiEditTextFrag);
         tvHeaderInformation = weight_man_frag_view.findViewById(R.id.headerInformationFrag);
 
-        if (UserKt.getDefaultUser().getProfilePhoto() != null)
+        weightManViewModel = ViewModelProviders.of(this).get(WeightManViewModel.class);
+        user = weightManViewModel.getProfileViewModelData().getValue();
+
+        if (user.getProfilePhoto() != null)
         {
-            profilePhoto.setImageBitmap(UserKt.getDefaultUser().getProfilePhoto());
+            profilePhoto.setImageBitmap(user.getProfilePhoto());
         }
 
-        if(UserKt.getDefaultUser().getHeight() != 0 && UserKt.getDefaultUser().getWeight() != 0)
+        if(user.getHeight() != 0 && user.getWeight() != 0)
         {
-            tvHeaderInformation.setText("Calculations based on a weight of " + UserKt.getDefaultUser().getWeight() + " pounds and a height of " + UserKt.getDefaultUser().getHeight() + " inches.");
-            UserKt.getDefaultUser().setBmi(Double.parseDouble(Calculators.BMI()));
-            weightBMI.setText(String.valueOf(UserKt.getDefaultUser().getBmi()));
+            tvHeaderInformation.setText("Calculations based on a weight of " + user.getWeight() + " pounds and a height of " + user.getHeight() + " inches.");
+            user.setBmi(Double.parseDouble(Calculators.BMI(user.getWeight(), user.getHeight())));
+            weightBMI.setText(String.valueOf(user.getBmi()));
         }
     }
     @Override
