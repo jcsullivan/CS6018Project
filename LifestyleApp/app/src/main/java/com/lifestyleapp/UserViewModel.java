@@ -23,8 +23,8 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     // FORWARD ALL OF THE DATA TO THE REPOSITORY
-    public void setProfileViewModelData(String fullName, int age, String city, String country, double height, double weight, int gender, @Nullable String profilePhotoFileName, double bmi, double bmr, boolean sedentary){
-        profilePageRepository.setUserData(fullName, age, city, country, height, weight, gender, profilePhotoFileName, bmi, bmr, sedentary);
+    public void setProfileViewModelData(String fullName, int age, String city, String country, double height, double weight, int gender, @Nullable String profilePhotoFileName, @Nullable int profilePhotoSize, double bmi, double bmr, boolean sedentary){
+        profilePageRepository.setUserData(fullName, age, city, country, height, weight, gender, profilePhotoFileName, profilePhotoSize, bmi, bmr, sedentary);
     }
 
     // RETRIEVE DATA FROM THE REPOSITORY

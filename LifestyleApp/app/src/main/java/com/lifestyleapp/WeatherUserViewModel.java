@@ -5,12 +5,12 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-public class WeightManViewModel extends AndroidViewModel {
+public class WeatherUserViewModel extends AndroidViewModel {
 
     private MutableLiveData<User> userMutableLiveData;
     private UserRepository userRepository;
 
-    public WeightManViewModel (Application application) {
+    public WeatherUserViewModel (Application application) {
 
         super(application);
 

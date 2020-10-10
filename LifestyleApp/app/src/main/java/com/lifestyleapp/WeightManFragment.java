@@ -1,6 +1,8 @@
 package com.lifestyleapp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +20,10 @@ import android.widget.TextView;
 
 import com.example.lifestyleapp.Calculators;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 
 public class WeightManFragment extends Fragment implements View.OnClickListener {
 
@@ -30,7 +36,6 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
     private SeekBar seekBarPoundsPerWeek;
     private RadioButton radioButtonActive, radioButtonSedentary;
     private ImageView profilePhoto;
-    private UserViewModel userViewModel;
 
     private View weight_man_frag_view;
     OnLifePressFromWeightListener lifePressListenerFromWeight;
@@ -95,9 +100,25 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         weightManViewModel = ViewModelProviders.of(this).get(WeightManViewModel.class);
         user = weightManViewModel.getProfileViewModelData().getValue();
 
-        if (user.getProfilePhoto() != null)
+        if (user.getProfilePhotoPath() != null)
         {
-            profilePhoto.setImageBitmap(user.getProfilePhoto());
+
+            FileInputStream fis = null;
+            try {
+                fis = getContext().openFileInput(user.getProfilePhotoPath());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            byte[] readBytes = new byte[user.getProfilePhotoSize()];
+            try {
+                fis.read(readBytes);
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Bitmap fromFileBmp = BitmapFactory.decodeByteArray(readBytes,0,readBytes.length);
+            profilePhoto.setImageBitmap(fromFileBmp);
         }
 
         if(user.getHeight() != 0 && user.getWeight() != 0)

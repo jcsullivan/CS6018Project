@@ -30,6 +30,9 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     private static final String ARG_COUNTRY = "";
 
     private WeatherViewModel mWeatherViewModel;
+    private WeatherUserViewModel weatherUserViewModel;
+
+    private User user;
 
     ProfilePageFragment.OnLifePressListener lifePressListener;
 
@@ -127,9 +130,13 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     public void onStart()
     {
         super.onStart();
-        if(!UserKt.getDefaultUser().getCity().isEmpty() && !UserKt.getDefaultUser().getCountry().isEmpty())
+
+        weatherUserViewModel = ViewModelProviders.of(this).get(WeatherUserViewModel.class);
+        user = weatherUserViewModel.getProfileViewModelData().getValue();
+
+        if(!user.getCity().isEmpty() && !user.getCountry().isEmpty())
         {
-            editLocation.setText(UserKt.getDefaultUser().getCity() + ", " + UserKt.getDefaultUser().getCountry());
+            editLocation.setText(user.getCity() + ", " + user.getCountry());
             localLocation = editLocation.getText().toString();
             String locationForURL = localLocation.replaceAll(",\\s+", ",").trim();
             locationForURL = locationForURL.replaceAll("\\s+", "%20").trim();
