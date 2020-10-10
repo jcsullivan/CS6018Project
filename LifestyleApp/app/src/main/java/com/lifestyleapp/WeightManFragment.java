@@ -127,13 +127,13 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
                     boolSedentary = false;
                 }
 
-                UserKt.getDefaultUser().setSedentary(boolSedentary);
+                user.setSedentary(boolSedentary);
 
-                if(UserKt.getDefaultUser().getHeight() != 0.0 && UserKt.getDefaultUser().getWeight() != 0.0 && doubleBMI != 0.0)
+                if(user.getHeight() != 0.0 && user.getWeight() != 0.0 && doubleBMI != 0.0)
                 {
-                    UserKt.getDefaultUser().setBmrtee(Double.parseDouble(Calculators.BMRTEE()));
-                    weightBasal.setText(String.valueOf(UserKt.getDefaultUser().getBmrtee()));
-                    weightCalories.setText(Calculators.caloriesToEat(doubleToLose));
+                    user.setBmrtee(Double.parseDouble(Calculators.BMRTEE(user.getWeight(), user.getHeight(), user.getAge(), user.getGender(), user.getSedentary())));
+                    weightBasal.setText(String.valueOf(user.getBmrtee()));
+                    weightCalories.setText(Calculators.caloriesToEat(user.getBmrtee(), user.getGender(), doubleToLose));
                 }
             }
             break;
