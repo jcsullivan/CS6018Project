@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +31,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -45,6 +57,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
     private UserViewModel userViewModel;
     private int byteArrSize;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    String profilePhotoPath;
 
     ImageView profilePhotoView;
     Bitmap profilePicture = null;
@@ -55,6 +68,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
     public interface OnLifePressListener {
         public void onLifeBtnPress();
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -226,7 +240,6 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
                 profilePicture = (Bitmap) data.getExtras().get("data");
-
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 profilePicture.compress(Bitmap.CompressFormat.PNG, 100, stream);
