@@ -187,9 +187,13 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 doubleWeight = (double)seekBarWeight.getProgress();
                 doubleHeight = (double)seekBarHeight.getProgress();
 
-                if(stringName.isEmpty() || stringAge.isEmpty() || stringCity.isEmpty() || stringCountry.isEmpty()) {
+                if (stringName.isEmpty() || stringAge.isEmpty() || stringCity.isEmpty() || stringCountry.isEmpty()) {
 
                     Toast.makeText(getActivity(), "Please fill out all fields!", Toast.LENGTH_SHORT).show();
+
+                } else if (!profileMale.isChecked() && !profileFemale.isChecked()) {
+
+                    Toast.makeText(getActivity(), "Please select a gender!", Toast.LENGTH_SHORT).show();
 
                 } else {
 
@@ -252,8 +256,6 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 }
                 Bitmap fromFileBmp = BitmapFactory.decodeByteArray(readBytes,0,readBytes.length);
                 profilePhotoView.setImageBitmap(fromFileBmp);
-
-
 
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_LONG).show();
