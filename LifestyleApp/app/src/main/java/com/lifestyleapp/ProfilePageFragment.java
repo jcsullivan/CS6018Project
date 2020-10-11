@@ -85,16 +85,21 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
         myprofFragmentView =  inflater.inflate(R.layout.fragment_profile_page, container, false);
 
         buttonCamera = myprofFragmentView.findViewById(R.id.prof_update_photo_frag);
         buttonLifestyle = myprofFragmentView.findViewById(R.id.lifeBtnMyProfFrag);
         buttonSaveProfile = myprofFragmentView.findViewById(R.id.saveProfileFrag);
         profilePhotoView= myprofFragmentView.findViewById(R.id.myprof_photo_frag);
+        profileMale = myprofFragmentView.findViewById(R.id.profileMaleFrag);
+        profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
 
         buttonCamera.setOnClickListener(this);
         buttonLifestyle.setOnClickListener(this);
         buttonSaveProfile.setOnClickListener(this);
+        profileMale.setOnClickListener(this);
+        profileFemale.setOnClickListener(this);
 
         //height seek bar
         seekBarHeight = myprofFragmentView.findViewById(R.id.seekBarHeightFrag);
@@ -162,14 +167,6 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
             if (!user.getCity().equals("")) profileCity.setText(user.getCity());
             if (!user.getCountry().equals("")) profileCountry.setText(user.getCountry());
 
-            if (user.getGender() == 1) {
-                profileMale.setChecked(true);
-                profileFemale.setChecked(false);
-            } else {
-                profileMale.setChecked(false);
-                profileFemale.setChecked(true);
-            }
-
         }
     }
 
@@ -179,7 +176,19 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
 
         switch(view.getId()) {
 
-            case R.id.saveProfileFrag: {
+            case R.id.profileMaleFrag:
+                intGender = 1;
+                profileMale.setChecked(true);
+                profileFemale.setChecked(false);
+                break;
+
+            case R.id.profileFemaleFrag:
+                intGender = 0;
+                profileMale.setChecked(false);
+                profileFemale.setChecked(true);
+                break;
+
+            case R.id.saveProfileFrag:
 
                 profileName = myprofFragmentView.findViewById(R.id.profileNameFrag);
                 profileAge = myprofFragmentView.findViewById(R.id.profileAgeFrag);
@@ -212,22 +221,17 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                     Toast.makeText(getActivity(), "User information saved!", Toast.LENGTH_SHORT).show();
 
                 }
-
                 break;
 
-            }
             case R.id.prof_update_photo_frag:
-            {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
-
                 break;
-            }
+
             case R.id.lifeBtnMyProfFrag:
-            {
                 lifePressListener.onLifeBtnPress();
                 break;
-            }
+
         }
     }
 

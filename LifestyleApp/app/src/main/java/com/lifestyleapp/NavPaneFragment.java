@@ -27,8 +27,6 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
     public final int PROFILE_BUTTON_INDEX =1;
     public final int WEIGHT_BUTTON_INDEX =2;
     public final int WEATHER_BUTTON_INDEX=3;
-    //int HIKE_BUTTON_INDEX =3;
-    //int WEATHER_BUTTON_INDEX =4;
 
     @Override
     public void onAttach(Context context) {
@@ -39,10 +37,6 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
             throw new ClassCastException(context.toString() + " must implement OnNavSelectedListener");
         }
     }
-
-
-
-
 
     public interface OnNavSelectedListener {
         public void onNavSelected(int navIndex);
@@ -68,10 +62,10 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         navFragmentView = inflater.inflate(R.layout.fragment_nav_pane, container, false);
-         profileButton = navFragmentView.findViewById(R.id.my_prof_btn_frag);
-         weightManButton = navFragmentView.findViewById(R.id.weight_man_btn_frag);
-         hikesButton = navFragmentView.findViewById(R.id.hike_btn_frag);
-         weatherButton = navFragmentView.findViewById(R.id.weather_btn_frag);
+        profileButton = navFragmentView.findViewById(R.id.my_prof_btn_frag);
+        weightManButton = navFragmentView.findViewById(R.id.weight_man_btn_frag);
+        hikesButton = navFragmentView.findViewById(R.id.hike_btn_frag);
+        weatherButton = navFragmentView.findViewById(R.id.weather_btn_frag);
         profilePhotoView = navFragmentView.findViewById(R.id.photo_nav_pane_frag);
 
         profileButton.setOnClickListener(this);
@@ -80,6 +74,7 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
         weatherButton.setOnClickListener(this);
 
         return navFragmentView;
+
     }
 
     @Override
