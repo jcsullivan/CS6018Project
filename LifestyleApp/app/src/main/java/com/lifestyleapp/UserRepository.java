@@ -18,7 +18,7 @@ public class UserRepository {
     public MutableLiveData<User> getUserData() { return currentUserLiveData; }
 
     public void setUserData (String fullName, int age, String city, String country, double height, double weight, int gender, @Nullable String profilePhotoFileName, @Nullable int profilePhotoSize, double bmi, double bmr, boolean sedentary) {
-        User userData = new User(fullName, age, city, country, height, weight, gender, profilePhotoFileName, profilePhotoSize, bmi, bmr, sedentary);
+        User userData = new User(fullName, age, city, country, height, weight, gender, profilePhotoFileName, profilePhotoSize);
         currentUserLiveData.setValue(userData);
     }
 

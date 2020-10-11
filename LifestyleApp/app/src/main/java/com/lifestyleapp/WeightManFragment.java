@@ -23,13 +23,14 @@ import com.example.lifestyleapp.Calculators;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 
 public class WeightManFragment extends Fragment implements View.OnClickListener {
 
     public final int WEIGHT_MAN_SIGNAL = 2;
     private Button buttonLifestyle, buttonCalculate;
-    private EditText weightBasal, weightCalories, weightBMI;
+    private EditText editTextBMR, editTextCalories, editTextBMI;
     private Double doubleToLose, doubleBasal, doubleCalories, doubleBMI;
     private Boolean boolSedentary = true;
     private TextView tvPoundsPerWeek, tvHeaderInformation;
@@ -42,7 +43,9 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
 
     private WeightManViewModel weightManViewModel;
     private User user;
-
+    private Double bmr = 0.0;
+    private Double bmi = 0.0;
+    private boolean isSedentary = true;
 
     public WeightManFragment() {
         // Required empty public constructor
@@ -77,6 +80,13 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         buttonLifestyle.setOnClickListener(this);
         buttonCalculate.setOnClickListener(this);
 
+        weightManViewModel = ViewModelProviders.of(this).get(WeightManViewModel.class);
+        user = weightManViewModel.getProfileViewModelData().getValue();
+
+        // calculate BMR and BMI because they won't change
+        bmr = Calculators.calculateBMR(user.getWeight(), user.getHeight(), user.getAge(), user.getGender());
+        bmi = Calculators.calculateBMI(user.getWeight(), user.getHeight());
+
         //pounds per week seek bar
         seekBarPoundsPerWeek = weight_man_frag_view.findViewById(R.id.calculatorPoundsPerWeekFrag);
         seekBarPoundsPerWeek.setOnSeekBarChangeListener(seekBarChangePoundsPerWeek);
@@ -94,11 +104,9 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         super.onStart();
 
         profilePhoto = weight_man_frag_view.findViewById(R.id.weight_man_profile_pic_frag);
-        weightBMI = weight_man_frag_view.findViewById(R.id.bmiEditTextFrag);
+        editTextBMI = weight_man_frag_view.findViewById(R.id.bmiEditTextFrag);
         tvHeaderInformation = weight_man_frag_view.findViewById(R.id.headerInformationFrag);
-
-        weightManViewModel = ViewModelProviders.of(this).get(WeightManViewModel.class);
-        user = weightManViewModel.getProfileViewModelData().getValue();
+        editTextBMR = weight_man_frag_view.findViewById(R.id.basalMetRateEditTextFrag);
 
         if (user.getProfilePhotoPath() != null)
         {
@@ -124,8 +132,8 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         if(user.getHeight() != 0 && user.getWeight() != 0)
         {
             tvHeaderInformation.setText("Calculations based on a weight of " + user.getWeight() + " pounds and a height of " + user.getHeight() + " inches.");
-            user.setBmi(Double.parseDouble(Calculators.BMI(user.getWeight(), user.getHeight())));
-            weightBMI.setText(String.valueOf(user.getBmi()));
+            editTextBMR.setText(String.valueOf(bmr.intValue()));
+            editTextBMI.setText(String.valueOf(new DecimalFormat("#.0").format(bmi)));
         }
     }
 
@@ -135,38 +143,30 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         switch(view.getId())
         {
             case R.id.weight_man_calc_btn:
-            {
-                weightBMI = weight_man_frag_view.findViewById(R.id.bmiEditTextFrag);
+
+                editTextBMI = weight_man_frag_view.findViewById(R.id.bmiEditTextFrag);
                 seekBarPoundsPerWeek = weight_man_frag_view.findViewById(R.id.calculatorPoundsPerWeekFrag);
-                weightBasal = weight_man_frag_view.findViewById(R.id.basalMetRateEditTextFrag);
-                weightCalories = weight_man_frag_view.findViewById(R.id.dailyCalEditTextFrag);
+                editTextCalories = weight_man_frag_view.findViewById(R.id.dailyCalEditTextFrag);
 
-                doubleBMI = Double.parseDouble(weightBMI.getText().toString());
+                doubleBMI = Double.parseDouble(editTextBMI.getText().toString());
 
-                if(radioButtonActive.isSelected())
-                {
-                    boolSedentary = false;
+                if (radioButtonActive.isSelected()) isSedentary = false;
+
+                if (user.getHeight() != 0.0 && user.getWeight() != 0.0 && doubleBMI != 0.0) {
+                    editTextBMR.setText(String.valueOf(bmr));
+                    editTextCalories.setText(Calculators.caloriesToEat(bmr, user.getGender(), doubleToLose, isSedentary));
                 }
 
-                user.setSedentary(boolSedentary);
+                break;
 
-                if(user.getHeight() != 0.0 && user.getWeight() != 0.0 && doubleBMI != 0.0)
-                {
-                    user.setBmrtee(Double.parseDouble(Calculators.BMRTEE(user.getWeight(), user.getHeight(), user.getAge(), user.getGender(), user.getSedentary())));
-                    weightBasal.setText(String.valueOf(user.getBmrtee()));
-                    weightCalories.setText(Calculators.caloriesToEat(user.getBmrtee(), user.getGender(), doubleToLose));
-                }
-            }
-            break;
             case R.id.lifestyle_btn_weightman_frag:
-            {
+
                 lifePressListenerFromWeight.onLifeBtnPressFromWeight();
-            }
-            break;
+                break;
         }
     }
 
-    // seek bar listener for pounds per week
+    // seek bar listener for pounds gained/lost per week
     SeekBar.OnSeekBarChangeListener seekBarChangePoundsPerWeek = new SeekBar.OnSeekBarChangeListener() {
 
         @Override

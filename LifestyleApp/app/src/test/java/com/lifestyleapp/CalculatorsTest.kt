@@ -17,13 +17,13 @@ class CalculatorsTest {
 
     @Test
     fun BMI() {
-        assertEquals(Calculators.BMI(220.0, 72.0), "29.8341");
+        assertEquals(Calculators.calculateBMI(220.0, 72.0), "29.8341");
 
     }
 
     @Test
     fun BMRTEE() {
-        assertEquals(Calculators.BMRTEE(220.0, 72.0, 31.0, 1.0, false), "3503.6891");
+        assertEquals(Calculators.calculateBMR(220.0, 72.0, 31.0, 1.0, false), "3503.6891");
     }
 
     @Test
