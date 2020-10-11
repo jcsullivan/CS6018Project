@@ -2,16 +2,23 @@ package com.lifestyleapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 
 public class NavPaneFragment extends Fragment implements View.OnClickListener {
@@ -27,6 +34,8 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
     public final int PROFILE_BUTTON_INDEX =1;
     public final int WEIGHT_BUTTON_INDEX =2;
     public final int WEATHER_BUTTON_INDEX=3;
+
+    private UserViewModel userViewModel;
 
     @Override
     public void onAttach(Context context) {
@@ -73,8 +82,32 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
         hikesButton.setOnClickListener(this);
         weatherButton.setOnClickListener(this);
 
-        return navFragmentView;
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+        User user = userViewModel.getProfileViewModelData().getValue();
 
+        if (user != null) {
+
+            if (user.getProfilePhotoPath() != null) {
+                String profPhotoFileName = user.getProfilePhotoPath();
+
+                FileInputStream fis = null;
+                try {
+                    fis = getContext().openFileInput(profPhotoFileName);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                byte[] readBytes = new byte[user.getProfilePhotoSize()];
+                try {
+                    fis.read(readBytes);
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bitmap fromFileBmp = BitmapFactory.decodeByteArray(readBytes, 0, readBytes.length);
+                profilePhotoView.setImageBitmap(fromFileBmp);
+            }
+        }
+        return navFragmentView;
     }
 
     @Override

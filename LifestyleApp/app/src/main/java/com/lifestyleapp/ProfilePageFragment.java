@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
@@ -41,6 +46,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
     private UserViewModel userViewModel;
     private int byteArrSize;
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    private boolean photoTaken = false;
 
     ImageView profilePhotoView;
     Bitmap profilePicture = null;
@@ -123,27 +129,14 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         // GET USER FROM VIEWMODEL (IF THERE IS ONE), THEN SET THE TEXT FIELDS ON THE UI
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         User user = userViewModel.getProfileViewModelData().getValue();
-
+        @Nullable String fileToPlaceAsProfile = null;
+        if(photoTaken) {
+            fileToPlaceAsProfile = profilePhotoFileName;
+        }
         if (user != null) {
 
-            if (user.getProfilePhotoPath() != null) {
-                String profPhotoFileName = user.getProfilePhotoPath();
-
-                FileInputStream fis = null;
-                try {
-                    fis = getContext().openFileInput(profPhotoFileName);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                byte[] readBytes = new byte[byteArrSize];
-                try {
-                    fis.read(readBytes);
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Bitmap fromFileBmp = BitmapFactory.decodeByteArray(readBytes,0,readBytes.length);
-                profilePhotoView.setImageBitmap(fromFileBmp);
+            if(user.getProfilePhotoPath()!=null && !photoTaken) {
+                fileToPlaceAsProfile = user.getProfilePhotoPath();
             }
             if (!user.getFullName().equals("")) profileName.setText(user.getFullName());
             if (user.getAge() != 0) profileAge.setText(String.valueOf(user.getAge()));
@@ -158,8 +151,24 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
             }
 
         }
+        if(fileToPlaceAsProfile!=null) {
+            FileInputStream fis = null;
+            try {
+                fis = getContext().openFileInput(fileToPlaceAsProfile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            byte[] readBytes = new byte[byteArrSize];
+            try {
+                fis.read(readBytes);
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Bitmap fromFileBmp = BitmapFactory.decodeByteArray(readBytes, 0, readBytes.length);
+            profilePhotoView.setImageBitmap(fromFileBmp);
+        }
     }
-
 
     @Override
     public void onClick(View view) {
@@ -220,6 +229,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
 
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
             if (resultCode == RESULT_OK) {
+                photoTaken = true;
                 profilePicture = (Bitmap) data.getExtras().get("data");
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -227,7 +237,10 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 byte[] byteArray = stream.toByteArray();
                 byteArrSize = byteArray.length;
                 profilePicture.recycle();
-                profilePhotoFileName = "profilephoto.bmp";
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy-HH-mm-ss");
+                Date currentDate = new Date();
+                profilePhotoFileName = dateFormat.format(currentDate);
+                Log.d("CHECK PHOTO NAME:",profilePhotoFileName);
                 try(FileOutputStream fos = getContext().openFileOutput(profilePhotoFileName, Context.MODE_PRIVATE)){
                     fos.write(byteArray);
                 } catch (FileNotFoundException e) {
@@ -237,7 +250,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 }
 
                 Toast.makeText(getActivity(), "File Written", Toast.LENGTH_LONG).show();
-                FileInputStream fis = null;
+                /*FileInputStream fis = null;
                 try {
                     fis = getContext().openFileInput(profilePhotoFileName);
                 } catch (FileNotFoundException e) {
@@ -252,6 +265,8 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 }
                 Bitmap fromFileBmp = BitmapFactory.decodeByteArray(readBytes,0,readBytes.length);
                 profilePhotoView.setImageBitmap(fromFileBmp);
+
+                 */
 
 
 
@@ -302,5 +317,9 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         }
     };
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        photoTaken = false;
+    }
 }
