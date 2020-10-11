@@ -5,12 +5,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fillViewport="false"
-    tools:context=".NavPaneFragment">
+    tools:context=".NavigationFragment">
 
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".NavPaneFragment">
+    tools:context=".NavigationFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

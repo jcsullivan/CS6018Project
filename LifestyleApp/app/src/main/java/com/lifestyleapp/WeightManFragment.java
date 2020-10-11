@@ -180,11 +180,9 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
             if((user.getGender() == 1.0 && calories < 1200) || (calories < 1000)) {
 
                 // TODO IMPROVE THIS POPUP WINDOW
-                Snackbar.make(mainLayout, warning, 500).show();
+                Snackbar.make(mainLayout, warning, 1000).show();
 
             }
-
-
         }
 
         @Override

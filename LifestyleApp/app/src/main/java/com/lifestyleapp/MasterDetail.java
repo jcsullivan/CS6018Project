@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 
-public class MasterDetail extends AppCompatActivity implements NavPaneFragment.OnNavSelectedListener, ProfilePageFragment.OnLifePressListener, WeightManFragment.OnLifePressFromWeightListener {
-    private NavPaneFragment mMasterListNavFrag;
+public class MasterDetail extends AppCompatActivity implements NavigationFragment.OnNavSelectedListener, ProfilePageFragment.OnLifePressListener, WeightManFragment.OnLifePressFromWeightListener {
+    private NavigationFragment mMasterListNavFrag;
     private ProfilePageFragment profilePageFragment;
     private WeightManFragment weightManFragment;
     private WeatherFragment weatherFragment;
@@ -16,7 +16,7 @@ public class MasterDetail extends AppCompatActivity implements NavPaneFragment.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail);
 
-        mMasterListNavFrag = new NavPaneFragment();
+        mMasterListNavFrag = new NavigationFragment();
         profilePageFragment = new ProfilePageFragment();
         weightManFragment = new WeightManFragment();
         weatherFragment = new WeatherFragment();
