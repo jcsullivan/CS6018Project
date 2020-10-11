@@ -44,6 +44,7 @@
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/stock_gurl" />
 
+
         <Button
             android:id="@+id/lifestyle_btn_weightman_frag"
             android:layout_width="130dp"
@@ -53,28 +54,16 @@
             android:background="@drawable/roundedbuttongreen"
             android:text="@string/lifestyle_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/weight_man_calc_btn"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-        <Button
-            android:id="@+id/weight_man_calc_btn"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="47dp"
-            android:layout_marginBottom="42dp"
-            android:background="@drawable/roundedbuttonyellow"
-            android:text="@string/cal_button_text"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.101" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="334dp"
-            android:layout_height="536dp"
+            android:layout_width="337dp"
+            android:layout_height="476dp"
             android:layout_marginTop="32dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -105,7 +94,7 @@
                 android:layout_height="40dp"
                 android:max="20"
                 android:min="-20"
-                android:progress="1"
+                android:progress="0"
                 android:progressTint="#000000" />
 
             <RadioGroup
