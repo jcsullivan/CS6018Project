@@ -4,11 +4,8 @@ import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// TODO DELETE ALL INSTANCES OF DEFAULT USER
-var defaultUser = User("", 0, "", "", 0.0, 0.0, 1, null, null,0.0, 0.0, false);
-
 @Entity(tableName = "user_table")
-class User constructor(fullName: String, age: Int, city: String, country: String, height: Double, weight: Double, gender: Int, profilePhotoPath: String?, profilePhotoSize: Int?, bmi: Double, bmrtee: Double, sedentary: Boolean)
+class User constructor(fullName: String, age: Int, city: String, country: String, height: Double, weight: Double, gender: Int, profilePhotoPath: String?, profilePhotoSize: Int?)
 {
 
     @PrimaryKey
@@ -22,9 +19,9 @@ class User constructor(fullName: String, age: Int, city: String, country: String
     var gender: Int;      // 1 male, 0 female;
     var profilePhotoPath: String?;
     var profilePhotoSize: Int?;
-    var bmi: Double;
-    var bmrtee: Double;
-    var sedentary: Boolean;
+//    var bmi: Double;
+//    var bmrtee: Double;
+//    var sedentary: Boolean;
 
     init {
         this.fullName = fullName;
@@ -36,14 +33,14 @@ class User constructor(fullName: String, age: Int, city: String, country: String
         this.gender = gender;
         this.profilePhotoPath = profilePhotoPath;
         this.profilePhotoSize = profilePhotoSize;
-        this.bmi = bmi;
-        this.bmrtee = bmrtee;
-        this.sedentary = sedentary;
+//        this.bmi = bmi;
+//        this.bmrtee = bmrtee;
+//        this.sedentary = sedentary;
     }
 
-    fun manualSetBMI(BMI: Double)
-    {
-        this.bmi = BMI;
-    }
+//    fun manualSetBMI(BMI: Double)
+//    {
+//        this.bmi = BMI;
+//    }
 
 }

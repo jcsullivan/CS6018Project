@@ -30,9 +30,6 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
     //int HIKE_BUTTON_INDEX =3;
     //int WEATHER_BUTTON_INDEX =4;
 
-
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -92,10 +89,6 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
 
         profilePhotoView = navFragmentView.findViewById(R.id.photo_nav_pane_frag);
 
-        if (UserKt.getDefaultUser().getProfilePhotoPath() != null)
-        {
-            //profilePhotoView.setImageBitmap(UserKt.getDefaultUser().getProfilePhotoPath());
-        }
     }
 
 
