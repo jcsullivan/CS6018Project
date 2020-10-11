@@ -134,7 +134,7 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
         weatherUserViewModel = ViewModelProviders.of(this).get(WeatherUserViewModel.class);
         user = weatherUserViewModel.getProfileViewModelData().getValue();
 
-        if(!user.getCity().isEmpty() && !user.getCountry().isEmpty())
+        if(user != null && !user.getCity().isEmpty() && !user.getCountry().isEmpty())
         {
             editLocation.setText(user.getCity() + ", " + user.getCountry());
             localLocation = editLocation.getText().toString();

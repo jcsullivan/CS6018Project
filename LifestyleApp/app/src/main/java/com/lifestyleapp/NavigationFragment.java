@@ -21,7 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
-public class NavPaneFragment extends Fragment implements View.OnClickListener {
+public class NavigationFragment extends Fragment implements View.OnClickListener {
 
     View navFragmentView;
 
@@ -31,9 +31,11 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
     Button hikesButton;
     Button weatherButton;
     ImageView profilePhotoView;
-    public final int PROFILE_BUTTON_INDEX =1;
-    public final int WEIGHT_BUTTON_INDEX =2;
-    public final int WEATHER_BUTTON_INDEX=3;
+    public final int PROFILE_BUTTON_INDEX = 1;
+    public final int WEIGHT_BUTTON_INDEX = 2;
+    public final int WEATHER_BUTTON_INDEX = 3;
+
+    private NavigationViewModel navigationViewModel;
 
     private UserViewModel userViewModel;
 
@@ -52,7 +54,7 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    public NavPaneFragment() {
+    public NavigationFragment() {
         // Required empty public constructor
     }
 
@@ -60,10 +62,11 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //if (getArguments() != null) {
-            //mParam1 = getArguments().getString(ARG_PARAM1);
-            //mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        // GET USER FROM VIEWMODEL (IF THERE IS ONE), THEN SET THE TEXT FIELDS ON THE UI
+        navigationViewModel = ViewModelProviders.of(this).get(NavigationViewModel.class);
+
+    }
 
 
     @Override
@@ -140,7 +143,8 @@ public class NavPaneFragment extends Fragment implements View.OnClickListener {
                 // Search for nearby hikes on Google Maps
                 // https://developers.google.com/maps/documentation/urls/android-intents#java_6
                 // The level of Zoom can be adjusted - click on the link above for code
-                Uri gmmIntentUri = Uri.parse("geo:0,0?q=hiking");
+                String city = navigationViewModel.getCity();
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=hiking" + " " + Uri.encode(city));
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 startActivity(mapIntent);
