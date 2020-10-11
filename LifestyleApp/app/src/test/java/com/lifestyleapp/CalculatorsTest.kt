@@ -1,6 +1,5 @@
 package com.lifestyleapp
 
-import com.example.lifestyleapp.Calculators
 import org.junit.Before
 import org.junit.Test
 

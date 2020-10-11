@@ -1,4 +1,4 @@
-package com.example.lifestyleapp
+package com.lifestyleapp
 
 // Calling Kotlin from Java:  https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html 
 class Calculators
