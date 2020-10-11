@@ -83,8 +83,11 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         user = weightManViewModel.getProfileViewModelData().getValue();
 
         // calculate BMR and BMI because they won't change
-        bmr = Calculators.calculateBMR(user.getWeight(), user.getHeight(), user.getAge(), user.getGender());
-        bmi = Calculators.calculateBMI(user.getWeight(), user.getHeight());
+        if(user != null)
+        {
+            bmr = Calculators.calculateBMR(user.getWeight(), user.getHeight(), user.getAge(), user.getGender());
+            bmi = Calculators.calculateBMI(user.getWeight(), user.getHeight());
+        }
 
         //pounds per week seek bar
         seekBarPoundsPerWeek = weight_man_frag_view.findViewById(R.id.calculatorPoundsPerWeekFrag);
@@ -110,9 +113,8 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         editTextCalories = weight_man_frag_view.findViewById(R.id.dailyCalEditTextFrag);
         mainLayout = weight_man_frag_view.findViewById(R.id.main_layout);
 
-        if (user.getProfilePhotoPath() != null)
+        if (user != null && user.getProfilePhotoPath() != null)
         {
-
             FileInputStream fis = null;
             try {
                 fis = getContext().openFileInput(user.getProfilePhotoPath());
@@ -131,7 +133,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
             profilePhoto.setImageBitmap(fromFileBmp);
         }
 
-        if(user.getHeight() != 0 && user.getWeight() != 0)
+        if(user != null && user.getHeight() != 0 && user.getWeight() != 0)
         {
             tvHeaderInformation.setText("Calculations based on a weight of " + user.getWeight() + " pounds and a height of " + user.getHeight() + " inches.");
             editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));
@@ -147,14 +149,20 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         {
             case R.id.calculatorActiveFrag:
 
-                isSedentary = false;
-                editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));
+                if(user != null)
+                {
+                    isSedentary = false;
+                    editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));
+                }
                 break;
 
             case R.id.calculatorSedentaryFrag:
 
-                isSedentary = true;
-                editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));
+                if(user != null)
+                {
+                    isSedentary = true;
+                    editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));
+                }
                 break;
 
             case R.id.lifestyle_btn_weightman_frag:
@@ -170,17 +178,20 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         public void onProgressChanged(SeekBar seekBar, int pounds, boolean fromUser) {
             // updated continuously as the user slides the thumb
 
-            int calories = (int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary);
-            editTextCalories.setText(String.valueOf(calories));
-            poundsToLose = ((double)pounds / 10.0);
-            tvPoundsPerWeek.setText("Pounds To Change Per Week: " + poundsToLose);
-            String warning = "WARNING: EXCESSIVELY LOW CALORIC INTAKE";
+            if(user != null)
+            {
+                int calories = (int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary);
+                editTextCalories.setText(String.valueOf(calories));
+                poundsToLose = ((double)pounds / 10.0);
+                tvPoundsPerWeek.setText("Pounds To Change Per Week: " + poundsToLose);
+                String warning = "WARNING: EXCESSIVELY LOW CALORIC INTAKE";
 
-            if((user.getGender() == 1.0 && calories < 1200) || (calories < 1000)) {
+                if((user.getGender() == 1.0 && calories < 1200) || (calories < 1000)) {
 
-                // TODO IMPROVE THIS POPUP WINDOW
-                Snackbar.make(mainLayout, warning, 1000).show();
+                    // TODO IMPROVE THIS POPUP WINDOW
+                    Snackbar.make(mainLayout, warning, 1000).show();
 
+                }
             }
         }
 
