@@ -28,7 +28,7 @@ class CalculatorsTest {
 
     @Test
     fun caloriesToEat() {
-        assertEquals(Calculators.caloriesToEat(3500.0, 1.0, 1.0), "3953.5147");
+        assertEquals(Calculators.calculateCaloriesToEat(3500.0, 1.0, 1.0), "3953.5147");
     }
 
 }

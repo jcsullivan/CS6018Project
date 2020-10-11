@@ -32,7 +32,7 @@ class Calculators
         }
 
         @JvmStatic
-        fun caloriesToEat(bmr: Double, changeInPounds: Double, sedentary: Boolean): Double
+        fun calculateCaloriesToEat(bmr: Double, changeInPounds: Double, sedentary: Boolean): Double
         {
 
             var totalEnergyExpenditure =

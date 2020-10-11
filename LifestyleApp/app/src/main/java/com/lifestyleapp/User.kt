@@ -19,9 +19,6 @@ class User constructor(fullName: String, age: Int, city: String, country: String
     var gender: Int;      // 1 male, 0 female;
     var profilePhotoPath: String?;
     var profilePhotoSize: Int?;
-//    var bmi: Double;
-//    var bmrtee: Double;
-//    var sedentary: Boolean;
 
     init {
         this.fullName = fullName;
@@ -33,14 +30,6 @@ class User constructor(fullName: String, age: Int, city: String, country: String
         this.gender = gender;
         this.profilePhotoPath = profilePhotoPath;
         this.profilePhotoSize = profilePhotoSize;
-//        this.bmi = bmi;
-//        this.bmrtee = bmrtee;
-//        this.sedentary = sedentary;
     }
-
-//    fun manualSetBMI(BMI: Double)
-//    {
-//        this.bmi = BMI;
-//    }
 
 }

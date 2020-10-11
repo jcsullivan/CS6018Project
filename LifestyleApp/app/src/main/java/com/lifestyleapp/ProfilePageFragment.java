@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,29 +16,15 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
@@ -57,7 +41,6 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
     private UserViewModel userViewModel;
     private int byteArrSize;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    String profilePhotoPath;
 
     ImageView profilePhotoView;
     Bitmap profilePicture = null;
@@ -68,7 +51,6 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
     public interface OnLifePressListener {
         public void onLifeBtnPress();
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -95,6 +77,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         profileMale = myprofFragmentView.findViewById(R.id.profileMaleFrag);
         profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
 
+        // set click listeners
         buttonCamera.setOnClickListener(this);
         buttonLifestyle.setOnClickListener(this);
         buttonSaveProfile.setOnClickListener(this);
@@ -166,6 +149,13 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
             if (user.getAge() != 0) profileAge.setText(String.valueOf(user.getAge()));
             if (!user.getCity().equals("")) profileCity.setText(user.getCity());
             if (!user.getCountry().equals("")) profileCountry.setText(user.getCountry());
+            if (user.getGender() == 1) {
+                profileMale.setChecked(true);
+                profileFemale.setChecked(false);
+            } else if (user.getGender() == 0){
+                profileFemale.setChecked(true);
+                profileMale.setChecked(false);
+            }
 
         }
     }
@@ -190,25 +180,12 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
 
             case R.id.saveProfileFrag:
 
-                profileName = myprofFragmentView.findViewById(R.id.profileNameFrag);
-                profileAge = myprofFragmentView.findViewById(R.id.profileAgeFrag);
-                profileCity = myprofFragmentView.findViewById(R.id.profileCityFrag);
-                profileCountry = myprofFragmentView.findViewById(R.id.profileCountryFrag);
-                tvHeight = myprofFragmentView.findViewById(R.id.textViewHeightFrag);
-                seekBarHeight = myprofFragmentView.findViewById(R.id.seekBarHeightFrag);
-                tvWeight = myprofFragmentView.findViewById(R.id.textViewWeightFrag);
-                seekBarWeight = myprofFragmentView.findViewById(R.id.seekBarWeightFrag);
-                profileMale = myprofFragmentView.findViewById(R.id.profileMaleFrag);
-                profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
-
                 stringName = profileName.getText().toString();
                 stringAge = profileAge.getText().toString();
                 stringCity = profileCity.getText().toString();
                 stringCountry = profileCountry.getText().toString();
                 doubleWeight = (double)seekBarWeight.getProgress();
                 doubleHeight = (double)seekBarHeight.getProgress();
-
-                intGender = (profileMale.isSelected()) ? 1 : 0;  // assign 1 for male, 0 for female
 
                 if(stringName.isEmpty() || stringAge.isEmpty() || stringCity.isEmpty() || stringCountry.isEmpty()) {
 
