@@ -19,7 +19,6 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.example.lifestyleapp.Calculators;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.FileInputStream;

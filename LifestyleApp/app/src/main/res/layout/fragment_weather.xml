@@ -44,28 +44,31 @@
             app:layout_constraintTop_toBottomOf="@+id/resetLocation" />
 
         <Button
-            android:id="@+id/resetLocation"
-            android:layout_width="130dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/roundedbuttongreen"
-            android:text="@string/set_loc"
-            app:layout_constraintHorizontal_bias="0.25"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/backToLifestyle"
-            app:layout_constraintTop_toBottomOf="@+id/location" />
-
-        <Button
             android:id="@+id/backToLifestyle"
             android:layout_width="130dp"
             android:layout_height="45dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/roundedbuttonyellow"
+            android:background="@drawable/roundedbuttongreen"
             android:text="@string/lifestyle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintEnd_toStartOf="@+id/resetLocation"
+            app:layout_constraintTop_toBottomOf="@+id/location"
+            />
+
+        <Button
+            android:id="@+id/resetLocation"
+            android:layout_width="130dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/roundedbuttonyellow"
+            android:text="@string/set_loc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.75"
-            app:layout_constraintStart_toEndOf="@+id/resetLocation"
-            app:layout_constraintTop_toBottomOf="@+id/location" />
+            app:layout_constraintStart_toEndOf="@+id/backToLifestyle"
+            app:layout_constraintTop_toBottomOf="@+id/location"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
 </ScrollView>
