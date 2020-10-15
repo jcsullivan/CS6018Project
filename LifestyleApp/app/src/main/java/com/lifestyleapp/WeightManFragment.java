@@ -169,23 +169,21 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         @Override
         public void onProgressChanged(SeekBar seekBar, int pounds, boolean fromUser) {
 
-            // updated continuously as the user slides the thumb
+            // updated continuously as the user slides their thumb
             if(user != null)
             {
-                int dailyCalories = (int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary);
-                String message = String.valueOf(dailyCalories);
                 poundsToLose = ((double)pounds / 10.0);
+                int dailyCalories = (int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary);
                 tvPoundsPerWeek.setText("Pounds To Change Per Week: " + poundsToLose);
-                String warning = "WARNING: EXCESSIVELY LOW CALORIC INTAKE";
 
-                if(dailyCalories < 1200) {
-                    message += " (Warning)";
-                    Snackbar.make(mainLayout, warning, 2500).show();
+                if((dailyCalories < 1200  && user.getGender() == 1.0) || (dailyCalories < 1000 && user.getGender() == 0.0)){
+                    editTextCalories.setText(dailyCalories +  " (WARNING)");
+                    Snackbar.make(mainLayout, "WARNING: EXCESSIVELY LOW CALORIC INTAKE", 2500).show();
+                } else {
+                    editTextCalories.setText(String.valueOf(dailyCalories));
                 }
 
-                editTextCalories.setText(message);
             }
-
         }
 
         @Override

@@ -102,6 +102,6 @@ public class WeightManagementTests
         onView(withId(R.id.calculatorPoundsPerWeekFrag)).perform(setProgress(weight));
 
         onView(withId(R.id.dailyCalEditTextFrag)).perform(scrollTo());
-        onView(withId(R.id.dailyCalEditTextFrag)).check(matches(withText(containsString("665 (WARNING)"))));
+        onView(withId(R.id.dailyCalEditTextFrag)).check(matches(withText(containsString("615 (WARNING)"))));
     }
 }

@@ -1,7 +1,5 @@
 package com.lifestyleapp
 
-import com.google.android.material.snackbar.Snackbar
-
 // Calling Kotlin from Java:  https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html 
 class Calculators
 {
