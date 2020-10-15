@@ -34,32 +34,18 @@ class Calculators
         }
 
         @JvmStatic
-        fun rawCalculateCaloriesToEat(bmr: Double, changeInPounds: Double, sedentary: Boolean): Double
+        fun calculateCaloriesToEat(bmr: Double, changeInPounds: Double, sedentary: Boolean): Double
         {
 
             var totalEnergyExpenditure =
                     if(!sedentary) bmr * 1.73;
                     else bmr * 1.53;
 
-            // To reduce 1 lb of weight per week, about (1000 kcal / 7 days = 500 kcal / day) deficit is required.
+            // To reduce 1 lb of weight per week, about (3500 kcal / 7 days = 500 kcal / day) deficit is required.
             var dailyCalories = (500 * changeInPounds) + totalEnergyExpenditure;
 
             return dailyCalories;
 
-        }
-
-        @JvmStatic
-        fun calculateCaloriesToEat(bmr: Double, changeInPounds: Double, sedentary: Boolean, gender: Double): String
-        {
-            var calories = rawCalculateCaloriesToEat(bmr, changeInPounds, sedentary);
-            var response = "%.1f".format(calories);
-
-            if (gender == 1.0 && calories < 1200 || calories < 1000) {
-
-                response = response + " (WARNING)"
-            }
-
-            return response;
         }
     }
 }
