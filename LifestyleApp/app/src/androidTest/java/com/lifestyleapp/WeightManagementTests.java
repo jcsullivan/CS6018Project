@@ -11,6 +11,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.hamcrest.Matcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,14 +26,15 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.containsString;
 
 @RunWith(AndroidJUnit4.class)
-public class ProfilePageFragmentTests {
+public class WeightManagementTests
+{
 
     public static ViewAction setProgress(final int progress) {
         return new ViewAction() {
             @Override
             public void perform(UiController uiController, View view) {
                 SeekBar seekBar = (SeekBar) view;
-                seekBar.setProgress(progress);
+                seekBar.setProgress(progress, true);
             }
             @Override
             public String getDescription() {
@@ -48,77 +50,15 @@ public class ProfilePageFragmentTests {
     @Rule
     public ActivityScenarioRule<MasterDetail> masterActRule = new ActivityScenarioRule<>(MasterDetail.class);
 
-    @Test
-    public void nameEntry(){
-        //move to profile button and click
-        String name = "Sam Bauter";
-        ViewInteraction moveToMyProfBtn = onView(withId(R.id.my_prof_btn_frag));
-        moveToMyProfBtn.perform(click());
-        onView(withId(R.id.profileNameFrag)).perform(typeText(name));
-        onView(withId(R.id.profileNameFrag)).check(matches(withText(containsString(name))));
-    }
-
-    @Test
-    public void ageEntry(){
-        //move to profile button and click
-        String age = "31";
-        ViewInteraction moveToMyProfBtn = onView(withId(R.id.my_prof_btn_frag));
-        moveToMyProfBtn.perform(click());
-        onView(withId(R.id.profileAgeFrag)).perform(typeText(age));
-        onView(withId(R.id.profileAgeFrag)).check(matches(withText(containsString(age))));
-    }
-
-    @Test
-    public void cityEntry(){
-        //move to profile button and click
-        String city = "Denver";
-        ViewInteraction moveToMyProfBtn = onView(withId(R.id.my_prof_btn_frag));
-        moveToMyProfBtn.perform(click());
-        onView(withId(R.id.profileCityFrag)).perform(typeText(city));
-        onView(withId(R.id.profileCityFrag)).check(matches(withText(containsString(city))));
-    }
-
-    @Test
-    public void countryEntry(){
-        //move to profile button and click
-        String country = "usa";
-        ViewInteraction moveToMyProfBtn = onView(withId(R.id.my_prof_btn_frag));
-        moveToMyProfBtn.perform(click());
-        onView(withId(R.id.profileCountryFrag)).perform(typeText(country));
-        onView(withId(R.id.profileCountryFrag)).check(matches(withText(containsString(country))));
-    }
-
-    @Test
-    public void heightEntry(){
-        //move to height slider and click
-        int height = 74;
-        ViewInteraction moveToMyProfBtn = onView(withId(R.id.my_prof_btn_frag));
-        moveToMyProfBtn.perform(click());
-        onView(withId(R.id.seekBarHeightFrag)).perform(scrollTo());
-        onView(withId(R.id.seekBarHeightFrag)).perform(setProgress(height));
-        onView(withId(R.id.textViewHeightFrag)).check(matches(withText(containsString(String.valueOf(height)))));
-    }
-
-    @Test
-    public void weightEntry(){
-        //move to weight slider and click
-        int weight = 120;
-        ViewInteraction moveToMyProfBtn = onView(withId(R.id.my_prof_btn_frag));
-        moveToMyProfBtn.perform(click());
-        onView(withId(R.id.seekBarWeightFrag)).perform(scrollTo());
-        onView(withId(R.id.seekBarWeightFrag)).perform(setProgress(weight));
-        onView(withId(R.id.textViewWeightFrag)).check(matches(withText(containsString(String.valueOf(weight)))));
-    }
-
-    @Test
-    public void wholeRun()
+    @Before
+    public void setup()
     {
         String name = "Jonathan Sullivan";
-        int age = 38;
+        int age = 25;
         String city = "Seattle";
         String country = "USA";
-        int height = 74;
-        int weight = 180;
+        int height = 54;
+        int weight = 80;
         ViewInteraction moveToMyProfBtn = onView(withId(R.id.my_prof_btn_frag));
         moveToMyProfBtn.perform(click());
 
@@ -132,7 +72,7 @@ public class ProfilePageFragmentTests {
         onView(withId(R.id.seekBarWeightFrag)).perform(scrollTo());
         onView(withId(R.id.seekBarWeightFrag)).perform(setProgress(weight));
         onView(withId(R.id.profileMaleFrag)).perform(scrollTo());
-        onView(withId(R.id.profileMaleFrag)).perform(click());
+        onView(withId(R.id.profileFemaleFrag)).perform(click());
         onView(withId(R.id.saveProfileFrag)).perform(scrollTo());
         onView(withId(R.id.saveProfileFrag)).perform(click());
 
@@ -146,5 +86,22 @@ public class ProfilePageFragmentTests {
         onView(withId(R.id.profileCountryFrag)).check(matches(withText(containsString(country))));
         onView(withId(R.id.textViewHeightFrag)).check(matches(withText(containsString(String.valueOf(height)))));
         onView(withId(R.id.textViewWeightFrag)).check(matches(withText(containsString(String.valueOf(weight)))));
+
+        onView(withId(R.id.saveProfileFrag)).perform(scrollTo());
+        onView(withId(R.id.lifeBtnMyProfFrag)).perform(click());
+    }
+
+    @Test
+    public void desiredWeightChange(){
+        //move to height slider and click
+        int weight = -20;
+        ViewInteraction moveToMyProfBtn = onView(withId(R.id.weight_man_btn_frag));
+        moveToMyProfBtn.perform(click());
+        onView(withId(R.id.calculatorPoundsPerWeekFrag)).perform(scrollTo());
+        onView(withId(R.id.calculatorPoundsPerWeekFrag)).perform(setProgress(19));
+        onView(withId(R.id.calculatorPoundsPerWeekFrag)).perform(setProgress(weight));
+
+        onView(withId(R.id.dailyCalEditTextFrag)).perform(scrollTo());
+        onView(withId(R.id.dailyCalEditTextFrag)).check(matches(withText(containsString("665 (WARNING)"))));
     }
 }
