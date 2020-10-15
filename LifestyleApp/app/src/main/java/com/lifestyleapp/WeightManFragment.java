@@ -83,11 +83,8 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         user = weightManViewModel.getProfileViewModelData().getValue();
 
         // calculate BMR and BMI because they won't change
-        if(user != null)
-        {
-            bmr = Calculators.calculateBMR(user.getWeight(), user.getHeight(), user.getAge(), user.getGender());
-            bmi = Calculators.calculateBMI(user.getWeight(), user.getHeight());
-        }
+        bmr = Calculators.calculateBMR(user.getWeight(), user.getHeight(), user.getAge(), user.getGender());
+        bmi = Calculators.calculateBMI(user.getWeight(), user.getHeight());
 
         //pounds per week seek bar
         seekBarPoundsPerWeek = weight_man_frag_view.findViewById(R.id.calculatorPoundsPerWeekFrag);
@@ -113,8 +110,9 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         editTextCalories = weight_man_frag_view.findViewById(R.id.dailyCalEditTextFrag);
         mainLayout = weight_man_frag_view.findViewById(R.id.main_layout);
 
-        if (user != null && user.getProfilePhotoPath() != null)
+        if (user.getProfilePhotoPath() != null)
         {
+
             FileInputStream fis = null;
             try {
                 fis = getContext().openFileInput(user.getProfilePhotoPath());
@@ -133,10 +131,10 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
             profilePhoto.setImageBitmap(fromFileBmp);
         }
 
-        if(user != null && user.getHeight() != 0 && user.getWeight() != 0)
+        if(user.getHeight() != 0 && user.getWeight() != 0)
         {
             tvHeaderInformation.setText("Calculations based on a weight of " + user.getWeight() + " pounds and a height of " + user.getHeight() + " inches.");
-            editTextCalories.setText(Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary, user.getGender()));
+            editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));
             editTextBMR.setText(String.valueOf(bmr.intValue()));
             editTextBMI.setText(String.valueOf(new DecimalFormat("#.0").format(bmi)));
         }
@@ -149,20 +147,14 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         {
             case R.id.calculatorActiveFrag:
 
-                if(user != null)
-                {
-                    isSedentary = false;
-                    editTextCalories.setText(Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary, user.getGender()));
-                }
+                isSedentary = false;
+                editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));
                 break;
 
             case R.id.calculatorSedentaryFrag:
 
-                if(user != null)
-                {
-                    isSedentary = true;
-                    editTextCalories.setText(Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary, user.getGender()));
-                }
+                isSedentary = true;
+                editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));
                 break;
 
             case R.id.lifestyle_btn_weightman_frag:
@@ -176,23 +168,24 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int pounds, boolean fromUser) {
-            // updated continuously as the user slides the thumb
 
+            // updated continuously as the user slides the thumb
             if(user != null)
             {
-                String message = Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary, user.getGender());
+                int dailyCalories = (int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary);
+                String message = String.valueOf(dailyCalories);
                 poundsToLose = ((double)pounds / 10.0);
                 tvPoundsPerWeek.setText("Pounds To Change Per Week: " + poundsToLose);
                 String warning = "WARNING: EXCESSIVELY LOW CALORIC INTAKE";
 
-                if(message.contains("(WARNING)"))
-                {
-                    // TODO IMPROVE THIS POPUP WINDOW
+                if(dailyCalories < 1200) {
+                    message += " (Warning)";
                     Snackbar.make(mainLayout, warning, 2500).show();
                 }
 
                 editTextCalories.setText(message);
             }
+
         }
 
         @Override
