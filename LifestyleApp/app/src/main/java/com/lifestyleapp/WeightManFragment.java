@@ -136,7 +136,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         if(user != null && user.getHeight() != 0 && user.getWeight() != 0)
         {
             tvHeaderInformation.setText("Calculations based on a weight of " + user.getWeight() + " pounds and a height of " + user.getHeight() + " inches.");
-            editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));
+            editTextCalories.setText(Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary, user.getGender()));
             editTextBMR.setText(String.valueOf(bmr.intValue()));
             editTextBMI.setText(String.valueOf(new DecimalFormat("#.0").format(bmi)));
         }
@@ -152,7 +152,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
                 if(user != null)
                 {
                     isSedentary = false;
-                    editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));
+                    editTextCalories.setText(Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary, user.getGender()));
                 }
                 break;
 
@@ -161,7 +161,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
                 if(user != null)
                 {
                     isSedentary = true;
-                    editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));
+                    editTextCalories.setText(Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary, user.getGender()));
                 }
                 break;
 
@@ -180,18 +180,18 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
 
             if(user != null)
             {
-                int calories = (int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary);
-                editTextCalories.setText(String.valueOf(calories));
+                String message = Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary, user.getGender());
                 poundsToLose = ((double)pounds / 10.0);
                 tvPoundsPerWeek.setText("Pounds To Change Per Week: " + poundsToLose);
                 String warning = "WARNING: EXCESSIVELY LOW CALORIC INTAKE";
 
-                if((user.getGender() == 1.0 && calories < 1200) || (calories < 1000)) {
-
+                if(message.contains("(WARNING)"))
+                {
                     // TODO IMPROVE THIS POPUP WINDOW
-                    Snackbar.make(mainLayout, warning, 1000).show();
-
+                    Snackbar.make(mainLayout, warning, 2500).show();
                 }
+
+                editTextCalories.setText(message);
             }
         }
 

@@ -5,29 +5,39 @@ import org.junit.Test
 
 import org.junit.Assert.*
 
-
 class CalculatorsTest {
-
-    @Before
-    fun setUp() {
-        //defaultUser = User("Sam Bauter", 31, "Denver", "USA", 72.0, 220.0, 1, null, 0.0, 0.0, false)
-
-    }
 
     @Test
     fun BMI() {
-        assertEquals(Calculators.calculateBMI(220.0, 72.0), "29.8341");
+        assertEquals(Calculators.calculateBMI(220.0, 72.0), 29.834104938271604, 0.1);
 
     }
 
     @Test
     fun BMRTEE() {
-        assertEquals(Calculators.calculateBMR(220.0, 72.0, 31.0, 1.0, false), "3503.6891");
+        assertEquals(Calculators.calculateBMR(220.0, 72.0, 31.0, 1.0), 1990.732426303855, 0.1);
+    }
+
+    @Test
+    fun rawCaloriesToEat() {
+        assertEquals(Calculators.rawCalculateCaloriesToEat(1990.0, 1.0, false), 3942.7, 0.1);
     }
 
     @Test
     fun caloriesToEat() {
-        assertEquals(Calculators.calculateCaloriesToEat(3500.0, 1.0, 1.0), "3953.5147");
+        assertEquals(Calculators.calculateCaloriesToEat(1990.0, 1.0, false, 1.0), "3942.7");
+    }
+
+    @Test
+    fun maleWarningCaloriesToEat()
+    {
+        assertEquals(Calculators.calculateCaloriesToEat(1200.0, -2.0, false, 1.0), "1076.0 (WARNING)");
+    }
+
+    @Test
+    fun femaleWarningCaloriesToEat()
+    {
+        assertEquals(Calculators.calculateCaloriesToEat(1000.0, -2.0, false, 0.0), "730.0 (WARNING)");
     }
 
 }
