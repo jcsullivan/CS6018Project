@@ -1,9 +1,7 @@
 package com.lifestyleapp
 
-import org.junit.Before
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class CalculatorsTest {
 
