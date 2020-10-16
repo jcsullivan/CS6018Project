@@ -83,8 +83,11 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         user = weightManViewModel.getProfileViewModelData().getValue();
 
         // calculate BMR and BMI because they won't change
-        bmr = Calculators.calculateBMR(user.getWeight(), user.getHeight(), user.getAge(), user.getGender());
-        bmi = Calculators.calculateBMI(user.getWeight(), user.getHeight());
+        if(user != null)
+        {
+            bmr = Calculators.calculateBMR(user.getWeight(), user.getHeight(), user.getAge(), user.getGender());
+            bmi = Calculators.calculateBMI(user.getWeight(), user.getHeight());
+        }
 
         //pounds per week seek bar
         seekBarPoundsPerWeek = weight_man_frag_view.findViewById(R.id.calculatorPoundsPerWeekFrag);
@@ -110,7 +113,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         editTextCalories = weight_man_frag_view.findViewById(R.id.dailyCalEditTextFrag);
         mainLayout = weight_man_frag_view.findViewById(R.id.main_layout);
 
-        if (user.getProfilePhotoPath() != null)
+        if (user != null && user.getProfilePhotoPath() != null)
         {
 
             FileInputStream fis = null;
@@ -131,7 +134,7 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
             profilePhoto.setImageBitmap(fromFileBmp);
         }
 
-        if(user.getHeight() != 0 && user.getWeight() != 0)
+        if(user != null && user.getHeight() != 0 && user.getWeight() != 0)
         {
             tvHeaderInformation.setText("Calculations based on a weight of " + user.getWeight() + " pounds and a height of " + user.getHeight() + " inches.");
             editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));

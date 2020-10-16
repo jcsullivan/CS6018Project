@@ -20,24 +20,19 @@ class CalculatorsTest {
 
     @Test
     fun rawCaloriesToEat() {
-        assertEquals(Calculators.rawCalculateCaloriesToEat(1990.0, 1.0, false), 3942.7, 0.1);
-    }
-
-    @Test
-    fun caloriesToEat() {
-        assertEquals(Calculators.calculateCaloriesToEat(1990.0, 1.0, false, 1.0), "3942.7");
+        assertEquals(Calculators.calculateCaloriesToEat(1990.0, 1.0, false), 3942.7, 0.1);
     }
 
     @Test
     fun maleWarningCaloriesToEat()
     {
-        assertEquals(Calculators.calculateCaloriesToEat(1200.0, -2.0, false, 1.0), "1076.0 (WARNING)");
+        assertEquals(Calculators.calculateCaloriesToEat(1200.0, -2.0, false), 1076.0, 0.1);
     }
 
     @Test
     fun femaleWarningCaloriesToEat()
     {
-        assertEquals(Calculators.calculateCaloriesToEat(1000.0, -2.0, false, 0.0), "730.0 (WARNING)");
+        assertEquals(Calculators.calculateCaloriesToEat(1000.0, -2.0, false), 730.0, 0.1);
     }
 
 }

@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
@@ -62,10 +63,14 @@ public class WeightManagementTests
         ViewInteraction moveToMyProfBtn = onView(withId(R.id.my_prof_btn_frag));
         moveToMyProfBtn.perform(click());
 
+        onView(withId(R.id.profileNameFrag)).perform(clearText());
         onView(withId(R.id.profileNameFrag)).perform(typeText(name));
+        onView(withId(R.id.profileAgeFrag)).perform(clearText());
         onView(withId(R.id.profileAgeFrag)).perform(typeText(String.valueOf(age)));
+        onView(withId(R.id.profileCityFrag)).perform(clearText());
         onView(withId(R.id.profileCityFrag)).perform(typeText(city));
         onView(withId(R.id.profileCountryFrag)).perform(scrollTo());
+        onView(withId(R.id.profileCountryFrag)).perform(clearText());
         onView(withId(R.id.profileCountryFrag)).perform(typeText(country));
         onView(withId(R.id.seekBarHeightFrag)).perform(scrollTo());
         onView(withId(R.id.seekBarHeightFrag)).perform(setProgress(height));
