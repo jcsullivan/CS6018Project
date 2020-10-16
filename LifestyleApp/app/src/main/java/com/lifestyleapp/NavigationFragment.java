@@ -6,20 +6,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 
 public class NavigationFragment extends Fragment implements View.OnClickListener {
 
@@ -53,11 +49,9 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         public void onNavSelected(int navIndex);
     }
 
-
     public NavigationFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +61,6 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         navigationViewModel = ViewModelProviders.of(this).get(NavigationViewModel.class);
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -122,8 +115,6 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
 
     }
 
-
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -161,7 +152,6 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                 listener.onNavSelected(WEATHER_BUTTON_INDEX);
             }
             break;
-
 
         }
     }
