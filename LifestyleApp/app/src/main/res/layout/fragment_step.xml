@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="false"
+    android:background="@drawable/sandspiral"
+    android:backgroundTint="#d6FFFFFF"
+    android:backgroundTintMode="src_over"
+    tools:context=".StepFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/stepBackToLifestyle"
+                android:layout_width="130dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/roundedbuttongreen"
+                android:text="@string/lifestyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/counterField" />
+
+            <Button
+                android:id="@+id/startSteps"
+                android:layout_width="130dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/roundedbuttonyellow"
+                android:text="@string/startSteps"
+                app:layout_constraintEnd_toStartOf="@+id/stopSteps"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/stopSteps"
+                android:layout_width="130dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/roundedbuttonyellow"
+                android:text="@string/stopSteps"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/startSteps"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/counterField"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="32dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/stepsText"
+                android:textColor="#FF000000"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/startSteps" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</ScrollView>
