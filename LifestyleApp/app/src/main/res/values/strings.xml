@@ -42,6 +42,7 @@
     <string name="startSteps">Start Counter</string>
     <string name="stopSteps">End Counter</string>
     <string name="stepsText">Press "Start Counter" to start tracking your steps.  NOTE: leaving this page will stop the counter.</string>
+    <string name="stepCounter">Step Counter</string>
 
 
 

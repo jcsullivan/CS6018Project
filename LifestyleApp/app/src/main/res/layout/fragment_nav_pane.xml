@@ -60,7 +60,7 @@
             <Button
                 android:id="@+id/my_prof_btn_frag"
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/toolbuttonred"
@@ -69,7 +69,7 @@
             <Button
                 android:id="@+id/weight_man_btn_frag"
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/toolbuttonorange"
@@ -78,7 +78,7 @@
             <Button
                 android:id="@+id/hike_btn_frag"
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/toolbuttonyellow"
@@ -87,11 +87,20 @@
             <Button
                 android:id="@+id/weather_btn_frag"
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
+                android:layout_height="70dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/toolbuttongreen"
                 android:text="@string/local_weather" />
+
+            <Button
+                android:id="@+id/steps_btn_frag"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/toolbuttonblue"
+                android:text="@string/stepCounter" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
