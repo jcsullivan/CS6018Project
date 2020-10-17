@@ -17,6 +17,7 @@ public class MasterDetail extends AppCompatActivity implements NavigationFragmen
     private ProfilePageFragment profilePageFragment;
     private WeightManFragment weightManFragment;
     private WeatherFragment weatherFragment;
+    private StepFragment stepFragment;
 
     // Gesture fields
     private SensorManager sensorManager;
@@ -35,6 +36,7 @@ public class MasterDetail extends AppCompatActivity implements NavigationFragmen
         profilePageFragment = new ProfilePageFragment();
         weightManFragment = new WeightManFragment();
         weatherFragment = new WeatherFragment();
+        stepFragment = new StepFragment();
 
 
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
@@ -141,16 +143,24 @@ public class MasterDetail extends AppCompatActivity implements NavigationFragmen
             } else if (navIndex == mMasterListNavFrag.WEIGHT_BUTTON_INDEX) {
                 fTrans.replace(R.id.master_detail_right_pane_tablet, weightManFragment, "frag_weightman_tab").commit();
             }
-            else{
+            else if(navIndex == mMasterListNavFrag.WEATHER_BUTTON_INDEX){
                 fTrans.replace(R.id.master_detail_right_pane_tablet, weatherFragment, "frag_weather_tab").commit();
+            }
+            else
+            {
+                fTrans.replace(R.id.master_detail_right_pane_tablet, stepFragment, "frag_step_tab").commit();
             }
         } else {
             if (navIndex == mMasterListNavFrag.PROFILE_BUTTON_INDEX) {
                 fTrans.replace(R.id.master_detail_pane_phone, profilePageFragment, "frag_myprof_phone").addToBackStack("profile").commit();
             } else if (navIndex == mMasterListNavFrag.WEIGHT_BUTTON_INDEX) {
                 fTrans.replace(R.id.master_detail_pane_phone, weightManFragment, "frag_weightman_phone").addToBackStack("weight").commit();
-            } else{
+            } else if (navIndex == mMasterListNavFrag.WEATHER_BUTTON_INDEX) {
                 fTrans.replace(R.id.master_detail_pane_phone, weatherFragment, "frag_weather_phone").addToBackStack("weather").commit();
+            }
+            else
+            {
+                fTrans.replace(R.id.master_detail_pane_phone, stepFragment, "frag_step_phone").addToBackStack("step").commit();
             }
         }
         //fTrans.commit();

@@ -26,10 +26,12 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     Button weightManButton;
     Button hikesButton;
     Button weatherButton;
+    Button stepsButton;
     ImageView profilePhotoView;
     public final int PROFILE_BUTTON_INDEX = 1;
     public final int WEIGHT_BUTTON_INDEX = 2;
     public final int WEATHER_BUTTON_INDEX = 3;
+    public final int STEPS_BUTTON_INDEX=4;
 
     private NavigationViewModel navigationViewModel;
 
@@ -71,12 +73,14 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         weightManButton = navFragmentView.findViewById(R.id.weight_man_btn_frag);
         hikesButton = navFragmentView.findViewById(R.id.hike_btn_frag);
         weatherButton = navFragmentView.findViewById(R.id.weather_btn_frag);
+        stepsButton = navFragmentView.findViewById(R.id.steps_btn_frag);
         profilePhotoView = navFragmentView.findViewById(R.id.photo_nav_pane_frag);
 
         profileButton.setOnClickListener(this);
         weightManButton.setOnClickListener(this);
         hikesButton.setOnClickListener(this);
         weatherButton.setOnClickListener(this);
+        stepsButton.setOnClickListener(this);
 
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         User user = userViewModel.getProfileViewModelData().getValue();
@@ -152,6 +156,11 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                 listener.onNavSelected(WEATHER_BUTTON_INDEX);
             }
             break;
+            case R.id.steps_btn_frag:
+            {
+                listener.onNavSelected(STEPS_BUTTON_INDEX);
+                break;
+            }
 
         }
     }
