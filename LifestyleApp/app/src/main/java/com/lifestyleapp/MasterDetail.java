@@ -19,14 +19,6 @@ public class MasterDetail extends AppCompatActivity implements NavigationFragmen
     private WeatherFragment weatherFragment;
     private StepFragment stepFragment;
 
-    // Gesture fields
-    private SensorManager sensorManager;
-    private Sensor gyroscope;
-    private Sensor accelerometer;
-    private double accelerationThreshold = 10.5;
-    private double rotationThreshold = 1.8;
-    private boolean isStepCounterRunning;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,86 +40,16 @@ public class MasterDetail extends AppCompatActivity implements NavigationFragmen
         }
         fTrans.commit();
 
-        // SENSOR SETUP
-        isStepCounterRunning = false;
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-
     }
-
-    // SHAKE TO START STEP COUNTER
-    private SensorEventListener accelerationListener = new SensorEventListener() {
-        @Override
-        public void onSensorChanged(SensorEvent sensorEvent) {
-
-            Context context = getApplicationContext();
-
-            double xAcceleration = sensorEvent.values[0];
-            double yAcceleration = sensorEvent.values[1];
-            double zAcceleration = sensorEvent.values[2];
-
-            double magnitude = Math.sqrt(Math.pow(xAcceleration, 2) + Math.pow(yAcceleration, 2) + Math.pow(zAcceleration, 2));
-
-            //Check if this is greater than some threshold
-            if(magnitude > accelerationThreshold && !isStepCounterRunning) {
-                    MediaPlayer dingMediaPlayer = MediaPlayer.create(context, R.raw.ding);
-                    dingMediaPlayer.start();
-                    isStepCounterRunning = true;
-                    // TODO START STEP COUNTER
-            }
-
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int i) {}
-
-    };
-
-    // SPIN TO STOP STEP COUNTER
-    private SensorEventListener rotationListener = new SensorEventListener() {
-
-        @Override
-        public void onSensorChanged(SensorEvent sensorEvent) {
-
-            Context context = getApplicationContext();
-
-            double xRotation = sensorEvent.values[0];
-            double yRotation = sensorEvent.values[1];
-            double zRotation = sensorEvent.values[2];
-
-            double magnitude = Math.sqrt(Math.pow(xRotation, 2) + Math.pow(yRotation, 2) + Math.pow(zRotation, 2));
-
-            if (magnitude > rotationThreshold && isStepCounterRunning) {
-                MediaPlayer drumsMediaPlayer = MediaPlayer.create(context, R.raw.drums);
-                drumsMediaPlayer.start();
-                isStepCounterRunning = false;
-                // TODO STOP STEP COUNTER
-            }
-
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
-
-    };
 
     @Override
     public void onResume() {
         super.onResume();
-        if(accelerometer !=null){
-            sensorManager.registerListener(accelerationListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-            sensorManager.registerListener(rotationListener, gyroscope,SensorManager.SENSOR_DELAY_NORMAL);
-        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if(accelerometer!=null){
-            sensorManager.unregisterListener(accelerationListener);
-            sensorManager.unregisterListener(rotationListener);
-        }
     }
 
     boolean isTablet() {
