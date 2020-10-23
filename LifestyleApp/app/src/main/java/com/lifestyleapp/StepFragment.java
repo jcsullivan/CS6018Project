@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,13 @@ public class StepFragment extends Fragment implements View.OnClickListener
 
     private int steps;
 
+    // Gesture fields
+    private Sensor gyroscope;
+    private Sensor accelerometer;
+    private double accelerationThreshold = 10.5;
+    private double rotationThreshold = 1.8;
+    private boolean isStepCounterRunning;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -60,7 +68,9 @@ public class StepFragment extends Fragment implements View.OnClickListener
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -86,6 +96,9 @@ public class StepFragment extends Fragment implements View.OnClickListener
 
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         mStepCounter = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        isStepCounterRunning = false;
+        gyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         //Set the observer
         //mUserViewModel.getData().observe(this, stepsObserver);
@@ -128,47 +141,108 @@ public class StepFragment extends Fragment implements View.OnClickListener
         switch (v.getId())
         {
             case R.id.startSteps:
-            {
-                if(mStepCounter!=null){
-                    mSensorManager.registerListener(mListener,mStepCounter,SensorManager.SENSOR_DELAY_NORMAL);
-                }
-                counterField.setText("STEPS: 0");
-                Snackbar.make(mainLayout, "STEP COUNTER STARTED", 2500).show();
+                startSteps();
                 break;
-            }
+
             case R.id.stopSteps:
-            {
-                if(user != null)
-                {
-                    user.setSteps(steps);
-                }
-                if(mStepCounter!=null){
-                    mSensorManager.unregisterListener(mListener);
-                }
-                Snackbar.make(mainLayout, "STEP COUNTER STOPPED", 2500).show();
+                stopSteps();
                 break;
-            }
+
             case R.id.stepBackToLifestyle:
-            {
-                if(user != null)
-                {
-                    user.setSteps(steps);
-                }
-                if(mStepCounter!=null){
-                    mSensorManager.unregisterListener(mListener);
-                }
-                Snackbar.make(mainLayout, "STEP COUNTER STOPPED", 2500).show();
+                stopSteps();
                 lifePressListener.onLifeBtnPress();
                 break;
-            }
+
         }
     }
+
+    private void startSteps() {
+        if(!isStepCounterRunning) {
+
+            if (mStepCounter != null) mSensorManager.registerListener(mListener, mStepCounter, SensorManager.SENSOR_DELAY_NORMAL);
+            counterField.setText("STEPS: 0");
+            Snackbar.make(mainLayout, "STEP COUNTER STARTED", 2500).show();
+            isStepCounterRunning = true;
+
+        }
+    }
+
+    private void stopSteps() {
+        if (isStepCounterRunning) {
+
+            if (user != null) user.setSteps(steps);
+            if (mStepCounter != null) mSensorManager.unregisterListener(mListener);
+            Snackbar.make(mainLayout, "STEP COUNTER STOPPED", 2500).show();
+            isStepCounterRunning = false;
+
+        }
+    }
+
+    // SHAKE TO START STEP COUNTER
+    private SensorEventListener accelerationListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+
+            Context context = getActivity().getApplicationContext();
+
+            double xAcceleration = sensorEvent.values[0];
+            double yAcceleration = sensorEvent.values[1];
+            double zAcceleration = sensorEvent.values[2];
+
+            double magnitude = Math.sqrt(Math.pow(xAcceleration, 2) + Math.pow(yAcceleration, 2) + Math.pow(zAcceleration, 2));
+
+            //Check if this is greater than some threshold
+            if(magnitude > accelerationThreshold && !isStepCounterRunning) {
+                MediaPlayer dingMediaPlayer = MediaPlayer.create(context, R.raw.ding);
+                dingMediaPlayer.start();
+                startSteps();
+            }
+
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {}
+
+    };
+
+    // SPIN TO STOP STEP COUNTER
+    private SensorEventListener rotationListener = new SensorEventListener() {
+
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+
+            Context context = getActivity().getApplicationContext();
+
+            double xRotation = sensorEvent.values[0];
+            double yRotation = sensorEvent.values[1];
+            double zRotation = sensorEvent.values[2];
+
+            double magnitude = Math.sqrt(Math.pow(xRotation, 2) + Math.pow(yRotation, 2) + Math.pow(zRotation, 2));
+
+            if (magnitude > rotationThreshold && isStepCounterRunning) {
+                MediaPlayer drumsMediaPlayer = MediaPlayer.create(context, R.raw.drums);
+                drumsMediaPlayer.start();
+                stopSteps();
+            }
+
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
+    };
 
     @Override
     public void onResume() {
         super.onResume();
         if(mStepCounter!=null){
             mSensorManager.registerListener(mListener,mStepCounter,SensorManager.SENSOR_DELAY_NORMAL);
+        }
+        if(accelerometer !=null){
+            mSensorManager.registerListener(accelerationListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+        if(gyroscope != null) {
+            mSensorManager.registerListener(rotationListener, gyroscope,SensorManager.SENSOR_DELAY_NORMAL);
         }
     }
 
@@ -181,6 +255,12 @@ public class StepFragment extends Fragment implements View.OnClickListener
         }
         if(mStepCounter!=null){
             mSensorManager.unregisterListener(mListener);
+        }
+        if(accelerometer!=null){
+            mSensorManager.unregisterListener(accelerationListener);
+        }
+        if(gyroscope!=null){
+            mSensorManager.unregisterListener(rotationListener);
         }
     }
 }
