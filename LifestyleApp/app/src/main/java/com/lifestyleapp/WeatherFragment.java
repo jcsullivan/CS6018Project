@@ -160,14 +160,15 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
             locationForURL = locationForURL.replaceAll("\\s+", "%20").trim();
 
             loadWeatherData(locationForURL);
-        }else{
+        }
+        /*else{
             String defaultslc = "Salt Lake City, usa";
             editLocation.setText(defaultslc);
             String locationForURL = defaultslc.replaceAll(",\\s+", ",").trim();
             locationForURL = locationForURL.replaceAll("\\s+", "%20").trim();
             loadWeatherData(locationForURL);
 
-        }
+        }*/
     }
 
     @Override
