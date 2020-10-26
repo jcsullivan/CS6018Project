@@ -20,20 +20,38 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.amplifyframework.core.Amplify;
+
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 public class ProfilePageFragment extends Fragment implements View.OnClickListener {
+
+    private void uploadFile(String fileKey, File toUpload) {
+        Amplify.Storage.uploadFile(
+                fileKey,
+                toUpload,
+                result -> Log.i("MyAmplifyApp", "Successfully uploaded: " + result.getKey()),
+                storageFailure -> Log.e("MyAmplifyApp", "Upload failed", storageFailure)
+        );
+    }
 
     private Button buttonCamera, buttonLifestyle, buttonSaveProfile;
     private EditText profileName, profileAge, profileCity, profileCountry;
@@ -47,6 +65,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
     private int byteArrSize;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private boolean photoTaken = false;
+    User localUser;
 
     ImageView profilePhotoView;
     Bitmap profilePicture = null;
@@ -57,6 +76,7 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
     public interface OnLifePressListener {
         public void onLifeBtnPress();
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -127,25 +147,42 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
         profileFemale = myprofFragmentView.findViewById(R.id.profileFemaleFrag);
 
         // GET USER FROM VIEWMODEL (IF THERE IS ONE), THEN SET THE TEXT FIELDS ON THE UI
-        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-        User user = userViewModel.getProfileViewModelData().getValue();
+        userViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+
+        LiveData<List<User>> usersList = userViewModel.getProfileViewModelData();
+        usersList.observe(getActivity(),new Observer<List<User>>() {
+            @Override
+            public void onChanged(@Nullable final List<User> userList) {
+                if(!userList.isEmpty()&&userViewModel.getActiveUserFullName()!=null) {
+                    localUser = userList.stream()
+                            .filter(user ->
+                                    userViewModel.getActiveUserFullName().equals(user.getFullName()))
+                            .findAny()
+                            .orElse(null);
+                }
+            }
+
+            });
+
+
+
         @Nullable String fileToPlaceAsProfile = null;
         if(photoTaken) {
             fileToPlaceAsProfile = profilePhotoFileName;
         }
-        if (user != null) {
+        if (localUser != null) {
 
-            if(user.getProfilePhotoPath()!=null && !photoTaken) {
-                fileToPlaceAsProfile = user.getProfilePhotoPath();
+            if(localUser.getProfilePhotoPath()!=null && !photoTaken) {
+                fileToPlaceAsProfile = localUser.getProfilePhotoPath();
             }
-            if (!user.getFullName().equals("")) profileName.setText(user.getFullName());
-            if (user.getAge() != 0) profileAge.setText(String.valueOf(user.getAge()));
-            if (!user.getCity().equals("")) profileCity.setText(user.getCity());
-            if (!user.getCountry().equals("")) profileCountry.setText(user.getCountry());
-            if (user.getGender() == 1) {
+            if (!localUser.getFullName().equals("")) profileName.setText(localUser.getFullName());
+            if (localUser.getAge() != 0) profileAge.setText(String.valueOf(localUser.getAge()));
+            if (!localUser.getCity().equals("")) profileCity.setText(localUser.getCity());
+            if (!localUser.getCountry().equals("")) profileCountry.setText(localUser.getCountry());
+            if (localUser.getGender() == 1) {
                 profileMale.setChecked(true);
                 profileFemale.setChecked(false);
-            } else if (user.getGender() == 0){
+            } else if (localUser.getGender() == 0){
                 profileFemale.setChecked(true);
                 profileMale.setChecked(false);
             }
@@ -208,6 +245,9 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
 
                     intAge = Integer.parseInt(stringAge);
                     userViewModel.setProfileViewModelData(stringName, intAge, stringCity, stringCountry, doubleHeight, doubleWeight, intGender, profilePhotoFileName, byteArrSize, null,0.0, 0.0, false);
+                    userViewModel.setActiveUserFullName(stringName);
+
+
                     Toast.makeText(getActivity(), "User information saved!", Toast.LENGTH_SHORT).show();
 
                 }
@@ -219,6 +259,9 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
                 break;
 
             case R.id.lifeBtnMyProfFrag:
+                File db_path = getContext().getDatabasePath("user_database");
+                uploadFile("lifestyle_app_db",db_path);
+
                 lifePressListener.onLifeBtnPress();
                 break;
 

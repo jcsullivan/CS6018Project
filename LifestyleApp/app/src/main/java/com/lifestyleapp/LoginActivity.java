@@ -18,6 +18,10 @@ import com.amplifyframework.auth.AuthUserAttributeKey;
 import com.amplifyframework.auth.options.AuthSignUpOptions;
 import com.amplifyframework.core.Amplify;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+
 public class LoginActivity extends AppCompatActivity  implements View.OnClickListener, RegistrationFragment.OnSubmitPressListener {
 
     private Button loginButton;
@@ -28,6 +32,8 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     private String userPsw;
     private RegistrationFragment registrationFragment;
     public static final String EXTRA_MESSAGE = "com.lifestyleapp.MESSAGE";
+
+
 
 
     @Override

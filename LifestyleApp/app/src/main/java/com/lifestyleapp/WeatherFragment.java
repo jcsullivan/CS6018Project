@@ -6,7 +6,9 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 
 public class WeatherFragment extends Fragment implements View.OnClickListener
 {
@@ -30,9 +33,9 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     private static final String ARG_COUNTRY = "";
 
     private WeatherViewModel mWeatherViewModel;
-    private WeatherUserViewModel weatherUserViewModel;
+    private UserViewModel weatherUserViewModel;
 
-    private User user;
+    User localUser;
 
     ProfilePageFragment.OnLifePressListener lifePressListener;
 
@@ -90,8 +93,9 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
         //Create the view model
         mWeatherViewModel = ViewModelProviders.of(this).get(WeatherViewModel.class);
 
+
         //Set the observer
-        mWeatherViewModel.getData().observe(this, weatherObserver);
+        mWeatherViewModel.getData().observe(getActivity(), weatherObserver);
 
         return view;
     }
@@ -131,17 +135,38 @@ public class WeatherFragment extends Fragment implements View.OnClickListener
     {
         super.onStart();
 
-        weatherUserViewModel = ViewModelProviders.of(this).get(WeatherUserViewModel.class);
-        user = weatherUserViewModel.getProfileViewModelData().getValue();
+        weatherUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+        LiveData<List<User>> weatherUsersList = weatherUserViewModel.getProfileViewModelData();
 
-        if(user != null && !user.getCity().isEmpty() && !user.getCountry().isEmpty())
+
+        weatherUsersList.observe(getActivity(),new Observer<List<User>>() {
+            @Override
+            public void onChanged(@Nullable final List<User> userList) {
+                if(!userList.isEmpty()&&weatherUserViewModel.getActiveUserFullName()!=null) {
+                    localUser = userList.stream()
+                            .filter(user ->
+                                    weatherUserViewModel.getActiveUserFullName().equals(user.getFullName()))
+                            .findAny()
+                            .orElse(null);
+                }
+            }
+            });
+
+        if(localUser != null && !localUser.getCity().isEmpty() && !localUser.getCountry().isEmpty())
         {
-            editLocation.setText(user.getCity() + ", " + user.getCountry());
+            editLocation.setText(localUser.getCity() + ", " + localUser.getCountry());
             localLocation = editLocation.getText().toString();
             String locationForURL = localLocation.replaceAll(",\\s+", ",").trim();
             locationForURL = locationForURL.replaceAll("\\s+", "%20").trim();
 
             loadWeatherData(locationForURL);
+        }else{
+            String defaultslc = "Salt Lake City, usa";
+            editLocation.setText(defaultslc);
+            String locationForURL = defaultslc.replaceAll(",\\s+", ",").trim();
+            locationForURL = locationForURL.replaceAll("\\s+", "%20").trim();
+            loadWeatherData(locationForURL);
+
         }
     }
 

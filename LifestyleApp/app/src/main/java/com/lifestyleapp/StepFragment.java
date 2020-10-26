@@ -13,11 +13,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
 
 public class StepFragment extends Fragment implements View.OnClickListener
 {
@@ -26,7 +31,7 @@ public class StepFragment extends Fragment implements View.OnClickListener
     private Button startSteps, stopSteps, stepBackToLifestyle;
 
     private UserViewModel mUserViewModel;
-    private User user;
+    private User localUser;
 
     private SensorManager mSensorManager;
     private Sensor mStepCounter;
@@ -91,8 +96,20 @@ public class StepFragment extends Fragment implements View.OnClickListener
         stepBackToLifestyle.setOnClickListener(this);
 
         //Create the view model
-        mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-        user = mUserViewModel.getProfileViewModelData().getValue();
+        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+        LiveData<List<User>> usersList = mUserViewModel.getProfileViewModelData();
+        usersList.observe(getActivity(),new Observer<List<User>>() {
+            @Override
+            public void onChanged(@Nullable final List<User> userList) {
+                if (!userList.isEmpty()&& mUserViewModel.getActiveUserFullName() != null) {
+                    localUser = userList.stream()
+                            .filter(user ->
+                                    mUserViewModel.getActiveUserFullName().equals(user.getFullName()))
+                            .findAny()
+                            .orElse(null);
+                }
+            }
+        });
 
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
         mStepCounter = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
@@ -125,8 +142,6 @@ public class StepFragment extends Fragment implements View.OnClickListener
         super.onStart();
 
         mUserViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-        user = mUserViewModel.getProfileViewModelData().getValue();
-
         counterField = step_frag_view.findViewById(R.id.counterField);
         startSteps = (Button)step_frag_view.findViewById(R.id.startSteps);
         stopSteps = (Button)step_frag_view.findViewById(R.id.stopSteps);
@@ -170,7 +185,7 @@ public class StepFragment extends Fragment implements View.OnClickListener
     private void stopSteps() {
         if (isStepCounterRunning) {
 
-            if (user != null) user.setSteps(steps);
+            if (localUser != null) localUser.setSteps(steps);
             if (mStepCounter != null) mSensorManager.unregisterListener(mListener);
             Snackbar.make(mainLayout, "STEP COUNTER STOPPED", 2500).show();
             isStepCounterRunning = false;
@@ -249,9 +264,9 @@ public class StepFragment extends Fragment implements View.OnClickListener
     @Override
     public void onPause() {
         super.onPause();
-        if(user != null)
+        if(localUser != null)
         {
-            user.setSteps(steps);
+            localUser.setSteps(steps);
         }
         if(mStepCounter!=null){
             mSensorManager.unregisterListener(mListener);

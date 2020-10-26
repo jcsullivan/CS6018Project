@@ -6,7 +6,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +20,7 @@ import android.widget.ImageView;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 public class NavigationFragment extends Fragment implements View.OnClickListener {
 
@@ -28,12 +33,11 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     Button weatherButton;
     Button stepsButton;
     ImageView profilePhotoView;
+    User localUser;
     public final int PROFILE_BUTTON_INDEX = 1;
     public final int WEIGHT_BUTTON_INDEX = 2;
     public final int WEATHER_BUTTON_INDEX = 3;
     public final int STEPS_BUTTON_INDEX=4;
-
-    private NavigationViewModel navigationViewModel;
 
     private UserViewModel userViewModel;
 
@@ -59,8 +63,6 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // GET USER FROM VIEWMODEL (IF THERE IS ONE), THEN SET THE TEXT FIELDS ON THE UI
-        navigationViewModel = ViewModelProviders.of(this).get(NavigationViewModel.class);
 
     }
 
@@ -82,13 +84,25 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
         weatherButton.setOnClickListener(this);
         stepsButton.setOnClickListener(this);
 
-        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-        User user = userViewModel.getProfileViewModelData().getValue();
+        userViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+        LiveData<List<User>> usersList = userViewModel.getProfileViewModelData();
+        usersList.observe(getActivity(),new Observer<List<User>>() {
+            @Override
+            public void onChanged(@Nullable final List<User> userList) {
+                if(!userList.isEmpty()&&userViewModel.getActiveUserFullName()!=null) {
+                    localUser = userList.stream()
+                            .filter(user ->
+                                    userViewModel.getActiveUserFullName().equals(user.getFullName()))
+                            .findAny()
+                            .orElse(null);
+                }
+            }
+        });
 
-        if (user != null) {
+        if (localUser != null) {
 
-            if (user.getProfilePhotoPath() != null) {
-                String profPhotoFileName = user.getProfilePhotoPath();
+            if (localUser.getProfilePhotoPath() != null) {
+                String profPhotoFileName = localUser.getProfilePhotoPath();
 
                 FileInputStream fis = null;
                 try {
@@ -96,7 +110,7 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                byte[] readBytes = new byte[user.getProfilePhotoSize()];
+                byte[] readBytes = new byte[localUser.getProfilePhotoSize()];
                 try {
                     fis.read(readBytes);
                     fis.close();
@@ -138,7 +152,12 @@ public class NavigationFragment extends Fragment implements View.OnClickListener
                 // Search for nearby hikes on Google Maps
                 // https://developers.google.com/maps/documentation/urls/android-intents#java_6
                 // The level of Zoom can be adjusted - click on the link above for code
-                String city = navigationViewModel.getCity();
+                String city = "Salt Lake City";
+                if(localUser!=null){
+                    city = localUser.getCity();
+                }
+
+
                 Uri gmmIntentUri = Uri.parse("geo:0,0?q=hiking" + " " + Uri.encode(city));
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");

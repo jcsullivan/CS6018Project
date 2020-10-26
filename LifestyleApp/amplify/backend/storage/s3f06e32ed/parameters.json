@@ -1,0 +1,37 @@
+{
+    "bucketName": "lifestyleapp03bb46cd9d53473d9c4ef543d0314b0d",
+    "authPolicyName": "s3_amplify_f06e32ed",
+    "unauthPolicyName": "s3_amplify_f06e32ed",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "selectedGuestPermissions": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:ListBucket",
+        "s3:DeleteObject"
+    ],
+    "selectedAuthenticatedPermissions": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:ListBucket",
+        "s3:DeleteObject"
+    ],
+    "s3PermissionsAuthenticatedPublic": "s3:PutObject,s3:GetObject,s3:DeleteObject",
+    "s3PublicPolicy": "Public_policy_00eca841",
+    "s3PermissionsAuthenticatedUploads": "s3:PutObject",
+    "s3UploadsPolicy": "Uploads_policy_00eca841",
+    "s3PermissionsAuthenticatedProtected": "s3:PutObject,s3:GetObject,s3:DeleteObject",
+    "s3ProtectedPolicy": "Protected_policy_edba8da9",
+    "s3PermissionsAuthenticatedPrivate": "s3:PutObject,s3:GetObject,s3:DeleteObject",
+    "s3PrivatePolicy": "Private_policy_edba8da9",
+    "AuthenticatedAllowList": "ALLOW",
+    "s3ReadPolicy": "read_policy_00eca841",
+    "s3PermissionsGuestPublic": "s3:PutObject,s3:GetObject,s3:DeleteObject",
+    "s3PermissionsGuestUploads": "s3:PutObject",
+    "GuestAllowList": "ALLOW",
+    "triggerFunction": "NONE"
+}

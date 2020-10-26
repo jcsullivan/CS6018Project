@@ -1,6 +1,6 @@
 {
     "identityPoolName": "lifestyleapp0ffa674c_identitypool_0ffa674c",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "lifest0ffa674c",
     "userPoolName": "lifestyleapp0ffa674c_userpool_0ffa674c",
     "autoVerifiedAttributes": [

@@ -5,8 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
@@ -25,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class WeightManFragment extends Fragment implements View.OnClickListener {
 
@@ -39,8 +43,8 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
     private View weight_man_frag_view;
     OnLifePressFromWeightListener lifePressListenerFromWeight;
 
-    private WeightManViewModel weightManViewModel;
-    private User user;
+    private UserViewModel weightManViewModel;
+    private User localUser;
     private Double bmr = 0.0;
     private Double bmi = 0.0;
     private boolean isSedentary = false;
@@ -79,14 +83,32 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         radioButtonActive.setOnClickListener(this);
         radioButtonSedentary.setOnClickListener(this);
 
-        weightManViewModel = ViewModelProviders.of(this).get(WeightManViewModel.class);
-        user = weightManViewModel.getProfileViewModelData().getValue();
+
+
+        weightManViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+        //localUser = weightManViewModel.getActiveUser();
+
+        LiveData<List<User>> usersList = weightManViewModel.getProfileViewModelData();
+        usersList.observe(getActivity(),new Observer<List<User>>() {
+                    @Override
+                    public void onChanged(@Nullable final List<User> userList) {
+                        if (!userList.isEmpty() && weightManViewModel.getActiveUserFullName() != null) {
+                            localUser = userList.stream()
+                                    .filter(user ->
+                                            weightManViewModel.getActiveUserFullName().equals(user.getFullName()))
+                                    .findAny()
+                                    .orElse(null);
+                        }
+                    }
+                }
+            );
+
 
         // calculate BMR and BMI because they won't change
-        if(user != null)
+        if(localUser != null)
         {
-            bmr = Calculators.calculateBMR(user.getWeight(), user.getHeight(), user.getAge(), user.getGender());
-            bmi = Calculators.calculateBMI(user.getWeight(), user.getHeight());
+            bmr = Calculators.calculateBMR(localUser.getWeight(), localUser.getHeight(), localUser.getAge(), localUser.getGender());
+            bmi = Calculators.calculateBMI(localUser.getWeight(), localUser.getHeight());
         }
 
         //pounds per week seek bar
@@ -113,17 +135,17 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         editTextCalories = weight_man_frag_view.findViewById(R.id.dailyCalEditTextFrag);
         mainLayout = weight_man_frag_view.findViewById(R.id.main_layout);
 
-        if (user != null && user.getProfilePhotoPath() != null)
+        if (localUser != null && localUser.getProfilePhotoPath() != null)
         {
 
             FileInputStream fis = null;
             try {
-                fis = getContext().openFileInput(user.getProfilePhotoPath());
+                fis = getContext().openFileInput(localUser.getProfilePhotoPath());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
 
-            byte[] readBytes = new byte[user.getProfilePhotoSize()];
+            byte[] readBytes = new byte[localUser.getProfilePhotoSize()];
             try {
                 fis.read(readBytes);
                 fis.close();
@@ -134,9 +156,9 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
             profilePhoto.setImageBitmap(fromFileBmp);
         }
 
-        if(user != null && user.getHeight() != 0 && user.getWeight() != 0)
+        if(localUser != null && localUser.getHeight() != 0 && localUser.getWeight() != 0)
         {
-            tvHeaderInformation.setText("Calculations based on a weight of " + user.getWeight() + " pounds and a height of " + user.getHeight() + " inches.");
+            tvHeaderInformation.setText("Calculations based on a weight of " + localUser.getWeight() + " pounds and a height of " + localUser.getHeight() + " inches.");
             editTextCalories.setText(String.valueOf((int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary)));
             editTextBMR.setText(String.valueOf(bmr.intValue()));
             editTextBMI.setText(String.valueOf(new DecimalFormat("#.0").format(bmi)));
@@ -173,13 +195,13 @@ public class WeightManFragment extends Fragment implements View.OnClickListener 
         public void onProgressChanged(SeekBar seekBar, int pounds, boolean fromUser) {
 
             // updated continuously as the user slides their thumb
-            if(user != null)
+            if(localUser != null)
             {
                 poundsToLose = ((double)pounds / 10.0);
                 int dailyCalories = (int) Calculators.calculateCaloriesToEat(bmr, poundsToLose, isSedentary);
                 tvPoundsPerWeek.setText("Pounds To Change Per Week: " + poundsToLose);
 
-                if((dailyCalories < 1200  && user.getGender() == 1.0) || (dailyCalories < 1000 && user.getGender() == 0.0)){
+                if((dailyCalories < 1200  && localUser.getGender() == 1.0) || (dailyCalories < 1000 && localUser.getGender() == 0.0)){
                     editTextCalories.setText(dailyCalories +  " (WARNING)");
                     Snackbar.make(mainLayout, "WARNING: EXCESSIVELY LOW CALORIC INTAKE", 2500).show();
                 } else {

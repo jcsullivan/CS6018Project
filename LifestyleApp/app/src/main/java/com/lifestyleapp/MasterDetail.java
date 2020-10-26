@@ -14,6 +14,10 @@ import android.util.Log;
 
 import com.amplifyframework.core.Amplify;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+
 public class MasterDetail extends AppCompatActivity implements NavigationFragment.OnNavSelectedListener, ProfilePageFragment.OnLifePressListener, WeightManFragment.OnLifePressFromWeightListener {
 
     private NavigationFragment mMasterListNavFrag;
@@ -21,6 +25,8 @@ public class MasterDetail extends AppCompatActivity implements NavigationFragmen
     private WeightManFragment weightManFragment;
     private WeatherFragment weatherFragment;
     private StepFragment stepFragment;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,7 @@ public class MasterDetail extends AppCompatActivity implements NavigationFragmen
         weightManFragment = new WeightManFragment();
         weatherFragment = new WeatherFragment();
         stepFragment = new StepFragment();
+
 
 
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();

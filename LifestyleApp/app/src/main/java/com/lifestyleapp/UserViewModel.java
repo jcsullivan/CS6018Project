@@ -7,18 +7,22 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.List;
+
 public class UserViewModel extends AndroidViewModel {
 
-    private MutableLiveData<User> userMutableLiveData;
     private UserRepository profilePageRepository;
+    private LiveData<List<User>> mUsers;
+    private String activeUserFullName;
+
 
     public UserViewModel(Application application) {
 
         super(application);
 
-        profilePageRepository = UserRepository.getInstance();
+        profilePageRepository = UserRepository.getInstance(application);
 
-        userMutableLiveData = profilePageRepository.getUserData();
+        mUsers = profilePageRepository.getUsersData();
 
     }
 
@@ -28,8 +32,31 @@ public class UserViewModel extends AndroidViewModel {
     }
 
     // RETRIEVE DATA FROM THE REPOSITORY
-    public LiveData<User> getProfileViewModelData() {
-        return profilePageRepository.getUserData();
+    public LiveData<List<User>> getProfileViewModelData() {
+        return mUsers;
+    }
+
+    public void setActiveUserFullName(String fullName){
+        this.activeUserFullName = fullName;
+        //mUsers.setValue(mUsers.getValue());
+    }
+
+    public String getActiveUserFullName(){
+        return this.activeUserFullName;
+    }
+
+    public User getActiveUser() {
+        List<User> userList = mUsers.getValue();
+        if (activeUserFullName != null) {
+            return userList.stream()
+                    .filter(user ->
+                            activeUserFullName.equals(user.getFullName()))
+                    .findAny()
+                    .orElse(null);
+        }else{
+            return null;
+        }
     }
 
 }
+
