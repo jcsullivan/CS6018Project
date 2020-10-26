@@ -10,6 +10,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
+
+import com.amplifyframework.core.Amplify;
 
 public class MasterDetail extends AppCompatActivity implements NavigationFragment.OnNavSelectedListener, ProfilePageFragment.OnLifePressListener, WeightManFragment.OnLifePressFromWeightListener {
 
@@ -23,6 +26,8 @@ public class MasterDetail extends AppCompatActivity implements NavigationFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_master_detail);
+
+
 
         mMasterListNavFrag = new NavigationFragment();
         profilePageFragment = new ProfilePageFragment();

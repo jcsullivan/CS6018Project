@@ -45,11 +45,6 @@
     <string name="stepCounter">Step Counter</string>
 
 
-
-
-
-
-
     <string-array name="sed_act_array">
         <item>Sedentary</item>
         <item>Active</item>
@@ -154,6 +149,10 @@
     <string name="pounds_to_change_per_wk">Pounds To Change Per Week:</string>
     <string name="active">Active</string>
     <string name="sedentary">Sedentary</string>
+    <string name="register">Register</string>
+    <string name="email_colon">Email:</string>
+    <string name="confirmation_code_colon">Confirmation Code:</string>
+    <string name="submit">Submit</string>
 
 
 </resources>
