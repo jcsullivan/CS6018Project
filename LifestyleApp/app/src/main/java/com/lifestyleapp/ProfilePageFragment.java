@@ -260,7 +260,13 @@ public class ProfilePageFragment extends Fragment implements View.OnClickListene
 
             case R.id.lifeBtnMyProfFrag:
                 File db_path = getContext().getDatabasePath("user_database");
+                String basePathString =db_path.getPath();
+                File shm_path = new File(basePathString+"-shm");
+                File wal_path = new File(basePathString+"-wal");
+
                 uploadFile("lifestyle_app_db",db_path);
+                uploadFile("lifestyle_app_db-shm",shm_path);
+                uploadFile("lifestyle_app_db-wal",wal_path);
 
                 lifePressListener.onLifeBtnPress();
                 break;
