@@ -102,6 +102,19 @@
                 android:background="@drawable/toolbuttonblue"
                 android:text="@string/stepCounter" />
         </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/exit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="355dp"
+            android:layout_marginTop="553dp"
+            android:clickable="true"
+            android:src="@android:drawable/btn_dialog"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/photo_nav_pane_frag" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.storage.options.StorageDownloadFileOptions;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -25,6 +26,7 @@ public class MasterDetail extends AppCompatActivity implements NavigationFragmen
     private WeightManFragment weightManFragment;
     private WeatherFragment weatherFragment;
     private StepFragment stepFragment;
+
 
 
 
@@ -41,6 +43,15 @@ public class MasterDetail extends AppCompatActivity implements NavigationFragmen
         weatherFragment = new WeatherFragment();
         stepFragment = new StepFragment();
 
+
+
+        Amplify.Storage.downloadFile(
+                "lifestyle_app_db",
+                new File(getApplicationContext().getFilesDir() + "/db_from_s3"),
+                result -> Log.i("MyAmplifyApp", "Successfully downloaded: " + result.getFile().getName()),
+                error -> Log.e("MyAmplifyApp",  "Download Failure", error)
+        );
+        UserRoomDatabase.set_db_path(getApplicationContext().getFilesDir()+"db_from_s3");
 
 
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
@@ -112,6 +123,7 @@ public class MasterDetail extends AppCompatActivity implements NavigationFragmen
     }
 
 
+
     @Override
     public void onLifeBtnPressFromWeight() {
         FragmentTransaction fTrans = getSupportFragmentManager().beginTransaction();
@@ -123,4 +135,6 @@ public class MasterDetail extends AppCompatActivity implements NavigationFragmen
         }
         fTrans.commit();
     }
-    }
+
+
+}
